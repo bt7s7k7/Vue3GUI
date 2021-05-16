@@ -2,4 +2,4 @@
 
 const { project } = require("ucpem")
 
-project.prefix("src").res("vue3GUI")
+project.prefix("src").res("vue3gui")

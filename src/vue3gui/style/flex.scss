@@ -1,0 +1,38 @@
+@use './constants.scss';
+
+.flex {
+    display: flex;
+
+    @each $type in row, column {
+        &.#{$type} {
+            flex-direction: $type;
+        }
+    }
+    
+    &.center {
+        justify-content: center;
+        align-items: center;
+    }
+
+    &.center-main {
+        justify-content: center;
+    }
+
+    &.center-cross {
+        align-items: center;
+    }
+}
+
+.flex-fill {
+    flex: 1 1;
+}
+
+@for $mul from 0 to constants.$mul-max {
+    .flex-basis-#{$mul} {
+        flex-basis: $mul * constants.$size-int;
+    }
+
+    .flex-basis-#{$mul * constants.$px-int-n} {
+        flex-basis: $mul * constants.$px-int;
+    }
+}

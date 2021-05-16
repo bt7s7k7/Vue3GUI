@@ -1,0 +1,13 @@
+.contain {
+    contain: strict;
+}
+
+.scroll {
+    overflow-y: scroll;
+}
+
+@each $type in cover, contain {
+    .img-#{$type} {
+        object-fit: $type;
+    }
+}

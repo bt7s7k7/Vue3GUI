@@ -1,0 +1,21 @@
+@use './constants.scss';
+
+$border-style: 1px solid constants.$border-color;
+
+.border {
+    border: $border-style
+}
+
+.border-none {
+    border: none;
+}
+
+@each $side in left, right, bottom, top {
+    .border-#{$side} {
+        border-#{$side}: $border-style;
+    }
+
+    .border-#{$side}-none {
+        border-#{$side}: none;
+    }
+}

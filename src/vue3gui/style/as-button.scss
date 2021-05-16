@@ -1,0 +1,17 @@
+.as-button {
+    border: none;
+    border-radius: 2px;
+    padding: 3px 7px;
+    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.5);
+
+    transition: filter 0.05s;
+    filter: none;
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+    
+    &:active {
+        filter: brightness(1.4);
+    }
+}

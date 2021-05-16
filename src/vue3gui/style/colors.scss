@@ -1,0 +1,12 @@
+@use './constants.scss';
+
+@each $value-short, $color in constants.$colors {
+    .bg-#{$value-short} {
+        background-color: map-get($color, "bg");
+        @if map-get($color, "invert") == true {
+            color: map-get(map-get(constants.$colors, "white"), "fg")
+        } @else {
+            color: map-get(map-get(constants.$colors, "black"), "fg")
+        }
+    } 
+}

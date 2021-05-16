@@ -1,0 +1,39 @@
+@use './constants.scss';
+
+@each $value-short, $value in ("m": "margin", "p": "padding") {
+    @for $mul from 0 to constants.$mul-max {
+        .child-#{$value-short}-#{$mul} > * {
+            #{$value}: $mul * constants.$size-int;
+        }
+
+        @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
+            .child-#{$value-short}#{$dir-short}-#{$mul} > * {
+                #{$value}-#{$dir}: $mul * constants.$size-int;
+            }
+        }
+    }
+
+    @for $mul from 0 to constants.$mul-max {
+        .#{$value-short}-#{$mul} {
+            #{$value}: $mul * constants.$size-int;
+        }
+
+        @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
+            .#{$value-short}#{$dir-short}-#{$mul} {
+                #{$value}-#{$dir}: $mul * constants.$size-int;
+            }
+        }
+    }
+}
+
+@each $dir-short, $dir in ("w": "width", "h": "height") {
+    @for $mul from 0 to constants.$mul-max {
+        .#{$dir-short}-#{$mul} {
+            #{$dir}: $mul * constants.$size-int;
+        }
+
+        .#{$dir-short}-#{$mul * constants.$px-int-n} {
+            #{$dir}: $mul * constants.$px-int;
+        }
+    }
+}
