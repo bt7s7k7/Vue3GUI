@@ -1,6 +1,6 @@
-import { defineComponent, PropType } from "vue"
+import { computed, defineComponent, PropType } from "vue"
 import { eventDecorator } from "../eventDecorator"
-import { DEFAULT_VARIANT, Variant } from "./constants"
+import { Variant } from "./variants"
 
 export const Button = eventDecorator(defineComponent({
     name: "Button",
@@ -15,8 +15,15 @@ export const Button = eventDecorator(defineComponent({
     },
     setup(props, ctx) {
 
+        const variant = computed(() => props.variant ?? Variant.DEFAULT_VARIANT)
+
         return () => (
-            <button class={`as-button bg-${props.variant ?? DEFAULT_VARIANT}`} onClick={() => ctx.emit("click")}>{ctx.slots.default?.()}</button>
+            <button
+                class={`as-button bg-${variant.value} as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`}
+                onClick={() => ctx.emit("click")}
+            >
+                {ctx.slots.default?.()}
+            </button>
         )
     }
 }))
