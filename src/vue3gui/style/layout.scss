@@ -32,6 +32,14 @@
             #{$dir}: $mul * constants.$size-int;
         }
 
+        .#{$dir-short}-max-#{$mul * constants.$px-int-n} {
+            max-#{$dir}: $mul * constants.$px-int;
+        }
+
+        .#{$dir-short}-min-#{$mul * constants.$px-int-n} {
+            min-#{$dir}: $mul * constants.$px-int;
+        }
+
         .#{$dir-short}-#{$mul * constants.$px-int-n} {
             #{$dir}: $mul * constants.$px-int;
         }

@@ -8,5 +8,9 @@
         } @else {
             color: map-get(map-get(constants.$colors, "black"), "fg")
         }
-    } 
+    }
+
+    .text-#{$value-short} {
+        color: map-get($color, "fg")
+    }
 }
