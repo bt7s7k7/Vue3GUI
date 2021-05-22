@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "concurrently --raw --kill-others \"vite\" \"tsc --noEmit --watch --incremental --preserveWatchOutput\"",
-        "build": "vue-tsc --noEmit && vite build",
+        "build": "tsc --noEmit --incremental && vite build",
         "serve": "vite preview"
     },
     "dependencies": {
