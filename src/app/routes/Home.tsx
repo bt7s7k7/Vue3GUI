@@ -1,5 +1,7 @@
+import { mdiAlert, mdiBorderStyle, mdiLinkVariantOff, mdiTrashCan } from "@mdi/js"
 import { defineComponent, ref } from "vue"
 import { Button } from "../../vue3gui/Button"
+import { Icon } from "../../vue3gui/Icon"
 import { Variant } from "../../vue3gui/variants"
 
 export const Home = defineComponent({
@@ -30,6 +32,13 @@ export const Home = defineComponent({
                 <div>
                     {Variant.LIST.map(variant => <div class={`text-${variant}`}>{variant}</div>)}
                 </div>
+                <h1>Icons</h1>
+                <p>
+                    Using <code>@mdi/js</code>: <Icon icon={mdiAlert} /> <Icon icon={mdiLinkVariantOff} variant="success" /> <Icon icon={mdiBorderStyle} />
+                </p>
+                <p>
+                    <Button variant="danger"> <Icon icon={mdiTrashCan} /> Delete </Button>
+                </p>
             </div>
         )
     }
