@@ -7,6 +7,11 @@ const routes: RouteRecordRaw[] = [
         path: "/",
         component: Home
     },
+    {
+        name: "Link",
+        path: "/link",
+        component: () => import(/* webpackChunkName: "link-target" */ "./routes/LinkTarget")
+    }
     // {
     //     path: '/about',
     //     name: 'About',

@@ -4,15 +4,19 @@
     position: relative;
 }
 
+body {
+    margin: 0;
+}
+
 #app {
     display: flex;
     flex-direction: column;
     flex: 1 1;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI' , Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-family: constants.$font;
     color: map-get(map-get(constants.$colors, "black"), "fg")
 }
 
-h1 {
+h1, h2 {
     font-weight: 300;
     margin: 4 * constants.$size-int 0 2 * constants.$size-int 0;
 }
