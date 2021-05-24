@@ -6,6 +6,10 @@
     overflow-y: scroll;
 }
 
+.small {
+    font-size: small;
+}
+
 @each $type in cover, contain {
     .img-#{$type} {
         object-fit: $type;
