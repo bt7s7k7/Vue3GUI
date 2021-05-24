@@ -45,3 +45,13 @@
         }
     }
 }
+
+.absolute {
+    position: absolute;
+}
+
+@each $side in "top", "left", "right", "bottom" {
+    .#{$side}-0 {
+        #{$side}: 0;
+    }
+}
