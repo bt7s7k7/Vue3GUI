@@ -22,9 +22,10 @@ export function useListController<T>(options: {
         setup(props, ctx) {
             return () => (
                 <div class="flex column">
-                    {props.label && <div class="flex row mb-1">
-                        <div class="mr-2">{props.label}</div>
+                    {props.label && <div class="flex row mb-1 child-mr-2">
+                        <div>{props.label}</div>
                         <Button onClick={() => controller.add()}>+</Button>
+                        {controller.list.length > 0 && <Button onClick={() => controller.clear()} variant="danger">Clear</Button>}
                     </div>}
                     {controller.list.map((v, i) => (
                         <div key={(v as any).id ?? i} class="flex row mb-1">
@@ -32,8 +33,9 @@ export function useListController<T>(options: {
                             <Button variant="danger" onClick={() => controller.remove(i)}>-</Button>
                         </div>
                     ))}
-                    {!props.label && <div>
+                    {!props.label && <div class="flex row child-mr-2">
                         <Button onClick={() => controller.add()}>+</Button>
+                        {controller.list.length > 0 && <Button onClick={() => controller.clear()} variant="danger">Clear</Button>}
                     </div>}
                 </div>
             )
@@ -46,6 +48,12 @@ export function useListController<T>(options: {
 
         public add() {
             this.list.push(options.factory())
+        }
+
+        public clear() {
+            for (let i = this.list.length - 1; i >= 0; --i) {
+                this.remove(i)
+            }
         }
 
         public remove(index: number) {
