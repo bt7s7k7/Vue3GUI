@@ -4,10 +4,6 @@ import { eventDecorator } from "../eventDecorator"
 export const Fold = eventDecorator(defineComponent({
     name: "Fold",
     props: {
-        inline: {
-            type: Boolean,
-            default: false
-        },
         negative: {
             type: Boolean,
             default: false
@@ -20,7 +16,7 @@ export const Fold = eventDecorator(defineComponent({
         const open = props.open ?? ref(false)
 
         return () => (
-            <div class={[props.inline && "inline-block"]}>
+            <span>
                 <div
                     class={["as-fold", props.negative ? "as-clickable-negative" : "as-clickable-positive", open.value && "open", "inline-block"]}
                     onClick={() => open.value = !open.value}
@@ -31,7 +27,7 @@ export const Fold = eventDecorator(defineComponent({
                 <span>
                     {ctx.slots[open.value ? "default" : "hidden"]?.()}
                 </span>
-            </div>
+            </span>
         )
     }
 }))
