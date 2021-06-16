@@ -37,8 +37,13 @@ export namespace Variant {
             "bg": "#28a745",
             "fg": "#28a745",
             "invert": true
+        },
+        "dark": {
+            "bg": "#1a1a1a",
+            "fg": "#1a1a1a",
+            "invert": true
         }
     }
-    export const LIST = ["danger", "white", "black", "secondary", "primary", "warning", "success"] as const
+    export const LIST = ["danger", "white", "black", "secondary", "primary", "warning", "success", "dark"] as const
     export const DEFAULT_VARIANT = "secondary"
 }

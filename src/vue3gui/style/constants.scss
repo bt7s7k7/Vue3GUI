@@ -6,7 +6,8 @@ $colors: (
     "secondary": ("bg": #555555, "fg": #555555, "invert": true),
     "primary": ("bg": #0d6efd, "fg": #006ee0, "invert": true),
     "warning": ("bg": #ff6f00, "fg": #ff7b00, "invert": true),
-    "success": ("bg": #28a745, "fg": #28a745, "invert": true)
+    "success": ("bg": #28a745, "fg": #28a745, "invert": true),
+    "dark": ("bg": #1a1a1a, "fg": #1a1a1a, "invert": true)
 );
 
 $size-int: .25rem;
