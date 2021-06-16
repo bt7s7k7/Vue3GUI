@@ -1,15 +1,19 @@
 import { readFileSync, writeFileSync } from "fs"
 import { join } from "path"
 
-const sourceFile = readFileSync(join(__dirname, "../../../src/vue3gui/style/constants.scss")).toString()
-    .replace(/;/g, ",")
-    .replace(/\(/g, "{")
-    .replace(/\)/g, "}")
-    .replace(/(#......)/g, `"$1"`)
-    .replace(/\$([\w-]+)/g, `"$1"`)
-    .replace(/: (\.?\d+\w+)/g, `: "$1"`)
+const sourceFile =
+    "({"
+    + readFileSync(join(__dirname, "../../../src/vue3gui/style/constants.scss")).toString()
+        .replace(/\$font:.*?\n/, "")
+        .replace(/;/g, ",")
+        .replace(/\(/g, "{")
+        .replace(/\)/g, "}")
+        .replace(/(#......)/g, `"$1"`)
+        .replace(/\$([\w-]+)/g, `"$1"`)
+        .replace(/: (\.?\d+\w+)/g, `: "$1"`)
+    + "})"
 
-const source = eval(`({${sourceFile}})`)
+const source = eval(sourceFile)
 
 const output = `
 export type Variant = (typeof Variant.LIST)[number]
