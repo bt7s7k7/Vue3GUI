@@ -2,6 +2,7 @@ import { mdiAlert, mdiBorderStyle, mdiLinkVariantOff, mdiTrashCan } from "@mdi/j
 import { defineComponent, ref } from "vue"
 import { Button } from "../../vue3gui/Button"
 import { Icon } from "../../vue3gui/Icon"
+import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
 import { Variant } from "../../vue3gui/variants"
 
 export const Home = defineComponent({
@@ -38,6 +39,10 @@ export const Home = defineComponent({
                 </p>
                 <p>
                     <Button variant="danger"> <Icon icon={mdiTrashCan} /> Delete </Button>
+                </p>
+                <h1>Loading indicator</h1>
+                <p>
+                    <LoadingIndicator />
                 </p>
             </div>
         )

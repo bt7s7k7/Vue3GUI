@@ -1,0 +1,72 @@
+@keyframes as-loading-anim-one {
+    from {
+        transform: translate(0, calc(var(--as-loading-indicator-radius) * -1))
+    }
+
+    to {
+        transform: translate(0, var(--as-loading-indicator-radius))
+    }
+}
+
+@keyframes as-loading-anim-two {
+    from {
+        transform: rotate(calc(360deg / 3)) translate(0, calc(var(--as-loading-indicator-radius) * -1)) 
+    }
+
+    to {
+        transform: rotate(calc(360deg / 3)) translate(0, var(--as-loading-indicator-radius))
+    }
+}
+@keyframes as-loading-anim-three {
+    from {
+        transform: rotate(calc(360deg / 3 * 2)) translate(0, calc(var(--as-loading-indicator-radius) * -1))
+    }
+
+    to {
+        transform: rotate(calc(360deg / 3 * 2)) translate(0, var(--as-loading-indicator-radius))
+    }
+}
+
+.as-loading-indicator {
+    --as-loading-indicator-radius: 1.2em;
+    --as-loading-indicator-duration: 0.6s;
+    
+    font-size: 40px;
+    width: calc(var(--as-loading-indicator-radius) * 2);
+    height: calc(var(--as-loading-indicator-radius) * 2);
+
+    div {
+        position: absolute;
+        top: var(--as-loading-indicator-radius);
+        left: var(--as-loading-indicator-radius);
+        width: 5px;
+        height: 5px;
+        animation-duration: var(--as-loading-indicator-duration);
+        animation-timing-function: /* cubic-bezier(1, 0, 0, 1) */ cubic-bezier(0.8, 0, 0.2, 1) /* cubic-bezier(0.445, 0.05, 0.55, 0.95) */;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-fill-mode: both;
+
+        &:nth-child(1) {
+            animation-name: as-loading-anim-one;
+        }
+
+        &:nth-child(2) {
+            animation-delay: calc(var(--as-loading-indicator-duration) / 3);
+            animation-name: as-loading-anim-two;
+        }
+
+        &:nth-child(3) {
+            animation-delay: calc(var(--as-loading-indicator-duration) / 3 * 2);
+            animation-name: as-loading-anim-three;
+        }
+
+        div {
+            animation: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-0.1em, -0.65em);
+        }
+    }
+}
