@@ -18,6 +18,12 @@ export const Button = eventDecorator(defineComponent({
         },
         href: {
             type: String
+        },
+        flat: {
+            type: Boolean
+        },
+        textual: {
+            type: Boolean
         }
     },
     setup(props, ctx) {
@@ -29,7 +35,12 @@ export const Button = eventDecorator(defineComponent({
                 props.to ? RouterLink :
                     "button",
             {
-                class: `as-button bg-${variant.value} as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
+                class: [
+                    `as-button`,
+                    `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
+                    props.flat && "flat",
+                    !props.textual ? `bg-${variant.value}` : "textual"
+                ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
                         { onClick: () => ctx.emit("click") })

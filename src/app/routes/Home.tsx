@@ -3,6 +3,7 @@ import { defineComponent, ref } from "vue"
 import { Button } from "../../vue3gui/Button"
 import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
+import { Tabs, useTabs } from "../../vue3gui/Tabs"
 import { Variant } from "../../vue3gui/variants"
 
 export const Home = defineComponent({
@@ -11,6 +12,13 @@ export const Home = defineComponent({
         const buttonsCounter = ref(0)
 
         const capitalize = (v: string) => v.replace(/^(.)/, v => v.toUpperCase())
+
+        const tabs = useTabs({
+            first: "First",
+            second: "Second",
+            third: "Third",
+            long: "This is a long one!",
+        })
 
         return () => (
             <div class="ml-4">
@@ -43,6 +51,11 @@ export const Home = defineComponent({
                 <h1>Loading indicator</h1>
                 <p>
                     <LoadingIndicator />
+                </p>
+                <h1>Tabs</h1>
+                <p>
+                    <Tabs tabs={tabs} />
+                    <small>State:</small> <code>{tabs.selected}</code>
                 </p>
             </div>
         )
