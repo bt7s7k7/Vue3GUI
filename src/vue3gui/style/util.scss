@@ -18,6 +18,10 @@
     opacity: 0.5;
 }
 
+.passthrough {
+    display: contents;
+}
+
 @each $type in cover, contain {
     .img-#{$type} {
         object-fit: $type;
