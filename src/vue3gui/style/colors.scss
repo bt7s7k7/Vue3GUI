@@ -14,3 +14,7 @@
         color: map-get($color, "fg")
     }
 }
+
+.bg-none {
+    background: none;
+}
