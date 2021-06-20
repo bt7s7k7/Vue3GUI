@@ -19,3 +19,9 @@ $border-style: 1px solid constants.$border-color;
         border-#{$side}: none;
     }
 }
+
+@each $value-short, $color in constants.$colors { 
+    .border-#{$value-short} {
+        border-color: map-get($color, "bg");
+    }
+}
