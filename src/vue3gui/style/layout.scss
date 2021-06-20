@@ -76,6 +76,12 @@
     }
 }
 
+@each $side in left, right, center {
+    .text-#{$side} {
+        text-align: $side;
+    }
+}
+
 @each $side in "top", "left", "right", "bottom" {
     .#{$side}-0 {
         #{$side}: 0;
