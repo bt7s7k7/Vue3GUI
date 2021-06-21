@@ -10,6 +10,23 @@
         }
     }
 
+    .bg-#{$value-short}-transparent {
+        background-color: rgba(map-get($color, "bg"), 0.75);
+        @if map-get($color, "invert") == true {
+            color: map-get(map-get(constants.$colors, "white"), "fg")
+        } @else {
+            color: map-get(map-get(constants.$colors, "black"), "fg")
+        }
+    }
+
+    .bg-#{$value-short}-transparent-hover {
+        transition: background-color 0.1s ease-in-out;
+        background: none;
+        &:hover, &:focus {
+            background-color: rgba(map-get($color, "bg"), 0.25);
+        }
+    }
+
     .text-#{$value-short} {
         color: map-get($color, "fg")
     }
