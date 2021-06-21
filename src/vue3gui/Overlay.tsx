@@ -14,17 +14,25 @@ export const Overlay = (defineComponent({
         },
         noTransition: {
             type: Boolean
+        },
+        styleOnly: {
+            type: Boolean
         }
     },
     setup(props, ctx) {
         return () => (
             <div>
                 {ctx.slots.default?.()}
-                <Transition name={!props.noTransition ? "as-transition-fade" : undefined}>
-                    {props.show && <div class={["absolute-fill flex center", `bg-${props.variant}-transparent`]}>
+                {
+                    props.styleOnly ? <div class={["absolute-fill flex center", `bg-${props.variant}-transparent`, !props.show && "hidden"]}>
                         {ctx.slots.overlay?.()}
-                    </div>}
-                </Transition>
+                    </div>
+                        : <Transition name={!props.noTransition ? "as-transition-fade" : undefined}>
+                            {props.show && <div class={["absolute-fill flex center", `bg-${props.variant}-transparent`]}>
+                                {ctx.slots.overlay?.()}
+                            </div>}
+                        </Transition>
+                }
             </div>
         )
     }

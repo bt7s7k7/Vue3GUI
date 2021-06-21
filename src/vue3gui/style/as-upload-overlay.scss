@@ -1,0 +1,44 @@
+$diameter: 100px;
+$triangle-height: 50px;
+$triangle-width: 100px;
+$offset: 25px;
+$translate: -10px;
+
+.as-upload-overlay {
+    overflow: hidden;
+
+    .arrow-1 {
+        transform: translate(0,-$offset + $translate);
+
+        div {
+            width: $triangle-width;
+            height: $triangle-height;
+            background-color: #0d6efd;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transition-delay: 0.05s;
+        }
+    }
+
+    .arrow-2 {
+        transform: translate(0,$translate);
+        div {
+            width: $triangle-width;
+            height: $triangle-height;
+            background-color: mix(#0d6efd, #ffffff, 50);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transition-delay: 0.1s;
+        }
+    }
+
+    .arrow-3 {
+        transform: translate(0,$offset + $translate);
+
+        div {
+            width: $triangle-width;
+            height: $triangle-height;
+            background-color: #ffffff;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transition-delay: 0.15s;
+        }
+    }
+}

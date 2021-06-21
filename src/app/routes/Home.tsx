@@ -6,6 +6,7 @@ import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
 import { Overlay } from "../../vue3gui/Overlay"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
+import { UploadOverlay } from "../../vue3gui/UploadOverlay"
 import { TRANSITION_NAMES } from "../../vue3gui/util"
 import { Variant } from "../../vue3gui/variants"
 
@@ -88,6 +89,7 @@ export const Home = defineComponent({
                         </div>
                         <div>Files: {JSON.stringify(lastFilesDropped.value)}</div>
                     </div>
+                    <UploadOverlay class="w-200 h-200"></UploadOverlay>
                     <h1>{"Overlay"}</h1>
                     <Button onClick={() => showOverlay.value = true}>Show</Button>
                     <h1>Transitions</h1>

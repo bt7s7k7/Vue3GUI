@@ -12,6 +12,8 @@ export function useDropTarget(options: {
         }
     }
 
+    let count = 0
+
     const ret = reactive({
         over: false,
         props: {
@@ -22,14 +24,17 @@ export function useDropTarget(options: {
             },
             onDragenter(event: DragEvent) {
                 if (event.dataTransfer && accept(event.dataTransfer)) {
-                    ret.over = true
+                    count++
+                    ret.over = !!count
                 }
             },
             onDragleave() {
-                ret.over = false
+                count--
+                ret.over = !!count
             },
             onDrop(event: DragEvent) {
-                ret.over = false
+                count--
+                ret.over = !!count
                 if (event.dataTransfer && accept(event.dataTransfer)) {
                     event.preventDefault()
                     options.onDrop?.(event.dataTransfer)
