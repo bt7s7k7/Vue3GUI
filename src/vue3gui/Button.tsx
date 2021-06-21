@@ -24,6 +24,9 @@ export const Button = eventDecorator(defineComponent({
         },
         textual: {
             type: Boolean
+        },
+        clear: {
+            type: Boolean
         }
     },
     setup(props, ctx) {
@@ -38,8 +41,13 @@ export const Button = eventDecorator(defineComponent({
                 class: [
                     `as-button`,
                     `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
-                    props.flat && "flat",
-                    !props.textual ? `bg-${variant.value}` : "textual"
+                    ...(
+                        props.clear ? ["flat", `bg-${variant.value}-transparent-hover`]
+                            : [
+                                props.flat && "flat",
+                                !props.textual ? `bg-${variant.value}` : "textual flat",
+                            ]
+                    )
                 ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :

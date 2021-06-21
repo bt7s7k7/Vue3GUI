@@ -17,10 +17,7 @@
     font-family: constants.$font;
     text-decoration: none;
     font-size: 13.3333px;
-
-    &.textual {
-        color: inherit;
-    }
+    color: inherit;
 
     &.flat {
         box-shadow: none;
