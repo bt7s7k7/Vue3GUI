@@ -13,3 +13,12 @@ export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {
         }
     })
 }
+
+export const TRANSITION_NAMES = [
+    "fade",
+    "slide-up",
+    "slide-down",
+    "slide-left",
+    "slide-right",
+    "shrink"
+] as const
