@@ -4,6 +4,7 @@ import { Button } from "../../vue3gui/Button"
 import { useDraggable, useDropTarget, useFileDropTarget } from "../../vue3gui/dragAndDrop"
 import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
+import { Modal } from "../../vue3gui/Modal"
 import { Overlay } from "../../vue3gui/Overlay"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
 import { UploadOverlay } from "../../vue3gui/UploadOverlay"
@@ -29,6 +30,7 @@ export const Home = defineComponent({
         const lastFilesDropped = ref<string[]>([])
         const fileDropTarget = useFileDropTarget({ onDrop: v => lastFilesDropped.value = v.map(v => v.name) })
         const showOverlay = ref(false)
+        const showModal = ref(false)
         const transitions = ref(false)
 
         return () => (
@@ -90,8 +92,12 @@ export const Home = defineComponent({
                         <div>Files: {JSON.stringify(lastFilesDropped.value)}</div>
                     </div>
                     <UploadOverlay class="w-200 h-200"></UploadOverlay>
-                    <h1>{"Overlay"}</h1>
+                    <h1>Overlay</h1>
                     <Button onClick={() => showOverlay.value = true}>Show</Button>
+                    <Button onClick={() => showModal.value = true}>Show as modal</Button>
+                    <Modal show={showModal.value} cancelButton onCancel={() => showModal.value = false}>
+                        This is a modal
+                    </Modal>
                     <h1>Transitions</h1>
                     <div class="flex row">
                         <Button onClick={() => transitions.value = !transitions.value}>Toggle</Button>

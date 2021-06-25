@@ -1,13 +1,14 @@
 import { defineComponent, ref, Transition, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { useFileDropTarget } from "./dragAndDrop"
-import { Overlay } from "./Overlay"
+import { Overlay, OverlayProps } from "./Overlay"
 
 export const UploadOverlay = eventDecorator(defineComponent({
     name: "UploadOverlay",
     emits: {
         drop: (files: File[]) => true
     },
+    props: OverlayProps.BASE_PROPS,
     setup(props, ctx) {
 
         const fileDropTarget = useFileDropTarget({ onDrop: v => ctx.emit("drop", v) })
@@ -21,7 +22,7 @@ export const UploadOverlay = eventDecorator(defineComponent({
         })
 
         return () => (
-            <Overlay show={show.value} {...fileDropTarget.props}>{{
+            <Overlay show={show.value} {...fileDropTarget.props} {...props}>{{
                 default: ctx.slots.default ?? (() => <div></div>),
                 overlay: () => <div class="as-upload-overlay absolute-fill">
                     <div class="absolute-fill flex center arrow-1">

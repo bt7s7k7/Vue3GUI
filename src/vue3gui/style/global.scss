@@ -2,18 +2,22 @@
 
 * {
     position: relative;
+    box-sizing: border-box;
 }
 
 body {
     margin: 0;
 }
 
-#app {
+#app, .as-reset {
     display: flex;
     flex-direction: column;
-    flex: 1 1;
     font-family: constants.$font;
     color: map-get(map-get(constants.$colors, "black"), "fg")
+}
+
+#app {
+    flex: 1 1;
 }
 
 h1, h2 {

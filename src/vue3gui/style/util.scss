@@ -22,6 +22,14 @@
     display: contents;
 }
 
+.shadow {
+    box-shadow: 0 0 10px grey;
+}
+
+.rounded {
+    border-radius: 4px;
+}
+
 @each $type in cover, contain {
     .img-#{$type} {
         object-fit: $type;
