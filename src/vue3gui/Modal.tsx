@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType, reactive, Transition } from "vue"
+import { ComponentInternalInstance, computed, defineComponent, getCurrentInstance, onUnmounted, PropType, reactive, Transition, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Button } from "./Button"
 import { Overlay, OverlayProps } from "./Overlay"
@@ -20,7 +20,7 @@ export const Modal = eventDecorator(defineComponent({
         },
         backdropCancels: {
             type: Boolean
-        },
+        }
     },
     inheritAttrs: false,
     emits: {
@@ -32,6 +32,49 @@ export const Modal = eventDecorator(defineComponent({
             const { background, cancelButton, okButton, backdropCancels, ...ret } = props
             return ret
         })
+
+        const instance = getCurrentInstance()
+        if (instance) {
+            const root = instance.root as unknown as { "__v3g_modalStack": { stack: ComponentInternalInstance[], handled: boolean } }
+            if (root["__v3g_modalStack"] == null) {
+                root["__v3g_modalStack"] = { stack: [], handled: false }
+            }
+            const modalStack = root["__v3g_modalStack"]
+
+            const handler = (event: KeyboardEvent) => {
+                // @ts-ignore
+                if (event.target?.tagName?.toLowerCase() == "input" || event.target?.tagName?.toLowerCase() == "textarea") return
+
+                if (!props.backdropCancels && props.cancelButton == null) return
+                if (event.code != "Escape") return
+                if (modalStack.handled || instance != modalStack.stack[modalStack.stack.length - 1]) return
+
+                modalStack.handled = true
+                ctx.emit("cancel")
+                setTimeout(() => {
+                    modalStack.handled = false
+                }, 10)
+            }
+
+            watch(() => props.show, (show, oldValue) => {
+                if (show == oldValue) return
+
+                const index = modalStack.stack.indexOf(instance)
+
+                if (show) {
+                    if (index != -1) throw new Error("Duplicate addition of modal on stack")
+                    window.addEventListener("keydown", handler)
+                    modalStack.stack.push(instance)
+                } else {
+                    if (index == -1) return
+                    window.removeEventListener("keydown", handler)
+                    modalStack.stack.splice(index, 1)
+                }
+            }, { immediate: true })
+
+            onUnmounted(() => {
+            })
+        }
 
         return () => <Overlay onBackdropClick={() => props.backdropCancels && ctx.emit("cancel")} {...overlayProps.value} fullScreen>
             <Transition name="as-transition-shrink" appear>
