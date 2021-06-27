@@ -57,12 +57,10 @@ export function useModal(options: { show?: boolean } = {}) {
         props: {
             show: options.show ?? false,
             onCancel: () => {
-                ret.props.show = false
-                resolve?.(false)
+                ret.close(false)
             },
             onOk: () => {
-                ret.props.show = false
-                resolve?.(true)
+                ret.close(true)
             }
         },
         open: () => {
@@ -70,6 +68,11 @@ export function useModal(options: { show?: boolean } = {}) {
                 resolve = v
                 ret.props.show = true
             })
+        },
+        close: (success = false) => {
+            ret.props.show = false
+            resolve?.(success)
+            resolve = null
         }
     })
 
