@@ -6,8 +6,7 @@ import { Variant } from "./variants"
 export const Button = eventDecorator(defineComponent({
     name: "Button",
     emits: {
-        click: () => true,
-        dummy: (x: number, c: string) => true
+        click: (event: MouseEvent) => true,
     },
     props: {
         variant: {
@@ -51,7 +50,7 @@ export const Button = eventDecorator(defineComponent({
                 ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
-                        { onClick: () => ctx.emit("click") })
+                        { onClick: (event: MouseEvent) => ctx.emit("click", event) })
             },
             {
                 default: ctx.slots.default ?? (() => "")
