@@ -50,7 +50,7 @@ export const Button = eventDecorator(defineComponent({
                 ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
-                        { onClick: (event: MouseEvent) => ctx.emit("click", event) })
+                        { onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } })
             },
             {
                 default: ctx.slots.default ?? (() => "")
