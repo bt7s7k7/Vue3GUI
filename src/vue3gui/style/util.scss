@@ -30,6 +30,10 @@
     border-radius: 4px;
 }
 
+.monospace {
+    font-family: monospace;
+}
+
 @each $type in cover, contain {
     .img-#{$type} {
         object-fit: $type;
