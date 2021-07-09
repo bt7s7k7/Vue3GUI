@@ -1,4 +1,4 @@
-import { defineComponent, PropType, ref, watch } from "vue"
+import { defineComponent, onMounted, PropType, ref, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Variant } from "./variants"
 
@@ -16,15 +16,22 @@ export const TextField = eventDecorator(defineComponent({
         variant: {
             type: String as PropType<Variant>,
             default: "primary"
-        }
+        },
+        focus: { type: Boolean }
     },
     emits: {
         "update:modelValue": (value: string) => true,
         "input": (value: string) => true,
-        "confirm": (value: string) => true
+        "confirm": (value: string) => true,
+        "change": (value: string) => true,
     },
     setup(props, ctx) {
         const value = ref(props.modelValue)
+        const input = ref<HTMLInputElement>()
+
+        onMounted(() => {
+            if (props.focus) input.value?.focus()
+        })
 
         watch(() => props.modelValue, (newValue) => {
             value.value = newValue
@@ -39,10 +46,11 @@ export const TextField = eventDecorator(defineComponent({
             <div class="flex row as-text-field">
                 <input
                     type={props.type}
-                    onKeydown={e => e.code == "Enter" && ctx.emit("confirm", value.value)}
-                    onBlur={() => ctx.emit("confirm", value.value)}
+                    onKeydown={e => e.code == "Enter" && (ctx.emit("confirm", value.value), ctx.emit("change", value.value))}
+                    onBlur={() => ctx.emit("change", value.value)}
                     v-model={value.value}
                     class="flex-fill"
+                    ref={input}
                 />
                 <div class={["focus-indicator", `bg-${props.variant}`]}></div>
             </div>

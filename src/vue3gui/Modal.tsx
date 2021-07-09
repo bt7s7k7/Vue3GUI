@@ -45,15 +45,27 @@ export const Modal = eventDecorator(defineComponent({
                 // @ts-ignore
                 if (event.target?.tagName?.toLowerCase() == "input" || event.target?.tagName?.toLowerCase() == "textarea") return
 
-                if (!props.backdropCancels && props.cancelButton == null) return
-                if (event.code != "Escape") return
                 if (modalStack.handled || instance != modalStack.stack[modalStack.stack.length - 1]) return
 
-                modalStack.handled = true
-                ctx.emit("cancel")
-                setTimeout(() => {
-                    modalStack.handled = false
-                }, 10)
+                if (event.code == "Enter" && props.okButton) {
+                    modalStack.handled = true
+                    ctx.emit("ok")
+                    setTimeout(() => {
+                        modalStack.handled = false
+                    }, 10)
+
+                    return
+                }
+
+                if ((props.backdropCancels || props.cancelButton) && (event.code == "Escape" || event.code == "Enter")) {
+                    modalStack.handled = true
+                    ctx.emit("cancel")
+                    setTimeout(() => {
+                        modalStack.handled = false
+                    }, 10)
+
+                    return
+                }
             }
 
             watch(() => props.show, (show, oldValue) => {
@@ -84,7 +96,7 @@ export const Modal = eventDecorator(defineComponent({
                     {(props.okButton || props.cancelButton) && <div class="flex row">
                         <div class="flex-fill"></div>
                         {ctx.slots.buttons?.()}
-                        {props.okButton && <Button onClick={() => { ctx.emit("ok") }} clear>{typeof props.okButton == "string" ? props.okButton : "OK"}</Button>}
+                        {props.okButton && <Button variant="primary" onClick={() => { ctx.emit("ok") }} clear>{typeof props.okButton == "string" ? props.okButton : "OK"}</Button>}
                         {props.cancelButton && <Button onClick={() => { ctx.emit("cancel") }} clear>{typeof props.cancelButton == "string" ? props.cancelButton : "Cancel"}</Button>}
                     </div>}
                 </div>

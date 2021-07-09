@@ -1,5 +1,5 @@
 import { Ref } from "@vue/reactivity"
-import { computed, reactive, watch, WatchOptions } from "vue"
+import { computed, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -53,4 +53,8 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
     }, { ...options, immediate: true })
 
     return ret
+}
+
+export type ComponentProps<T extends { new(...args: any): { $props: any } }> = Omit<InstanceType<T>["$props"], Exclude<keyof VNodeProps, "class" | "style">>
+
 }
