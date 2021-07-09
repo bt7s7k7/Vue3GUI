@@ -1,8 +1,9 @@
-import { defineComponent, markRaw, PropType, reactive, ref } from "vue"
+import { defineComponent, markRaw, PropType, reactive, ref, watch } from "vue"
 import { Modal, useModal } from "./Modal"
-import { StateInfo } from "./StateInfo"
+import { StateCard } from "./StateCard"
+import { StateInfo, useState } from "./StateInfo"
 import { TextField } from "./TextField"
-import { ComponentProps } from "./util"
+import { ComponentProps, useDebounce } from "./util"
 
 interface ModalDefinition {
     props: Omit<ComponentProps<typeof Modal>, keyof ReturnType<typeof useModal>["props"]>
@@ -16,8 +17,9 @@ interface PromptOptions {
     initialValue?: string,
     props?: ModalDefinition["props"],
     title?: string,
-    checker?: (value: string, state: StateInfo) => void | Promise<void>,
-    checkerDebounce?: number
+    verifier?: (value: string, state: StateInfo) => void | Promise<void>,
+    verifierDebounce?: number,
+    verifierOptional?: boolean
 }
 
 let nextID = 0
@@ -44,10 +46,43 @@ export function useDynamicEmitter() {
                 const component = defineComponent({
                     name: "Prompt",
                     setup: () => {
+                        let state = null as StateInfo | null
+                        if (options.verifier) {
+                            if (!options.verifierOptional) promise.controller.okBlocked = true
+
+                            const value = useDebounce(result, { delay: options.verifierDebounce ?? 100 })
+                            state = useState()
+                            let blocked = false
+                            let dirty = false
+                            const check = () => {
+                                if (blocked) {
+                                    dirty = true
+                                    return
+                                }
+
+                                const promise = options.verifier!(value.value, state!)
+                                if (promise instanceof Promise) {
+                                    blocked = true
+                                    promise.then(() => {
+                                        blocked = false
+                                        if (dirty) check()
+                                    })
+                                }
+
+                            }
+
+                            watch(value, check, { immediate: true })
+
+                            watch(() => state!.type, (type) => {
+                                if (!options.verifierOptional) promise.controller.okBlocked = type != "done"
+                            })
+                        }
+
                         return () => (
                             <>
                                 <div>{options.title ?? "Enter value"}</div>
                                 <TextField focus onConfirm={() => promise.controller.close(true)} modelValue={result.value} onInput={v => result.value = v} />
+                                {state && <StateCard state={state} />}
                             </>
                         )
                     }

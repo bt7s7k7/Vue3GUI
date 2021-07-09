@@ -115,6 +115,7 @@ export function useModal(options: { show?: boolean } = {}) {
                 ret.close(false)
             },
             onOk: () => {
+                if (ret.okBlocked) return
                 ret.close(true)
             }
         },
@@ -124,6 +125,7 @@ export function useModal(options: { show?: boolean } = {}) {
                 ret.props.show = true
             })
         },
+        okBlocked: false,
         close: (success = false) => {
             ret.props.show = false
             resolve?.(success)
