@@ -2,6 +2,7 @@ import { ComponentInternalInstance, computed, defineComponent, getCurrentInstanc
 import { eventDecorator } from "../eventDecorator"
 import { Button } from "./Button"
 import { Overlay, OverlayProps } from "./Overlay"
+import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
 export const Modal = eventDecorator(defineComponent({
@@ -10,7 +11,7 @@ export const Modal = eventDecorator(defineComponent({
         ...OverlayProps.PROPS,
         background: {
             type: String as PropType<Variant>,
-            default: "white"
+            default: () => Theme.selected.background
         },
         cancelButton: {
             type: [Boolean, String]

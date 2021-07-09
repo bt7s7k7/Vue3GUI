@@ -1,6 +1,7 @@
 import { computed, defineComponent, h, PropType } from "vue"
 import { RouteLocationRaw, RouterLink } from "vue-router"
 import { eventDecorator } from "../eventDecorator"
+import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
 export const Button = eventDecorator(defineComponent({
@@ -30,7 +31,7 @@ export const Button = eventDecorator(defineComponent({
     },
     setup(props, ctx) {
 
-        const variant = computed(() => props.variant ?? Variant.DEFAULT_VARIANT)
+        const variant = computed(() => props.variant ?? Theme.selected.object)
 
         return () => (h as any)(
             props.href ? "a" :

@@ -1,5 +1,6 @@
 import { defineComponent, onMounted, PropType, reactive, watch } from "vue"
 import { Button } from "./Button"
+import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
 interface TabsState<T extends Record<string, string> = Record<string, string>> {
@@ -26,7 +27,7 @@ export const Tabs = (defineComponent({
     props: {
         variant: {
             type: String as PropType<Variant>,
-            default: () => "primary"
+            default: () => Theme.selected.highlight
         },
         tabs: {
             type: Object as PropType<TabsState>,

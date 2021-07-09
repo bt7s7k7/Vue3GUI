@@ -1,12 +1,13 @@
 import { defineComponent, PropType, ref, Slot, Teleport, Transition } from "vue"
 import { eventDecorator } from "../eventDecorator"
+import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
 export namespace OverlayProps {
     export const BASE_PROPS = {
         variant: {
             type: String as PropType<Variant>,
-            default: "secondary"
+            default: () => Theme.selected.overlay
         },
         noTransition: {
             type: Boolean

@@ -45,5 +45,4 @@ export namespace Variant {
         }
     }
     export const LIST = ["danger", "white", "black", "secondary", "primary", "warning", "success", "dark"] as const
-    export const DEFAULT_VARIANT = "secondary"
 }

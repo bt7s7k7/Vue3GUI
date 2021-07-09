@@ -1,5 +1,6 @@
 import { defineComponent, onMounted, PropType, ref, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
+import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
 export const TextField = eventDecorator(defineComponent({
@@ -15,7 +16,7 @@ export const TextField = eventDecorator(defineComponent({
         },
         variant: {
             type: String as PropType<Variant>,
-            default: "primary"
+            default: () => Theme.selected.highlight
         },
         focus: { type: Boolean }
     },
