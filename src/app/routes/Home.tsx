@@ -6,6 +6,8 @@ import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
 import { Modal } from "../../vue3gui/Modal"
 import { Overlay } from "../../vue3gui/Overlay"
+import { StateCard } from "../../vue3gui/StateCard"
+import { useState } from "../../vue3gui/StateInfo"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
 import { UploadOverlay } from "../../vue3gui/UploadOverlay"
 import { TRANSITION_NAMES } from "../../vue3gui/util"
@@ -32,6 +34,7 @@ export const Home = defineComponent({
         const showOverlay = ref(false)
         const showModal = ref(false)
         const transitions = ref(false)
+        const state = useState()
 
         return () => (
             <Overlay class="flex flex-fill" show={showOverlay.value}>{{
@@ -110,6 +113,13 @@ export const Home = defineComponent({
                             {transitions.value && <div class="bg-success p-2">{v}</div>}
                         </Transition>)}
                     </div>
+                    <h1>State card</h1>
+                    <div class="child-mr-2 mb-2">
+                        <Button variant="primary" onClick={() => state.working("Loading...")}>Working</Button>
+                        <Button variant="danger" onClick={() => state.error("There was an error")}>Error</Button>
+                        <Button variant="success" onClick={() => state.done("Done!")}>Done</Button>
+                    </div>
+                    <StateCard state={state} />
                 </div>,
                 overlay: () => <Button variant="primary" clear onClick={() => showOverlay.value = false}>Hide</Button>
             }}</Overlay>
