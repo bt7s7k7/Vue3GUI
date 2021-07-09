@@ -57,4 +57,15 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
 
 export type ComponentProps<T extends { new(...args: any): { $props: any } }> = Omit<InstanceType<T>["$props"], Exclude<keyof VNodeProps, "class" | "style">>
 
+export function useDebounce<T>(value: Ref<T>, { delay = 100, ...options }: { delay?: number } & WatchOptions) {
+    let timeoutID = 0
+
+    const result = ref(value.value) as Ref<T>
+
+    watch(value, (value) => {
+        clearTimeout(timeoutID)
+        setTimeout(() => result.value = value, delay)
+    }, { ...options })
+
+    return result
 }
