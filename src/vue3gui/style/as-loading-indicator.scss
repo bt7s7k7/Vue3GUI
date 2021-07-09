@@ -30,17 +30,32 @@
 .as-loading-indicator {
     --as-loading-indicator-radius: 1.2em;
     --as-loading-indicator-duration: 0.6s;
+    --as-loading-indicator-dot-size: 0.2em;
+    --as-loading-indicator-offset: 0s;
     
     font-size: 40px;
     width: calc(var(--as-loading-indicator-radius) * 2);
     height: calc(var(--as-loading-indicator-radius) * 2);
 
+    &.inline {
+        font-size: inherit;
+        --as-loading-indicator-radius: 0.5em;
+    }
+
+    &.prewarm {
+        --as-loading-indicator-offset: calc(var(--as-loading-indicator-duration) * -1);
+    }
+
     div {
         position: absolute;
         top: var(--as-loading-indicator-radius);
         left: var(--as-loading-indicator-radius);
-        width: 5px;
-        height: 5px;
+
+        width: var(--as-loading-indicator-dot-size);
+        height: var(--as-loading-indicator-dot-size);
+        border-radius: 100%;
+        background-color: var(--fg-color);
+        
         animation-duration: var(--as-loading-indicator-duration);
         animation-timing-function: /* cubic-bezier(1, 0, 0, 1) */ cubic-bezier(0.8, 0, 0.2, 1) /* cubic-bezier(0.445, 0.05, 0.55, 0.95) */;
         animation-iteration-count: infinite;
@@ -48,25 +63,18 @@
         animation-fill-mode: both;
 
         &:nth-child(1) {
+            animation-delay: calc(var(--as-loading-indicator-offset));
             animation-name: as-loading-anim-one;
         }
 
         &:nth-child(2) {
-            animation-delay: calc(var(--as-loading-indicator-duration) / 3);
+            animation-delay: calc((var(--as-loading-indicator-duration) / 3) + var(--as-loading-indicator-offset));
             animation-name: as-loading-anim-two;
         }
 
         &:nth-child(3) {
-            animation-delay: calc(var(--as-loading-indicator-duration) / 3 * 2);
+            animation-delay: calc((var(--as-loading-indicator-duration) / 3 * 2) + var(--as-loading-indicator-offset));
             animation-name: as-loading-anim-three;
-        }
-
-        div {
-            animation: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translate(-0.1em, -0.65em);
         }
     }
 }

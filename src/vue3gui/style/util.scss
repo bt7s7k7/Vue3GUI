@@ -30,8 +30,16 @@
     border-radius: 4px;
 }
 
+.circle {
+    border-radius: 100%;
+}
+
 .monospace {
     font-family: monospace;
+}
+
+.user-select-none {
+    user-select: none;
 }
 
 @each $type in cover, contain {
