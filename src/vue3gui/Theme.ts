@@ -5,6 +5,8 @@ interface Theme {
     background: Variant
     highlight: Variant
     overlay: Variant
+    inset: Variant
+    border: Variant | "default"
 }
 
 export namespace Theme {
@@ -12,14 +14,18 @@ export namespace Theme {
         highlight: "primary",
         background: "white",
         object: "secondary",
-        overlay: "secondary"
+        overlay: "secondary",
+        inset: "white",
+        border: "default"
     }
 
     export const DARK: Theme = {
         highlight: "white",
         background: "dark",
         object: "secondary",
-        overlay: "black"
+        overlay: "black",
+        inset: "black",
+        border: "secondary"
     }
 
     export let selected = LIGHT

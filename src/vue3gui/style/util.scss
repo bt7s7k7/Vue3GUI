@@ -42,6 +42,10 @@
     user-select: none;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 @each $type in cover, contain {
     .img-#{$type} {
         object-fit: $type;

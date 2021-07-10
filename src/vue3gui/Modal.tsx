@@ -95,9 +95,10 @@ export const Modal = eventDecorator(defineComponent({
                     {ctx.slots.default?.()}
                     <div class="flex-fill"></div>
                     {(props.okButton || props.cancelButton) && <div class="flex row">
+                        {ctx.slots.buttonsLeft?.()}
                         <div class="flex-fill"></div>
                         {ctx.slots.buttons?.()}
-                        {props.okButton && <Button variant="primary" onClick={() => { ctx.emit("ok") }} clear>{typeof props.okButton == "string" ? props.okButton : "OK"}</Button>}
+                        {props.okButton && <Button class="text-primary" variant="primary" onClick={() => { ctx.emit("ok") }} clear>{typeof props.okButton == "string" ? props.okButton : "OK"}</Button>}
                         {props.cancelButton && <Button onClick={() => { ctx.emit("cancel") }} clear>{typeof props.cancelButton == "string" ? props.cancelButton : "Cancel"}</Button>}
                     </div>}
                 </div>

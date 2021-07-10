@@ -12,11 +12,12 @@ export const StateCard = (defineComponent({
     name: "StateCard",
     props: {
         state: {
-            type: Object as PropType<StateInfo>,
+            type: Object as PropType<{ type: StateInfo["type"], text: string }>,
         },
         error: { type: Boolean },
         working: { type: Boolean },
-        done: { type: Boolean }
+        done: { type: Boolean },
+        textClass: { type: null }
     },
     setup(props, ctx) {
         const type = computed<StateInfo["type"]>(() =>
@@ -35,7 +36,7 @@ export const StateCard = (defineComponent({
                         </div>
                     </Transition>
                 </div>
-                <div class={[type.value == "error" && "text-danger"]}>
+                <div class={[type.value == "error" && "text-danger", props.textClass]}>
                     {props.state?.text ?? ctx.slots.default?.()}
                 </div>
             </div>

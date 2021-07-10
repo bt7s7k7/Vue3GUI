@@ -57,15 +57,39 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
 
 export type ComponentProps<T extends { new(...args: any): { $props: any } }> = Omit<InstanceType<T>["$props"], Exclude<keyof VNodeProps, "class" | "style">>
 
-export function useDebounce<T>(value: Ref<T>, { delay = 100, ...options }: { delay?: number } & WatchOptions) {
-    let timeoutID = 0
+export function useDebounce<T>(value: Ref<T>, { delay = 500, ...options }: { delay?: number } & WatchOptions) {
+    let timeoutID: any = 0
 
     const result = ref(value.value) as Ref<T>
 
     watch(value, (value) => {
         clearTimeout(timeoutID)
-        setTimeout(() => result.value = value, delay)
+        timeoutID = setTimeout(() => result.value = value, delay)
     }, { ...options })
 
     return result
+}
+
+export function stringifyError(error: any) {
+    if (!error) return "Internal error"
+
+    if (error.response) {
+        if (error.response.data) {
+            if (typeof error.response.data == "string") {
+                try {
+                    error = new DOMParser().parseFromString(error.response.data, "text/html").querySelector("body")!.innerText
+                } catch { /* Ignore */ }
+            } else if (typeof error.response.data == "object") {
+                error = error.response.data
+            }
+        } else if (error.response.statusText) {
+            error = error.response.statusText
+        }
+    }
+
+    if (error.err) error = error.err
+    if (error.error) error = error.error
+    if (error.message) error = error.message
+
+    return error
 }

@@ -30,9 +30,11 @@
 @for $mul from 0 to constants.$mul-max {
     .flex-basis-#{$mul} {
         flex-basis: $mul * constants.$size-int;
+        flex-shrink: 0;
     }
 
     .flex-basis-#{$mul * constants.$px-int-n} {
         flex-basis: $mul * constants.$px-int;
+        flex-shrink: 0;
     }
 }
