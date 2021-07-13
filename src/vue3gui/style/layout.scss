@@ -30,6 +30,10 @@
             #{$dir}: $mul * $size-int;
         }
 
+        .#{$dir-short}-#{$mul}-em {
+            #{$dir}: $mul * $size-int-em;
+        }
+
         .#{$dir-short}-max-#{$mul * $px-int-n} {
             max-#{$dir}: $mul * $px-int;
         }

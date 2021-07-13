@@ -3,8 +3,8 @@ import { LoadingIndicator } from "./LoadingIndicator"
 import { StateInfo } from "./StateInfo"
 
 const stateTypeLookup: Record<StateInfo["type"], Function> = {
-    error: () => <div class="w-5 h-5 bg-danger circle flex center user-select-none"><b>!</b></div>,
-    done: () => <div class="w-2 h-2 bg-success circle"></div>,
+    error: () => <div class="w-5-em h-5-em bg-danger circle flex center user-select-none"><b>!</b></div>,
+    done: () => <div class="w-2-em h-2-em bg-success circle"></div>,
     working: () => <LoadingIndicator prewarm inline />
 }
 
@@ -29,13 +29,14 @@ export const StateCard = (defineComponent({
 
         return () => (
             <div class="flex row">
-                <div class="flex-basis-5 mr-2">
+                <div class="flex-basis-5">
                     <Transition name="as-transition-fade" mode="default">
                         <div key={type.value} class="absolute-fill flex center">
                             {stateTypeLookup[type.value]()}
                         </div>
                     </Transition>
                 </div>
+                &nbsp;
                 <div class={[type.value == "error" && "text-danger", props.textClass]}>
                     {props.state?.text ?? ctx.slots.default?.()}
                 </div>
