@@ -1,5 +1,3 @@
-@use './constants.scss';
-
 .flex {
     display: flex;
 
@@ -27,14 +25,14 @@
     flex: 1 1;
 }
 
-@for $mul from 0 to constants.$mul-max {
+@for $mul from 0 to $mul-max {
     .flex-basis-#{$mul} {
-        flex-basis: $mul * constants.$size-int;
+        flex-basis: $mul * $size-int;
         flex-shrink: 0;
     }
 
-    .flex-basis-#{$mul * constants.$px-int-n} {
-        flex-basis: $mul * constants.$px-int;
+    .flex-basis-#{$mul * $px-int-n} {
+        flex-basis: $mul * $px-int;
         flex-shrink: 0;
     }
 }

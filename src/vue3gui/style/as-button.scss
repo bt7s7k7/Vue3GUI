@@ -1,5 +1,3 @@
-@use "./constants.scss";
-
 .as-button {
     border: none;
     border-radius: 2px;
@@ -14,7 +12,7 @@
     text-align: center;
     cursor: pointer;
     user-select: none;
-    font-family: constants.$font;
+    font-family: $font;
     text-decoration: none;
     font-size: 13.3333px;
     color: inherit;

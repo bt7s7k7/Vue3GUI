@@ -1,12 +1,6 @@
-@use './constants.scss';
-
 * {
     position: relative;
     box-sizing: border-box;
-}
-
-:root {
-    --fg-color: black;
 }
 
 body {
@@ -16,8 +10,10 @@ body {
 #app, .as-reset {
     display: flex;
     flex-direction: column;
-    font-family: constants.$font;
-    color: map-get(map-get(constants.$colors, "black"), "fg")
+    font-family: $font;
+    --fg-color: #{map-get(map-get($colors, $default-fg), "fg")};
+    color: var(--fg-color);
+    background-color: map-get(map-get($colors, $default-bg), "bg");
 }
 
 #app {
@@ -26,5 +22,5 @@ body {
 
 h1, h2 {
     font-weight: 300;
-    margin: 4 * constants.$size-int 0 2 * constants.$size-int 0;
+    margin: 4 * $size-int 0 2 * $size-int 0;
 }

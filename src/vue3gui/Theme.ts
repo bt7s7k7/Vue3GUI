@@ -10,7 +10,7 @@ interface Theme {
 }
 
 export namespace Theme {
-    export const LIGHT: Theme = {
+    export const DEFAULT: Theme = {
         highlight: "primary",
         background: "white",
         object: "secondary",
@@ -19,14 +19,5 @@ export namespace Theme {
         border: "default"
     }
 
-    export const DARK: Theme = {
-        highlight: "white",
-        background: "dark",
-        object: "secondary",
-        overlay: "black",
-        inset: "black",
-        border: "secondary"
-    }
-
-    export let selected = LIGHT
+    export let selected = DEFAULT
 }

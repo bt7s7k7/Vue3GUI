@@ -1,6 +1,4 @@
-@use './constants.scss';
-
-$border-style: 1px solid constants.$border-color;
+$border-style: 1px solid $border-color;
 
 .border {
     border: $border-style
@@ -20,7 +18,7 @@ $border-style: 1px solid constants.$border-color;
     }
 }
 
-@each $value-short, $color in constants.$colors { 
+@each $value-short, $color in $colors { 
     .border-#{$value-short} {
         border-color: map-get($color, "bg");
     }

@@ -1,12 +1,10 @@
-@use './constants.scss';
-
-@each $value-short, $color in constants.$colors {
+@each $value-short, $color in $colors {
     .bg-#{$value-short} {
         background-color: map-get($color, "bg");
         @if map-get($color, "invert") == true {
-            --fg-color: #{map-get(map-get(constants.$colors, "white"), "fg")};
+            --fg-color: #{map-get(map-get($colors, "white"), "fg")};
         } @else {
-            --fg-color: #{map-get(map-get(constants.$colors, "black"), "fg")};
+            --fg-color: #{map-get(map-get($colors, "black"), "fg")};
         }
         color: var(--fg-color);
     }
@@ -14,9 +12,9 @@
     .bg-#{$value-short}-transparent {
         background-color: rgba(map-get($color, "bg"), 0.75);
         @if map-get($color, "invert") == true {
-            --fg-color: #{map-get(map-get(constants.$colors, "white"), "fg")};
+            --fg-color: #{map-get(map-get($colors, "white"), "fg")};
         } @else {
-            --fg-color: #{map-get(map-get(constants.$colors, "black"), "fg")};
+            --fg-color: #{map-get(map-get($colors, "black"), "fg")};
         }
         color: var(--fg-color);
     }

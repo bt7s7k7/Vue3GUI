@@ -1,47 +1,45 @@
-@use './constants.scss';
-
 @each $value-short, $value in ("m": "margin", "p": "padding") {
-    @for $mul from 0 to constants.$mul-max {
+    @for $mul from 0 to $mul-max {
         .child-#{$value-short}-#{$mul} > * {
-            #{$value}: $mul * constants.$size-int;
+            #{$value}: $mul * $size-int;
         }
 
         @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
             .child-#{$value-short}#{$dir-short}-#{$mul} > * {
-                #{$value}-#{$dir}: $mul * constants.$size-int;
+                #{$value}-#{$dir}: $mul * $size-int;
             }
         }
     }
 
-    @for $mul from 0 to constants.$mul-max {
+    @for $mul from 0 to $mul-max {
         .#{$value-short}-#{$mul} {
-            #{$value}: $mul * constants.$size-int;
+            #{$value}: $mul * $size-int;
         }
 
         @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
             .#{$value-short}#{$dir-short}-#{$mul} {
-                #{$value}-#{$dir}: $mul * constants.$size-int;
+                #{$value}-#{$dir}: $mul * $size-int;
             }
         }
     }
 }
 
 @each $dir-short, $dir in ("w": "width", "h": "height") {
-    @for $mul from 0 to constants.$mul-max {
+    @for $mul from 0 to $mul-max {
         .#{$dir-short}-#{$mul} {
-            #{$dir}: $mul * constants.$size-int;
+            #{$dir}: $mul * $size-int;
         }
 
-        .#{$dir-short}-max-#{$mul * constants.$px-int-n} {
-            max-#{$dir}: $mul * constants.$px-int;
+        .#{$dir-short}-max-#{$mul * $px-int-n} {
+            max-#{$dir}: $mul * $px-int;
         }
 
-        .#{$dir-short}-min-#{$mul * constants.$px-int-n} {
-            min-#{$dir}: $mul * constants.$px-int;
+        .#{$dir-short}-min-#{$mul * $px-int-n} {
+            min-#{$dir}: $mul * $px-int;
         }
 
-        .#{$dir-short}-#{$mul * constants.$px-int-n} {
-            #{$dir}: $mul * constants.$px-int;
+        .#{$dir-short}-#{$mul * $px-int-n} {
+            #{$dir}: $mul * $px-int;
         }
     }
 

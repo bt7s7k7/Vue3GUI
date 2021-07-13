@@ -1,16 +1,55 @@
-@use './style/global.scss';
+$bg-danger: #dc3545 !default;
+$bg-white: #ffffff !default;
+$bg-black: #000000 !default;
+$bg-secondary: #555555 !default;
+$bg-primary: #0d6efd !default;
+$bg-warning: #ff6f00 !default;
+$bg-success: #28a745 !default;
+$bg-dark: #1a1a1a !default;
 
-@use './style/as-button.scss';
-@use './style/as-icon.scss';
-@use './style/as-fold.scss';
-@use './style/as-loading-indicator.scss';
-@use './style/as-tabs.scss';
-@use './style/as-text-field.scss';
-@use './style/as-upload-overlay.scss';
+$fg-danger: #ff0000 !default;
+$fg-white: #ffffff !default;
+$fg-black: #000000 !default;
+$fg-secondary: #555555 !default;
+$fg-primary: #006ee0 !default;
+$fg-warning: #ff7b00 !default;
+$fg-success: #28a745 !default;
+$fg-dark: #1a1a1a !default;
 
-@use './style/util.scss';
-@use './style/border.scss';
-@use './style/colors.scss';
-@use './style/flex.scss';
-@use './style/layout.scss';
-@use './style/transitions.scss';
+$default-fg: "black" !default;
+$default-bg: "white" !default;
+
+$border-color: #cccccc;
+$colors: (
+    "danger": ("bg": $bg-danger, "fg": $fg-danger, "invert": true),
+    "white": ("bg": $bg-white, "fg": $fg-white, "invert": false),
+    "black": ("bg": $bg-black, "fg": $fg-black, "invert": true),
+    "secondary": ("bg": $bg-secondary, "fg": $fg-secondary, "invert": true),
+    "primary": ("bg": $bg-primary, "fg": $fg-primary, "invert": true),
+    "warning": ("bg": $bg-warning, "fg": $fg-warning, "invert": true),
+    "success": ("bg": $bg-success, "fg": $fg-success, "invert": true),
+    "dark": ("bg": $bg-dark, "fg": $fg-dark, "invert": true)
+);
+
+$size-int: 0.25rem !default;
+$px-int: 50px !default;
+$px-int-n: 50 !default;
+$mul-max: 11 !default;
+$font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+@import './style/global.scss';
+
+@import './style/as-button.scss';
+@import './style/as-icon.scss';
+@import './style/as-fold.scss';
+@import './style/as-loading-indicator.scss';
+@import './style/as-tabs.scss';
+@import './style/as-text-field.scss';
+@import './style/as-upload-overlay.scss';
+
+@import './style/util.scss';
+@import './style/border.scss';
+@import './style/colors.scss';
+@import './style/flex.scss';
+@import './style/layout.scss';
+@import './style/transitions.scss';
