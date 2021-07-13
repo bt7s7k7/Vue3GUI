@@ -10,9 +10,16 @@ import { Overlay } from "../../vue3gui/Overlay"
 import { StateCard } from "../../vue3gui/StateCard"
 import { useState } from "../../vue3gui/StateInfo"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
+import { DARK_THEME } from "../../vue3gui/themes/dark"
+import { LIGHT_THEME } from "../../vue3gui/themes/light"
+import { ThemeSwitch } from "../../vue3gui/ThemeSwitch"
 import { UploadOverlay } from "../../vue3gui/UploadOverlay"
 import { TRANSITION_NAMES } from "../../vue3gui/util"
 import { Variant } from "../../vue3gui/variants"
+
+const themeSwitch = new ThemeSwitch()
+themeSwitch.registerTheme(DARK_THEME)
+themeSwitch.registerTheme(LIGHT_THEME)
 
 export const Home = defineComponent({
     name: "Home",
@@ -39,8 +46,13 @@ export const Home = defineComponent({
         const emitter = useDynamicEmitter()
 
         return () => (
-            <Overlay class="flex flex-fill" show={showOverlay.value}>{{
+            <Overlay class="flex flex-fill" show={showOverlay.value} key={themeSwitch.selectedTheme}>{{
                 default: () => <div class="pl-4 pb-5 scroll contain flex-fill">
+                    <h1>Themes</h1>
+                    Theme: {
+                        themeSwitch.selectedTheme == "light" ? <Button variant="white" onClick={() => themeSwitch.setTheme("dark")}>Light</Button>
+                            : <Button variant="black" onClick={() => themeSwitch.setTheme("light")}>Dark</Button>
+                    }
                     <h1>Buttons</h1>
                     <div class="child-mb-2">
                         <div class="child-mr-2">

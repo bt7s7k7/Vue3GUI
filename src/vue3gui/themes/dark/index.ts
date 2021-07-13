@@ -1,10 +1,13 @@
 import { Theme } from "../../Theme"
+import style from "./style.scss"
 
-Theme.selected = {
+export const DARK_THEME = Theme.selected = {
+    name: "dark",
     highlight: "white",
     background: "dark",
     object: "secondary",
     overlay: "black",
     inset: "black",
-    border: "secondary"
+    border: "secondary",
+    style
 }
