@@ -64,6 +64,7 @@ export const ListInput = eventDecorator(defineComponent({
         itemClass: {
             type: null
         },
+        titleClass: { type: null },
         title: {
             type: String
         },
@@ -87,36 +88,41 @@ export const ListInput = eventDecorator(defineComponent({
 
         return () => (
             <div class="flex column">
-                <div class="flex row">
-                    <div class="flex-fill flex row">
-                        {props.title}
-                        {slots.label?.()}
+                <div class={["flex row", props.titleClass]}>
+                    <div class="flex-fill flex row center-cross">
+                        <div>
+                            {props.title}
+                        </div>
+                        {slots.title?.()}
                     </div>
                     {props.addButton && <Button clear onClick={() => ctx.emit("add", props.items.length)}>+</Button>}
                 </div>
-                <div class={["flex column", props.listClass]}>
-                    {props.items.map((item, i) => {
-                        const key = props.key?.(item, i) ?? i.toString()
+                {(props.items.length > 0 || slots.placeholder) && <div class={["flex column", props.listClass]}>
+                    {
+                        props.items.length > 0 ? props.items.map((item, i) => {
+                            const key = props.key?.(item, i) ?? i.toString()
 
-                        return (
-                            <div class={["flex row"]} key={key}>
-                                <div class="flex-fill flex row">
-                                    {slots.item?.(item, i, key) ?? key}
+                            return (
+                                <div class={["flex row"]} key={key}>
+                                    <div class="flex-fill flex row">
+                                        {slots.item?.(item, i, key) ?? key}
+                                    </div>
+                                    {props.deleteButton && <Button clear onClick={() => ctx.emit("remove", i, item)} >-</Button>}
                                 </div>
-                                {props.deleteButton && <Button clear onClick={() => ctx.emit("remove", i, item)} >-</Button>}
-                            </div>
-                        )
-                    })}
-                </div>
+                            )
+                        })
+                            : slots.placeholder?.()
+                    }
+                </div>}
             </div>
         )
     }
 }))
 
 export namespace ListInput {
-
     export interface Slots<T = any> {
-        label?: () => any,
-        item?: (value: T, index: number, key: string) => any
+        title?: () => any,
+        item?: (value: T, index: number, key: string) => any,
+        placeholder?: () => any
     }
 }
