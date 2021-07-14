@@ -31,6 +31,11 @@
         flex-shrink: 0;
     }
 
+    .flex-basis-#{$mul}-em {
+        flex-basis: $mul * $size-int-em;
+        flex-shrink: 0;
+    }
+
     .flex-basis-#{$mul * $px-int-n} {
         flex-basis: $mul * $px-int;
         flex-shrink: 0;

@@ -29,7 +29,7 @@ export const StateCard = (defineComponent({
 
         return () => (
             <div class="flex row">
-                <div class="flex-basis-5">
+                <div class="flex-basis-5-em">
                     <Transition name="as-transition-fade" mode="default">
                         <div key={type.value} class="absolute-fill flex center">
                             {stateTypeLookup[type.value]()}
