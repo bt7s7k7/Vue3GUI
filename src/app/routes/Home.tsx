@@ -2,7 +2,7 @@ import { mdiAlert, mdiBorderStyle, mdiLinkVariantOff, mdiTrashCan } from "@mdi/j
 import { defineComponent, ref, Transition } from "vue"
 import { Button } from "../../vue3gui/Button"
 import { useDraggable, useDropTarget, useFileDropTarget } from "../../vue3gui/dragAndDrop"
-import { DynamicsEmitter, useDynamicEmitter } from "../../vue3gui/DynamicsEmitter"
+import { useDynamicsEmitter } from "../../vue3gui/DynamicsEmitter"
 import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
 import { Modal } from "../../vue3gui/Modal"
@@ -43,7 +43,7 @@ export const Home = defineComponent({
         const showModal = ref(false)
         const transitions = ref(false)
         const state = useState()
-        const emitter = useDynamicEmitter()
+        const emitter = useDynamicsEmitter()
 
         return () => (
             <Overlay class="flex flex-fill" show={showOverlay.value} key={themeSwitch.selectedTheme}>{{
@@ -135,8 +135,6 @@ export const Home = defineComponent({
                         <Button variant="success" onClick={() => state.done("Done!")}>Done</Button>
                     </div>
                     <StateCard state={state} />
-
-                    <DynamicsEmitter emitter={emitter} />
                 </div>,
                 overlay: () => <Button variant="primary" clear onClick={() => showOverlay.value = false}>Hide</Button>
             }}</Overlay>

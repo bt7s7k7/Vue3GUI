@@ -1,4 +1,4 @@
-import { defineComponent, markRaw, PropType, reactive, Ref, ref, watch } from "vue"
+import { defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
 import { Button } from "./Button"
 import { Modal, useModal } from "./Modal"
 import { StateCard } from "./StateCard"
@@ -57,18 +57,26 @@ const ButtonDefinitionRenderer = defineComponent({
     }
 })
 
-export function useDynamicEmitter() {
+export interface DynamicsEmitter extends ReturnType<typeof makeDynamicEmitter> { }
 
-    return reactive({
+const DYNAMICS_EMITTER_KEY: InjectionKey<DynamicsEmitter> = Symbol("dynamicsEmitter")
+
+function makeDynamicEmitter() {
+    const emitter = reactive({
         modal(content: ModalDefinition["content"], props: ModalDefinition["props"] = {}, buttons: ModalDefinition["buttons"] = []) {
             const controller = useModal()
 
-            this.modals.push({ content: typeof content == "object" ? markRaw(content) : content, controller, props, id: nextID++, buttons })
+            const modal: ModalDefinition = { content: typeof content == "object" ? markRaw(content) : content, controller, props, id: nextID++, buttons }
+            this.modals.push(modal)
 
             const promise = controller.open()
 
             // @ts-ignore
             promise.controller = controller
+
+            promise.finally(() => {
+                this.modals.splice(this.modals.indexOf(modal), 1)
+            })
 
             return promise as Promise<boolean> & { controller: typeof controller }
         },
@@ -132,11 +140,11 @@ export function useDynamicEmitter() {
                 promise.then(ok => resolve(ok ? result.value : null))
             })
         },
-        listPrompt<T extends any[]>(items: T, options: BaseOptions & { label: (v: T[number]) => string | string[] }) {
+        listPrompt<T extends any[]>(items: T, options: BaseOptions & { label?: (v: T[number]) => string | string[] } = {}) {
             return new Promise<T[number] | null>(resolve => {
                 const result = ref(null) as Ref<T[number] | null>
                 const itemList: { label: string[], value: T[number] }[] = items
-                    .map(v => ({ label: options.label(v), value: v }))
+                    .map(v => ({ label: options.label?.(v) ?? v.toString(), value: v }))
                     .map(v => ({ value: v.value, label: typeof v.label == "string" ? [v.label] : v.label }))
 
                 const component = defineComponent({
@@ -166,20 +174,32 @@ export function useDynamicEmitter() {
         },
         modals: [] as ModalDefinition[]
     })
+
+    provide(DYNAMICS_EMITTER_KEY, emitter)
+
+    return emitter
+}
+
+export function useOptionalDynamicsEmitter() {
+    return inject(DYNAMICS_EMITTER_KEY, null)
+}
+
+export function useDynamicsEmitter() {
+    const emitter = inject(DYNAMICS_EMITTER_KEY)
+    if (!emitter) throw new Error("No dynamics emitter provided")
+    return emitter
 }
 
 export const DynamicsEmitter = (defineComponent({
     name: "DynamicsEmitter",
-    props: {
-        emitter: {
-            type: Object as PropType<ReturnType<typeof useDynamicEmitter>>,
-            required: true
-        }
-    },
     setup(props, ctx) {
+        if (inject(DYNAMICS_EMITTER_KEY, null)) throw new Error("Multiple dynamics emitters")
+        const emitter = makeDynamicEmitter()
+
         return () => (
             <>
-                {props.emitter?.modals.map(modal => <Modal {...modal.props} {...modal.controller.props} key={modal.id}>{{
+                {ctx.slots.default?.()}
+                {emitter.modals.map(modal => <Modal {...modal.props} {...modal.controller.props} key={modal.id}>{{
                     default: () => typeof modal.content == "string" ? modal.content
                         : <modal.content />,
                     buttons: () => modal.buttons && <ButtonDefinitionRenderer definition={modal.buttons} close={(v = false) => modal.controller.close(v)} />
