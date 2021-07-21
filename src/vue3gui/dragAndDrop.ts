@@ -30,10 +30,12 @@ export function useDropTarget(options: {
             },
             onDragleave() {
                 count--
+                if (count == -1) count = 0
                 ret.over = !!count
             },
             onDrop(event: DragEvent) {
                 count--
+                if (count == -1) count = 0
                 ret.over = !!count
                 if (event.dataTransfer && accept(event.dataTransfer)) {
                     event.preventDefault()
