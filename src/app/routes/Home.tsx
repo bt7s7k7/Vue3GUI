@@ -14,6 +14,7 @@ import { DARK_THEME } from "../../vue3gui/themes/dark"
 import { LIGHT_THEME } from "../../vue3gui/themes/light"
 import { ThemeSwitch } from "../../vue3gui/ThemeSwitch"
 import { UploadOverlay } from "../../vue3gui/UploadOverlay"
+import { Slider } from "../../vue3gui/useSlider"
 import { TRANSITION_NAMES } from "../../vue3gui/util"
 import { Variant } from "../../vue3gui/variants"
 
@@ -135,6 +136,10 @@ export const Home = defineComponent({
                         <Button variant="success" onClick={() => state.done("Done!")}>Done</Button>
                     </div>
                     <StateCard state={state} />
+                    <h1>Slider</h1>
+                    <Slider class="w-700 h-500 border" vertical type="end">{{
+                        end: () => <div class="w-200 h-200 bg-primary"></div>
+                    }}</Slider>
                 </div>,
                 overlay: () => <Button variant="primary" clear onClick={() => showOverlay.value = false}>Hide</Button>
             }}</Overlay>

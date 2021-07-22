@@ -1,5 +1,5 @@
 import { Ref } from "@vue/reactivity"
-import { computed, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
+import { computed, onUnmounted, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -92,4 +92,9 @@ export function stringifyError(error: any) {
     if (error.message) error = error.message
 
     return error
+}
+
+export function useEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement | Window, event: K, handler: (event: HTMLElementEventMap[K]) => void) {
+    target.addEventListener(event, handler as any)
+    onUnmounted(() => target.removeEventListener(event, handler as any))
 }
