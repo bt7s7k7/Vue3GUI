@@ -1,5 +1,5 @@
 import style from "../../style.scss"
-import { Theme } from "../../Theme"
+import type { Theme } from "../../Theme"
 
 export const LIGHT_THEME: Theme = {
     name: "light",
@@ -11,5 +11,3 @@ export const LIGHT_THEME: Theme = {
     border: "default",
     style
 }
-
-if (Theme) Theme.selected = LIGHT_THEME
