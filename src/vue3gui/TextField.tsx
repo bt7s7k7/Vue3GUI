@@ -19,7 +19,8 @@ export const TextField = eventDecorator(defineComponent({
             default: () => Theme.selected.highlight
         },
         focus: { type: Boolean },
-        autoResize: { type: Boolean }
+        autoResize: { type: Boolean },
+        placeholder: { type: String }
     },
     emits: {
         "update:modelValue": (value: string) => true,
@@ -75,6 +76,7 @@ export const TextField = eventDecorator(defineComponent({
                     class="flex-fill"
                     ref={input}
                     size={1}
+                    placeholder={props.placeholder}
                 />
                 <div class={["focus-indicator", `bg-${props.variant}`]}></div>
             </div>
