@@ -5,15 +5,15 @@
 
 body {
     margin: 0;
+    font-family: $font;
+    --fg-color: #{map-get(map-get($colors, $default-fg), "fg")};
+    background-color: map-get(map-get($colors, $default-bg), "bg");
+    color: var(--fg-color);
 }
 
 #app, .as-reset {
     display: flex;
     flex-direction: column;
-    font-family: $font;
-    --fg-color: #{map-get(map-get($colors, $default-fg), "fg")};
-    color: var(--fg-color);
-    background-color: map-get(map-get($colors, $default-bg), "bg");
 }
 
 #app {
