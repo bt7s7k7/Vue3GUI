@@ -1,4 +1,3 @@
-import { LIGHT_THEME } from "./themes/light"
 import { Variant } from "./variants"
 
 export interface Theme {
@@ -13,5 +12,5 @@ export interface Theme {
 }
 
 export namespace Theme {
-    export let selected: Theme = LIGHT_THEME
+    export let selected: Theme = null!
 }
