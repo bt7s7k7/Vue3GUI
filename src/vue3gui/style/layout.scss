@@ -52,6 +52,12 @@
     }
 }
 
+@for $mul from 0 to $mul-max {
+    .gap-#{$mul} {
+        gap: $mul * $size-int;
+    }
+}
+
 .absolute {
     position: absolute;
 }
