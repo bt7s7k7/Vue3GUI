@@ -29,7 +29,8 @@ export namespace OverlayProps {
         ...PROPS,
         fullScreen: {
             type: Boolean
-        }
+        },
+        overlayClass: { type: null }
     }
 }
 
@@ -48,7 +49,7 @@ export const Overlay = eventDecorator(defineComponent({
                 {props.show && <div
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
-                    class={["absolute-fill flex", `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center"]}
+                    class={["absolute-fill flex", `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center", props.overlayClass]}
                 >
                     {content?.()}
                 </div>}

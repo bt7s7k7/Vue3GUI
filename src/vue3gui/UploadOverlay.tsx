@@ -22,7 +22,7 @@ export const UploadOverlay = eventDecorator(defineComponent({
         })
 
         return () => (
-            <Overlay show={show.value} {...fileDropTarget.props} {...props}>{{
+            <Overlay overlayClass="ignored" show={show.value} {...fileDropTarget.props} {...props}>{{
                 default: ctx.slots.default ?? (() => <div></div>),
                 overlay: () => <div class="as-upload-overlay absolute-fill">
                     <div class="absolute-fill flex center arrow-1">

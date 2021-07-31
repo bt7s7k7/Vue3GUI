@@ -23,20 +23,25 @@ export const TRANSITION_NAMES = [
     "shrink"
 ] as const
 
-export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Promise<R>, options: { persist?: boolean, onError?: (err: any, inputs: T, lastValue: R | null) => R | null } & WatchOptions = {}) {
-    const ret = reactive({
-        value: null,
-        loading: true,
-        error: null
-    }) as { value: R | null, loading: boolean, error: any | null }
+interface AsyncComputedOptions<T, R> extends WatchOptions {
+    persist?: boolean
+    onError?: (err: any, inputs: T, lastValue: R | null) => R | null | void,
+    onSuccess?: (value: R) => void
+}
 
-    watch(inputs, (inputs) => {
-        if (!options.persist) ret.value = null
+export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Promise<R>, options: AsyncComputedOptions<T, R> = {}) {
+
+    function reload(inputs: T) {
+        if (!options.persist)
+            ret.value = null
         ret.loading = true
         ret.error = null
         const lastValue = ret.value
-        getter(inputs).then(
-            result => ret.value = result,
+        return getter(inputs).then(
+            result => {
+                ret.value = result
+                options.onSuccess?.(result)
+            },
             err => {
                 // eslint-disable-next-line no-console
                 console.error(err)
@@ -50,9 +55,22 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
                 }
             }
         ).finally(() => ret.loading = false)
+    }
+
+
+    const ret = reactive({
+        value: null,
+        loading: true,
+        error: null,
+        reload: () => reload(inputs())
+    }) as { value: R | null, loading: boolean, error: any | null, reload: () => Promise<void> }
+
+    watch(inputs, (inputs) => {
+        reload(inputs)
     }, { ...options, immediate: true })
 
     return ret
+
 }
 
 export type ComponentProps<T extends { new(...args: any): { $props: any } }> = Omit<InstanceType<T>["$props"], Exclude<keyof VNodeProps, "class" | "style">>

@@ -1,5 +1,15 @@
 import { reactive, Ref } from "vue"
 
+let dropTargetID = 1
+
+function getTargetID(event: DragEvent) {
+    const target = event.composedPath().find((element: any) => {
+        return "dataset" in element && element.dataset.dropTargetId
+    })
+
+    return target ? (target as any).dataset.dropTargetId as string : null
+}
+
 export function useDropTarget(options: {
     accept: string | ((transfer: DataTransfer) => boolean),
     onDrop?: (transfer: DataTransfer) => void
@@ -14,15 +24,20 @@ export function useDropTarget(options: {
 
     let count = 0
 
+    const id = (dropTargetID++).toString()
     const ret = reactive({
         over: false,
         props: {
             onDragover(event: DragEvent) {
+                if (getTargetID(event) != id) return
+
                 if (event.dataTransfer && accept(event.dataTransfer)) {
                     event.preventDefault()
                 }
             },
             onDragenter(event: DragEvent) {
+                if (getTargetID(event) != id) return
+
                 if (event.dataTransfer && accept(event.dataTransfer)) {
                     count++
                     ret.over = !!count
@@ -34,6 +49,8 @@ export function useDropTarget(options: {
                 ret.over = !!count
             },
             onDrop(event: DragEvent) {
+                if (getTargetID(event) != id) return
+
                 count--
                 if (count == -1) count = 0
                 ret.over = !!count
@@ -41,7 +58,8 @@ export function useDropTarget(options: {
                     event.preventDefault()
                     options.onDrop?.(event.dataTransfer)
                 }
-            }
+            },
+            "data-drop-target-id": id
         }
     })
 
