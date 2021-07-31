@@ -20,7 +20,8 @@ export const Modal = eventDecorator(defineComponent({
             type: [Boolean, String]
         },
         backdropCancels: {
-            type: Boolean
+            type: null as unknown as PropType<undefined | boolean | null>,
+            default: null
         }
     },
     inheritAttrs: false,
@@ -34,6 +35,12 @@ export const Modal = eventDecorator(defineComponent({
             return ret
         })
 
+        const backdropCancels = computed(() => {
+            if (props.backdropCancels === true) return true
+            if (props.backdropCancels == null) return !!props.cancelButton
+            if (props.backdropCancels === false) return false
+        })
+
         const instance = getCurrentInstance()
         if (instance) {
             const root = instance.root as unknown as { "__v3g_modalStack": { stack: ComponentInternalInstance[], handled: boolean } }
@@ -43,14 +50,18 @@ export const Modal = eventDecorator(defineComponent({
             const modalStack = root["__v3g_modalStack"]
 
             const handler = (event: KeyboardEvent) => {
+                if (modalStack.handled) return
+
                 // @ts-ignore
-                if (event.target?.tagName?.toLowerCase() == "input" || event.target?.tagName?.toLowerCase() == "textarea") return
+                if (event.target?.tagName?.toLowerCase() == "textarea") return
 
                 if (modalStack.handled || instance != modalStack.stack[modalStack.stack.length - 1]) return
 
                 if (event.code == "Enter" && props.okButton) {
                     modalStack.handled = true
                     ctx.emit("ok")
+                    event.preventDefault()
+                    event.stopPropagation()
                     setTimeout(() => {
                         modalStack.handled = false
                     }, 10)
@@ -58,9 +69,11 @@ export const Modal = eventDecorator(defineComponent({
                     return
                 }
 
-                if ((props.backdropCancels || props.cancelButton) && (event.code == "Escape" || event.code == "Enter")) {
+                if ((backdropCancels.value) && (event.code == "Escape" || event.code == "Enter")) {
                     modalStack.handled = true
                     ctx.emit("cancel")
+                    event.preventDefault()
+                    event.stopPropagation()
                     setTimeout(() => {
                         modalStack.handled = false
                     }, 10)
@@ -76,11 +89,11 @@ export const Modal = eventDecorator(defineComponent({
 
                 if (show) {
                     if (index != -1) throw new Error("Duplicate addition of modal on stack")
-                    window.addEventListener("keydown", handler)
+                    window.addEventListener("keypress", handler)
                     modalStack.stack.push(instance)
                 } else {
                     if (index == -1) return
-                    window.removeEventListener("keydown", handler)
+                    window.removeEventListener("keypress", handler)
                     modalStack.stack.splice(index, 1)
                 }
             }, { immediate: true })
@@ -89,17 +102,20 @@ export const Modal = eventDecorator(defineComponent({
             })
         }
 
-        return () => <Overlay onBackdropClick={() => props.backdropCancels && ctx.emit("cancel")} {...overlayProps.value} fullScreen>
+        const cancel = () => ctx.emit("cancel")
+
+        return () => <Overlay onBackdropClick={() => backdropCancels.value && ctx.emit("cancel")} {...overlayProps.value} fullScreen>
             <Transition name="as-transition-shrink" appear>
                 <div class={[`bg-${props.background}`, "p-2 w-min-200 h-min-100 as-reset rounded", props.fill && "flex-fill"]} {...ctx.attrs}>
-                    {ctx.slots.default?.()}
-                    <div class="flex-fill"></div>
+                    <div class="flex-fill flex column">
+                        {ctx.slots.default?.()}
+                    </div>
                     {(props.okButton || props.cancelButton) && <div class="flex row">
                         {ctx.slots.buttonsLeft?.()}
                         <div class="flex-fill"></div>
-                        {ctx.slots.buttons?.()}
+                        {ctx.slots.buttons?.(cancel)}
                         {props.okButton && <Button class="text-primary" variant="primary" onClick={() => { ctx.emit("ok") }} clear>{typeof props.okButton == "string" ? props.okButton : "OK"}</Button>}
-                        {props.cancelButton && <Button onClick={() => { ctx.emit("cancel") }} clear>{typeof props.cancelButton == "string" ? props.cancelButton : "Cancel"}</Button>}
+                        {props.cancelButton && <Button onClick={cancel} clear>{typeof props.cancelButton == "string" ? props.cancelButton : "Cancel"}</Button>}
                     </div>}
                 </div>
             </Transition>

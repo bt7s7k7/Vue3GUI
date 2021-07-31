@@ -46,8 +46,50 @@
     white-space: nowrap;
 }
 
+.pre {
+    white-space: pre;
+}
+
 @each $type in cover, contain {
     .img-#{$type} {
         object-fit: $type;
     }
+}
+
+.hover-check {
+    .if-hover-fade, .if-not-hover-fade {
+        transition: opacity 0.1s ease-in-out;
+    }
+
+    &:not(:hover) {
+        .if-hover {
+            display: none;
+        }
+
+        .if-hover-visible {
+            visibility: hidden;
+        }
+
+        .if-hover-fade {
+            opacity: 0;
+        }
+    }
+
+    &:hover {
+        .if-not-hover {
+            display: none;
+        }
+
+        .if-not-hover-visible {
+            visibility: hidden;
+        }
+
+        .if-not-hover-fade {
+            opacity: 0;
+        }
+    }
+}
+
+.ignored {
+    pointer-events: none;
 }

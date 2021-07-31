@@ -1,4 +1,4 @@
-import { defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
+import { computed, defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
 import { Button } from "./Button"
 import { Modal, useModal } from "./Modal"
 import { StateCard } from "./StateCard"
@@ -10,17 +10,27 @@ import { Variant } from "./variants"
 
 interface ModalDefinition {
     props: Omit<ComponentProps<typeof Modal>, keyof ReturnType<typeof useModal>["props"]>
+    contentProps: any
     content: any
     controller: ReturnType<typeof useModal>
     id: number
     buttons: ButtonDefinition[]
 }
 
-interface BaseOptions {
+interface ModalOptions {
+    props?: ModalDefinition["props"]
+    contentProps?: ModalDefinition["contentProps"]
+    buttons?: ModalDefinition["buttons"]
+}
+
+interface BaseOptions extends ModalOptions {
     title?: string
     cancelable?: boolean
-    props?: ModalDefinition["props"]
-    buttons?: ModalDefinition["buttons"]
+}
+
+interface AlertOptions extends ModalOptions {
+    error?: boolean,
+    state?: StateInfo["type"]
 }
 
 interface PromptOptions extends BaseOptions {
@@ -61,12 +71,45 @@ export interface DynamicsEmitter extends ReturnType<typeof makeDynamicEmitter> {
 
 const DYNAMICS_EMITTER_KEY: InjectionKey<DynamicsEmitter> = Symbol("dynamicsEmitter")
 
+const AlertPopup = defineComponent({
+    name: "AlertPopup",
+    props: {
+        state: { type: String as PropType<StateInfo["type"]> },
+        content: { type: null, required: true }
+    },
+    setup(props) {
+
+        const content = computed(() => typeof props.content != "function" ? (() => <>{props.content}</>) : props.content)
+
+        return () => (
+            <div class="pre mb-5 mt-5 ml-2 mr-4">
+                {props.state ? <div class="flex row">
+                    <h3 class="m-0 mb-3 mr-7">
+                        <StateCard state={{ text: "", type: props.state }}></StateCard>
+                    </h3>
+                    <div class={props.state == "error" && "text-danger"}>
+                        <content.value />
+                    </div>
+                </div> : <content.value />}
+            </div>
+        )
+    }
+})
+
 function makeDynamicEmitter() {
     const emitter = reactive({
-        modal(content: ModalDefinition["content"], props: ModalDefinition["props"] = {}, buttons: ModalDefinition["buttons"] = []) {
+        modal(content: ModalDefinition["content"], options: ModalOptions = {}) {
             const controller = useModal()
 
-            const modal: ModalDefinition = { content: typeof content == "object" ? markRaw(content) : content, controller, props, id: nextID++, buttons }
+            const modal: ModalDefinition = {
+                content: typeof content == "object" ? markRaw(content) : content,
+                controller,
+                props: options.props ?? {},
+                id: nextID++,
+                buttons: options.buttons ?? [],
+                contentProps: options.contentProps
+            }
+
             this.modals.push(modal)
 
             const promise = controller.open()
@@ -80,10 +123,10 @@ function makeDynamicEmitter() {
 
             return promise as Promise<boolean> & { controller: typeof controller }
         },
-        prompt(options: PromptOptions = {}) {
-            return new Promise<string | null>(resolve => {
-                const result = ref<string>(options.initialValue ?? "")
+        prompt(options: PromptOptions = {}): Promise<string | null> & { result: Ref<string> } {
+            const result = ref<string>(options.initialValue ?? "")
 
+            const ret = new Promise<string | null>(resolve => {
                 const component = defineComponent({
                     name: "Prompt",
                     setup: () => {
@@ -124,7 +167,7 @@ function makeDynamicEmitter() {
                         return () => (
                             <>
                                 <div class="mb-3">{options.title ?? "Enter value"}</div>
-                                <TextField focus onConfirm={() => promise.controller.close(true)} modelValue={result.value} onInput={v => result.value = v} />
+                                <TextField focus modelValue={result.value} onInput={v => result.value = v} />
                                 {state && <StateCard class="mt-3" state={state} />}
                             </>
                         )
@@ -132,13 +175,18 @@ function makeDynamicEmitter() {
                 })
 
                 const promise = this.modal(component, {
-                    okButton: true,
-                    cancelButton: options.cancelable ?? true,
-                    ...options.props,
-                }, options.buttons)
+                    ...options,
+                    props: {
+                        okButton: true,
+                        cancelButton: options.cancelable ?? true,
+                        ...options.props
+                    }
+                })
 
                 promise.then(ok => resolve(ok ? result.value : null))
             })
+
+            return Object.assign(ret, { result })
         },
         listPrompt<T extends any[]>(items: T, options: BaseOptions & { label?: (v: T[number]) => string | string[] } = {}) {
             return new Promise<T[number] | null>(resolve => {
@@ -162,15 +210,45 @@ function makeDynamicEmitter() {
                 })
 
                 const promise = this.modal(component, {
-                    cancelButton: options.cancelable ?? true,
-                    ...options.props,
-                }, options.buttons)
+                    ...options,
+                    props: {
+                        cancelButton: options.cancelable ?? true,
+                        ...options.props
+                    }
+                })
 
                 promise.then(ok => resolve(ok ? result.value : null))
             })
         },
-        alert(content: ModalDefinition["content"], props: ModalDefinition["props"] = {}) {
-            return this.modal(content, { ...props, cancelButton: "Close" })
+        alert(content: ModalDefinition["content"], options: AlertOptions = {}) {
+            const state = options.error ? "error" : options.state
+
+            return this.modal(AlertPopup, {
+                ...options,
+                props: { cancelButton: true, ...options.props },
+                contentProps: { content, state, ...options.props }
+            })
+        },
+        confirm(content: ModalDefinition["content"], options: ModalOptions = {}) {
+            return this.alert(content, {
+                ...options,
+                props: {
+                    okButton: true,
+                    ...options.props,
+                }
+            })
+        },
+        work(message = "", options: ModalOptions = {}) {
+            const result = reactive({
+                message,
+                done: null! as () => void
+            })
+
+            const { controller } = this.modal(AlertPopup, { ...options, contentProps: { content: computed(() => result.message), state: "working", ...options.contentProps } })
+
+            result.done = () => controller.close()
+
+            return result
         },
         modals: [] as ModalDefinition[]
     })
@@ -201,7 +279,7 @@ export const DynamicsEmitter = (defineComponent({
                 {ctx.slots.default?.()}
                 {emitter.modals.map(modal => <Modal {...modal.props} {...modal.controller.props} key={modal.id}>{{
                     default: () => typeof modal.content == "string" ? modal.content
-                        : <modal.content />,
+                        : <modal.content {...modal.contentProps} />,
                     buttons: () => modal.buttons && <ButtonDefinitionRenderer definition={modal.buttons} close={(v = false) => modal.controller.close(v)} />
                 }}</Modal>)}
             </>
