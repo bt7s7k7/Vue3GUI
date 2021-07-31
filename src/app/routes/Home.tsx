@@ -112,11 +112,29 @@ export const Home = defineComponent({
                     <UploadOverlay class="w-200 h-200"></UploadOverlay>
                     <h1>Overlay</h1>
                     <Button onClick={() => showOverlay.value = true}>Show</Button>
-                    <Button onClick={() => showModal.value = true}>Show as modal</Button>
+                    <h1>Modal</h1>
+                    <Button onClick={() => showModal.value = true}>Show</Button>
                     <Modal show={showModal.value} cancelButton onCancel={() => showModal.value = false}>
                         This is a modal
                     </Modal>
-                    <Button onClick={() => emitter.prompt().then(v => v != null ? emitter.alert(`Entered text: ${JSON.stringify(v)}`) : null)}>Open prompt</Button>
+                    <h2>Using dynamics emitter:</h2>
+                    <div class="flex row gap-2">
+                        <Button onClick={() => emitter.alert("Hello world!")}>Open alert</Button>
+                        <Button onClick={() => emitter.alert("Failed to do stuff\n\n" + new Error("Wrong data").stack, { error: true })}>Open error</Button>
+                        <Button onClick={() => {
+                            const work = emitter.work()
+                            let left: any = 2
+                            const intervalID = setInterval(() => {
+                                if (left < 0) {
+                                    work.done()
+                                    clearInterval(intervalID)
+                                }
+                                work.message = `Loading (${((2 - left) / 0.02).toFixed(0)}%)`
+                                left -= 0.01
+                            }, 10)
+                        }}>Open working</Button>
+                        <Button onClick={() => emitter.prompt().then(v => v != null ? emitter.alert(`Entered text: ${JSON.stringify(v)}`) : null)}>Open prompt</Button>
+                    </div>
                     <h1>Transitions</h1>
                     <div class="flex row">
                         <Button onClick={() => transitions.value = !transitions.value}>Toggle</Button>
