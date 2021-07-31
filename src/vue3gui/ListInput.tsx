@@ -103,7 +103,7 @@ export const ListInput = eventDecorator(defineComponent({
                             const key = props.key?.(item, i) ?? i.toString()
 
                             return (
-                                <div class={["flex row"]} key={key}>
+                                <div class={["flex row", props.itemClass]} key={key}>
                                     <div class="flex-fill flex row">
                                         {slots.item?.(item, i, key) ?? key}
                                     </div>
