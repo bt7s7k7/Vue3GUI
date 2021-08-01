@@ -81,8 +81,12 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, ...options }: { del
     const result = ref(value.value) as Ref<T>
 
     watch(value, (value) => {
-        clearTimeout(timeoutID)
-        timeoutID = setTimeout(() => result.value = value, delay)
+        if (delay <= 0) {
+            result.value = value
+        } else {
+            clearTimeout(timeoutID)
+            timeoutID = setTimeout(() => result.value = value, delay)
+        }
     }, { ...options })
 
     return result

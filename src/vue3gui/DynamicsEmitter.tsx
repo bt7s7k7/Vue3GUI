@@ -157,11 +157,11 @@ function makeDynamicEmitter() {
                             }
 
                             watch(value, check, { immediate: true })
-                            watch(result, () => state!.working("Waiting for input"))
+                            watch(result, () => options.verifierDebounce && options.verifierDebounce > 0 && state!.working("Waiting for input"))
 
                             watch(() => state!.type, (type) => {
                                 if (!options.verifierOptional) promise.controller.okBlocked = type != "done"
-                            })
+                            }, { immediate: true })
                         }
 
                         return () => (
