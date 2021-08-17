@@ -20,7 +20,7 @@ interface SetChangeEvent<T> extends ChangeEventBase<T> {
 type AnyChangeEvent<T> = DeleteChangeEvent<T> | SetChangeEvent<T>
 
 interface ListInputHookOptions<T> {
-    factory?: (index: number) => T
+    factory?: (index: number) => T | Promise<T | null> | null
     key: (v: T, index: number) => string
     disposer?: (v: T) => void
     onChange?: (event: AnyChangeEvent<T>) => void
@@ -36,8 +36,9 @@ export function useListInput<T>(_list: Ref<T[]> | T[], options: ListInputHookOpt
             key: options.key,
             addButton: !!options.factory,
             deleteButton: !options.noDelete,
-            onAdd(index) {
-                const newValue = options.factory!(index)
+            async onAdd(index) {
+                const newValue = await options.factory!(index)
+                if (newValue == null) return
                 this.items.push(newValue)
                 options.onChange?.({ type: "set", index, value: newValue, state: this.items as T[] })
             },
