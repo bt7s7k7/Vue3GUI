@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, PropType, ref, watch } from "vue"
+import { defineComponent, InputHTMLAttributes, onMounted, PropType, ref, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Theme } from "./Theme"
 import { Variant } from "./variants"
@@ -21,7 +21,8 @@ export const TextField = eventDecorator(defineComponent({
         focus: { type: Boolean },
         autoResize: { type: Boolean },
         placeholder: { type: String },
-        clear: { type: Boolean }
+        clear: { type: Boolean },
+        fieldProps: { type: Object as PropType<InputHTMLAttributes> }
     },
     emits: {
         "update:modelValue": (value: string) => true,
@@ -78,6 +79,7 @@ export const TextField = eventDecorator(defineComponent({
                     ref={input}
                     size={1}
                     placeholder={props.placeholder}
+                    {...props.fieldProps}
                 />
                 <div class={["focus-indicator", `bg-${props.variant}`]}></div>
             </div>
