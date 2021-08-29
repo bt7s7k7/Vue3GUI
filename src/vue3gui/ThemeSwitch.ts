@@ -16,6 +16,8 @@ export class ThemeSwitch {
         this.themeRefs.push({ theme, element })
         this.selectedTheme = theme.name
         Theme.selected = theme
+
+        return this
     }
 
     public setTheme(name: string) {
