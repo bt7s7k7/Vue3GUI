@@ -65,7 +65,7 @@
     resize: none;
 }
 
-@each $type in cover, contain {
+@each $type in cover, contain, scale-down {
     .img-#{$type} {
         object-fit: $type;
     }
