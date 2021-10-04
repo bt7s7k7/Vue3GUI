@@ -30,7 +30,7 @@ export const Tabs = (defineComponent({
             default: () => Theme.selected.highlight
         },
         tabs: {
-            type: Object as PropType<TabsState>,
+            type: Object as PropType<Omit<TabsState, "next">>,
             required: true
         }
     },
