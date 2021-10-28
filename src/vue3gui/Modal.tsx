@@ -22,7 +22,8 @@ export const Modal = eventDecorator(defineComponent({
         backdropCancels: {
             type: null as unknown as PropType<undefined | boolean | null>,
             default: null
-        }
+        },
+        contentClass: { type: null }
     },
     inheritAttrs: false,
     emits: {
@@ -31,7 +32,7 @@ export const Modal = eventDecorator(defineComponent({
     },
     setup(props, ctx) {
         const overlayProps = computed(() => {
-            const { background, cancelButton, okButton, backdropCancels, ...ret } = props
+            const { background, cancelButton, okButton, backdropCancels, contentClass, ...ret } = props
             return ret
         })
 
@@ -107,7 +108,7 @@ export const Modal = eventDecorator(defineComponent({
         return () => <Overlay onBackdropClick={() => backdropCancels.value && ctx.emit("cancel")} {...overlayProps.value} fullScreen>
             <Transition name="as-transition-shrink" appear>
                 <div class={[`bg-${props.background}`, "p-2 w-min-200 h-min-100 as-reset rounded", props.fill && "flex-fill"]} {...ctx.attrs}>
-                    <div class="flex-fill flex column">
+                    <div class={["flex-fill flex column", props.contentClass]}>
                         {ctx.slots.default?.()}
                     </div>
                     {(props.okButton || props.cancelButton) && <div class="flex row">
