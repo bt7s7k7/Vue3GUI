@@ -32,6 +32,25 @@ export class ThemeSwitch {
         } else throw new RangeError(`No theme named ${JSON.stringify(name)} found`)
     }
 
+    public hide() {
+        this.themeRefs.forEach(v => v.element?.remove())
+
+        return this
+    }
+
+    public getCurrentStyle() {
+        const themeRef = this.themeRefs.find(v => v.theme.name == this.selectedTheme)
+        if (!themeRef) return null
+        if (themeRef.element) return themeRef.element
+        if (themeRef.theme.style) {
+            const styleElement = document.createElement("style")
+            styleElement.innerHTML = themeRef.theme.style
+            return themeRef.element = styleElement
+        }
+
+        return null
+    }
+
     protected themeRefs: ThemeReference[] = []
 
     constructor(
