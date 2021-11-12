@@ -116,7 +116,7 @@ export function stringifyError(error: any) {
     return error
 }
 
-export function useEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement | Window, event: K, handler: (event: HTMLElementEventMap[K]) => void) {
-    target.addEventListener(event, handler as any)
+export function useEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement | Window, event: K, handler: (event: HTMLElementEventMap[K]) => void, options?: boolean | AddEventListenerOptions) {
+    target.addEventListener(event, handler as any, options)
     onUnmounted(() => target.removeEventListener(event, handler as any))
 }
