@@ -27,6 +27,9 @@ export const Button = eventDecorator(defineComponent({
         },
         clear: {
             type: Boolean
+        },
+        submit: {
+            type: Boolean
         }
     },
     setup(props, ctx) {
@@ -36,7 +39,8 @@ export const Button = eventDecorator(defineComponent({
         return () => (h as any)(
             props.href ? "a" :
                 props.to ? RouterLink :
-                    "button",
+                    props.submit ? "input" :
+                        "button",
             {
                 class: [
                     `as-button`,
@@ -51,7 +55,8 @@ export const Button = eventDecorator(defineComponent({
                 ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
-                        { onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } })
+                        props.submit ? { type: "submit", value: ctx.slots.default?.()[0].children ?? "" } :
+                            { onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } })
             },
             {
                 default: ctx.slots.default ?? (() => "")
