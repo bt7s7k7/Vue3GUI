@@ -49,6 +49,7 @@ export const Overlay = eventDecorator(defineComponent({
                 {props.show && <div
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
+                    style="pointer-events: auto"
                     class={["absolute-fill flex", `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center", props.overlayClass]}
                 >
                     {content?.()}
@@ -58,7 +59,7 @@ export const Overlay = eventDecorator(defineComponent({
 
         return () => {
             if (props.fullScreen) return (
-                <Teleport to="body">
+                <Teleport to={Overlay.fullScreenTarget}>
                     {drawOverlay(ctx.slots.default)}
                 </Teleport>
             )
@@ -71,3 +72,5 @@ export const Overlay = eventDecorator(defineComponent({
         }
     }
 }))
+
+Overlay.fullScreenTarget = "body"
