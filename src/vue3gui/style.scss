@@ -19,7 +19,7 @@ $fg-dark: #1a1a1a !default;
 $default-fg: "black" !default;
 $default-bg: "white" !default;
 
-$border-color: #cccccc;
+$border-color: #cccccc !default;
 $colors: (
     "danger": ("bg": $bg-danger, "fg": $fg-danger, "invert": true),
     "white": ("bg": $bg-white, "fg": $fg-white, "invert": false),
