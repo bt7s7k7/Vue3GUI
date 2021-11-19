@@ -30,6 +30,9 @@ export const Button = eventDecorator(defineComponent({
         },
         submit: {
             type: Boolean
+        },
+        small: {
+            type: Boolean
         }
     },
     setup(props, ctx) {
@@ -51,7 +54,8 @@ export const Button = eventDecorator(defineComponent({
                                 props.flat && "flat",
                                 !props.textual ? `bg-${variant.value}` : "textual flat",
                             ]
-                    )
+                    ),
+                    props.small && "small"
                 ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
