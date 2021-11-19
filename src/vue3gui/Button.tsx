@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, PropType } from "vue"
-import { RouteLocationRaw, RouterLink } from "vue-router"
+import type { RouteLocationRaw } from "vue-router"
 import { eventDecorator } from "../eventDecorator"
 import { Theme } from "./Theme"
 import { Variant } from "./variants"
@@ -41,7 +41,7 @@ export const Button = eventDecorator(defineComponent({
 
         return () => (h as any)(
             props.href ? "a" :
-                props.to ? RouterLink :
+                props.to ? "router-link" :
                     props.submit ? "input" :
                         "button",
             {
