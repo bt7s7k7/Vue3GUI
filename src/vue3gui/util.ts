@@ -92,7 +92,7 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, ...options }: { del
     return result
 }
 
-export function stringifyError(error: any) {
+export function stringifyError(error: any): string {
     if (!error) return "Internal error"
 
     if (error.response) {
