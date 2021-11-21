@@ -1,4 +1,4 @@
-import { defineComponent, PropType, ref, Slot, Teleport, Transition } from "vue"
+import { defineComponent, h, PropType, ref, Slot, Teleport, Transition } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Theme } from "./Theme"
 import { Variant } from "./variants"
@@ -6,7 +6,7 @@ import { Variant } from "./variants"
 export namespace OverlayProps {
     export const BASE_PROPS = {
         variant: {
-            type: String as PropType<Variant>,
+            type: String as PropType<Variant | "clear">,
             default: () => Theme.selected.overlay
         },
         noTransition: {
@@ -30,7 +30,8 @@ export namespace OverlayProps {
         fullScreen: {
             type: Boolean
         },
-        overlayClass: { type: null }
+        overlayClass: { type: null },
+        tag: { type: String, default: () => "div" }
     }
 }
 
@@ -50,7 +51,7 @@ export const Overlay = eventDecorator(defineComponent({
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
                     style="pointer-events: auto"
-                    class={["absolute-fill flex", `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center", props.overlayClass]}
+                    class={["absolute-fill flex", props.variant != "clear" && `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center", props.overlayClass]}
                 >
                     {content?.()}
                 </div>}
@@ -64,10 +65,10 @@ export const Overlay = eventDecorator(defineComponent({
                 </Teleport>
             )
             else return (
-                <div>
-                    {ctx.slots.default?.()}
-                    {drawOverlay(ctx.slots.overlay)}
-                </div>
+                h(props.tag, {}, [
+                    ctx.slots.default?.(),
+                    drawOverlay(ctx.slots.overlay)
+                ])
             )
         }
     }

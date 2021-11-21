@@ -8,6 +8,9 @@ import { Theme } from "./Theme"
 import { ComponentProps, useDebounce } from "./util"
 import { Variant } from "./variants"
 
+type PopupAlign = "top-left" | "top-right" | "left-up" | "left-down" |
+    "right-up" | "right-down" | "bottom-left" | "bottom-right"
+
 interface ModalDefinition {
     props: Omit<ComponentProps<typeof Modal>, keyof ReturnType<typeof useModal>["props"]>
     contentProps: any
@@ -250,7 +253,46 @@ function makeDynamicEmitter() {
 
             return result
         },
-        modals: [] as ModalDefinition[]
+        modals: [] as ModalDefinition[],
+        popup(target: HTMLElement, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
+            const rect = target.getBoundingClientRect()
+            const [base, extend] = (options.align ?? "bottom-left").split("-")
+            const pos: any = {}
+            if (base == "right" || base == "left") {
+                if (extend == "down") {
+                    pos.top = rect.top + "px"
+                } else {
+                    pos.bottom = (window.innerHeight - rect.bottom) + "px"
+                }
+
+                if (base == "right") {
+                    pos.left = rect.right + "px"
+                } else {
+                    pos.right = (window.innerWidth - rect.left) + "px"
+                }
+            } else if (base == "top" || base == "bottom") {
+                if (extend == "right") {
+                    pos.left = rect.left + "px"
+                } else {
+                    pos.right = (window.innerWidth - rect.right) + "px"
+                }
+
+                if (base == "bottom") {
+                    pos.top = rect.bottom + "px"
+                } else {
+                    pos.bottom = (window.innerHeight - rect.top) + "px"
+                }
+            }
+
+            return this.modal(content, {
+                ...options,
+                props: {
+                    variant: "clear",
+                    style: { position: "absolute", ...pos, minWidth: "unset", minHeight: "unset" },
+                    ...options.props
+                }
+            })
+        }
     })
 
     provide(DYNAMICS_EMITTER_KEY, emitter)
