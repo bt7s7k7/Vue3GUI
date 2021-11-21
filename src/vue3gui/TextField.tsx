@@ -21,6 +21,7 @@ export const TextField = eventDecorator(defineComponent({
         focus: { type: Boolean },
         autoResize: { type: Boolean },
         placeholder: { type: String },
+        autocomplete: { type: String },
         clear: { type: Boolean },
         noIndicator: { type: Boolean },
         fieldProps: { type: Object as PropType<InputHTMLAttributes> }
@@ -80,6 +81,7 @@ export const TextField = eventDecorator(defineComponent({
                     ref={input}
                     size={1}
                     placeholder={props.placeholder}
+                    autocomplete={props.autocomplete}
                     {...props.fieldProps}
                 />
                 {!props.noIndicator && <div class={["focus-indicator", `bg-${props.variant}`]}></div>}
