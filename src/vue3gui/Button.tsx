@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, PropType } from "vue"
+import { computed, defineAsyncComponent, defineComponent, h, PropType } from "vue"
 import type { RouteLocationRaw } from "vue-router"
 import { eventDecorator } from "../eventDecorator"
 import { Theme } from "./Theme"
@@ -41,7 +41,7 @@ export const Button = eventDecorator(defineComponent({
 
         return () => (h as any)(
             props.href ? "a" :
-                props.to ? "router-link" :
+                props.to ? defineAsyncComponent(() => import("vue-router").then(v => v.RouterLink)) :
                     props.submit ? "input" :
                         "button",
             {
