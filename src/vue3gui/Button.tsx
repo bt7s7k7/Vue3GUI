@@ -33,6 +33,9 @@ export const Button = eventDecorator(defineComponent({
         },
         small: {
             type: Boolean
+        },
+        disabled: {
+            type: Boolean
         }
     },
     setup(props, ctx) {
@@ -47,9 +50,9 @@ export const Button = eventDecorator(defineComponent({
             {
                 class: [
                     `as-button`,
-                    `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
+                    !props.disabled && `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
                     ...(
-                        props.clear ? ["flat", `bg-${variant.value}-transparent-hover`]
+                        props.clear ? ["flat", !props.disabled && `bg-${variant.value}-transparent-hover`]
                             : [
                                 props.flat && "flat",
                                 !props.textual ? `bg-${variant.value}` : "textual flat",
@@ -60,7 +63,8 @@ export const Button = eventDecorator(defineComponent({
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
                         props.submit ? { type: "submit", value: ctx.slots.default?.()[0].children ?? "" } :
-                            { onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } })
+                            { onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } }),
+                ...(props.disabled ? { disabled: true } : {})
             },
             {
                 default: ctx.slots.default ?? (() => "")
