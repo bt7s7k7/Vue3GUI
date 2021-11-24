@@ -241,7 +241,7 @@ function makeDynamicEmitter() {
                 }
             })
         },
-        work(message = "", options: ModalOptions = {}) {
+        work(message: any = "", options: ModalOptions = {}) {
             const result = reactive({
                 message,
                 done: null! as () => void
