@@ -2,7 +2,12 @@
 
 const { project, run, constants } = require("ucpem")
 
-project.prefix("src").res("vue3gui")
+const vue3gui = project.prefix("src").res("vue3gui")
+
+project.prefix("src").res("viewComponents",
+    vue3gui
+)
+
 
 project.script("script", async ([name]) => {
     await run(`${process.argv[0]} ./scripts/node_modules/.bin/ts-node-script ./scripts/src/scripts/${name}.ts`, constants.projectPath)
