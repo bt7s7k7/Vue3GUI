@@ -58,21 +58,13 @@ export const Modal = eventDecorator(defineComponent({
 
                 if (modalStack.handled || instance != modalStack.stack[modalStack.stack.length - 1]) return
 
-                if (event.code == "Enter" && props.okButton) {
+                if (
+                    (props.okButton && event.code == "Enter") ||
+                    (backdropCancels.value && (event.code == "Escape" || event.code == "Enter"))
+                ) {
                     modalStack.handled = true
-                    ctx.emit("ok")
-                    event.preventDefault()
-                    event.stopPropagation()
-                    setTimeout(() => {
-                        modalStack.handled = false
-                    }, 10)
-
-                    return
-                }
-
-                if ((backdropCancels.value) && (event.code == "Escape" || event.code == "Enter")) {
-                    modalStack.handled = true
-                    ctx.emit("cancel")
+                    if (event.code == "Enter") ctx.emit("ok")
+                    else ctx.emit("cancel")
                     event.preventDefault()
                     event.stopPropagation()
                     setTimeout(() => {
