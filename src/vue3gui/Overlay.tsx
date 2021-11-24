@@ -50,7 +50,7 @@ export const Overlay = eventDecorator(defineComponent({
                 {props.show && <div
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
-                    style="pointer-events: auto"
+                    style="pointer-events: auto; z-index: 20"
                     class={["absolute-fill flex", props.variant != "clear" && `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center", props.overlayClass]}
                 >
                     {content?.()}
