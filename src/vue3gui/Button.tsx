@@ -7,7 +7,7 @@ import { Variant } from "./variants"
 export const Button = eventDecorator(defineComponent({
     name: "Button",
     emits: {
-        click: (event: MouseEvent) => true,
+        click: (click: MouseEvent) => true,
     },
     props: {
         variant: {

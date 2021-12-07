@@ -18,11 +18,7 @@ export default defineConfig(() => {
                 lib: {
                     entry: resolve(__dirname, "src/index.ts"),
                     name: "Vue3GUI",
-                    fileName: (format) => `index.${format}.js`,
-                    formats: [
-                        "cjs",
-                        "es"
-                    ]
+                    fileName: (format) => `index.${format}.js`
                 },
                 rollupOptions: {
                     external: ["vue", "vue-router"],
@@ -31,7 +27,7 @@ export default defineConfig(() => {
                             vue: "Vue"
                         }
                     }
-                }
+                },
             }
         } : undefined)
     }
