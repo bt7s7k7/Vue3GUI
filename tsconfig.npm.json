@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "declaration": true,
+        "emitDeclarationOnly": true
+    },
+    "exclude": [
+        "src/main.ts",
+        "src/eventDecorator.ts",
+        "src/viewComponents",
+        "src/app",
+        "src/vue3gui/ListController.tsx",
+        "src/vue3gui/ListInput.tsx"
+    ]
+}

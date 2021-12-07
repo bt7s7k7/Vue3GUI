@@ -1,10 +1,10 @@
 {
-    "name": "vue3gui",
-    "version": "0.0.0",
-    "private": true,
+    "name": "@bt7s7k7/vue3gui",
+    "version": "1.0.1",
+    "description": "Small and simple UI components for Vue",
     "scripts": {
         "dev": "concurrently --raw --kill-others \"vite\" \"tsc --noEmit --watch --incremental --preserveWatchOutput\"",
-        "build": "tsc --noEmit --incremental && vite build",
+        "build": "vite build && yarn tsc -p ./tsconfig.npm.json ",
         "serve": "vite preview"
     },
     "dependencies": {
@@ -25,5 +25,17 @@
         "sass": "^1.32.13",
         "typescript": "^4.1.3",
         "vite": "^2.1.5"
-    }
+    },
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.cjs.ts",
+    "module": "./dist/index.es.ts",
+    "license": "MIT",
+    "author": "bt7s7k7",
+    "files": [
+        "README.md",
+        "LICENSE",
+        "package.json",
+        "dist"
+    ],
+    "repository": "https://github.com/bt7s7k7/Vue3GUI"
 }
