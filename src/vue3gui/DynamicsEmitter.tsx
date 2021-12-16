@@ -20,6 +20,12 @@ interface ModalDefinition {
     buttons: ButtonDefinition[]
 }
 
+export interface GenericModalHandle<T> {
+    resultFactory: () => T
+    submit(): void
+    cancel(): void
+}
+
 interface ModalOptions {
     props?: ModalDefinition["props"]
     contentProps?: ModalDefinition["contentProps"]
@@ -125,6 +131,22 @@ function makeDynamicEmitter() {
             })
 
             return promise as Promise<boolean> & { controller: typeof controller }
+        },
+        genericModal<T>(content: { new(...args: any): { $props: { handle: GenericModalHandle<T> } } }, options: ModalOptions = {}) {
+            const handle: GenericModalHandle<T> = {
+                cancel: () => promise.controller.close(false),
+                submit: () => promise.controller.close(true),
+                resultFactory: () => { throw new Error("Result factory was not set") }
+            }
+            const promise = this.modal(content, {
+                ...options,
+                contentProps: {
+                    handle,
+                    ...options.contentProps
+                }
+            })
+
+            return promise.then(success => success ? handle.resultFactory() : null)
         },
         prompt(options: PromptOptions = {}): Promise<string | null> & { result: Ref<string> } {
             const result = ref<string>(options.initialValue ?? "")
