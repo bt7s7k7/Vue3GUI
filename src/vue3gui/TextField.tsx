@@ -61,7 +61,8 @@ export const TextField = eventDecorator(defineComponent({
             container.style.width = `${width + 5}px`
         }
 
-        watch(value, (value) => {
+        watch(value, (value, oldValue) => {
+            if (value == oldValue || value == props.modelValue) return
             ctx.emit("update:modelValue", value)
             ctx.emit("input", value)
 
