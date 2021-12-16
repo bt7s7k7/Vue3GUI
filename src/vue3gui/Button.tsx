@@ -45,8 +45,7 @@ export const Button = eventDecorator(defineComponent({
         return () => (h as any)(
             props.href ? "a" :
                 props.to ? defineAsyncComponent(() => import("vue-router").then(v => v.RouterLink)) :
-                    props.submit ? "input" :
-                        "button",
+                    "button",
             {
                 class: [
                     `as-button`,
@@ -62,8 +61,8 @@ export const Button = eventDecorator(defineComponent({
                 ],
                 ...(props.href ? { href: props.href } :
                     props.to ? { to: props.to } :
-                        props.submit ? { type: "submit", value: ctx.slots.default?.()[0].children ?? "" } :
-                            { onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } }),
+                        props.submit ? { type: "submit" } :
+                            { type: "button", onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) } }),
                 ...(props.disabled ? { disabled: true } : {})
             },
             {
