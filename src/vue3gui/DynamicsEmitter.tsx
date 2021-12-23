@@ -132,12 +132,19 @@ function makeDynamicEmitter() {
 
             return promise as Promise<boolean> & { controller: typeof controller }
         },
-        genericModal<T>(content: { new(...args: any): { $props: { handle: GenericModalHandle<T> } } }, options: ModalOptions = {}) {
+        genericModal<T>(content: { new(...args: any): { $props: { handle: GenericModalHandle<T> } } } | { value: T, render: (value: T, handle: GenericModalHandle<T>) => any }, options: ModalOptions = {}) {
             const handle: GenericModalHandle<T> = {
                 cancel: () => promise.controller.close(false),
                 submit: () => promise.controller.close(true),
                 resultFactory: () => { throw new Error("Result factory was not set") }
             }
+
+            if ("value" in content) {
+                const simpleModal = content
+                handle.resultFactory = () => simpleModal.value
+                content = (() => simpleModal.render(simpleModal.value, handle)) as any
+            }
+
             const promise = this.modal(content, {
                 ...options,
                 contentProps: {
@@ -146,7 +153,9 @@ function makeDynamicEmitter() {
                 }
             })
 
-            return promise.then(success => success ? handle.resultFactory() : null)
+            const result = promise.then(success => success ? handle.resultFactory() : null) as Promise<T | null> & { controller: typeof promise.controller }
+            result.controller = promise.controller
+            return result
         },
         prompt(options: PromptOptions = {}): Promise<string | null> & { result: Ref<string> } {
             const result = ref<string>(options.initialValue ?? "")
