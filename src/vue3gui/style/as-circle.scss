@@ -1,0 +1,65 @@
+@keyframes as-circle-indeterminate-rotate {
+    from {
+        transform: rotate(0);
+        stroke-dashoffset: 0;
+    }    
+
+    25% {
+        transform: rotate(360deg);
+        stroke-dashoffset: 0.5;
+    }   
+
+    50% {
+        transform: rotate(360deg * 2);
+        stroke-dashoffset: 1;
+    }  
+
+    to {
+        transform: rotate(360deg * 3);
+        stroke-dashoffset: 0;
+    }  
+}
+
+.as-circle {
+    height: 200px;
+    width: 200px;
+
+    circle {
+        stroke-width: 1px;
+        r: 12.5;
+        cx: 16;
+        cy: 16;
+    }
+
+    .filler {
+        opacity: 0.25;
+    }
+
+    .main {
+        stroke-dasharray: 1;
+        transform: rotate(270deg);
+        transform-origin: center;
+    }
+    
+    &.transition {
+        transition: stroke-dashoffset 0.1s linear;
+    }
+
+    &.inline {
+        height: 1em;
+        width: 1em;
+
+        circle {
+            stroke-width: 2px;
+        }
+    }
+
+    &.indeterminate {
+        .main {
+            animation-duration: 2s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-name: as-circle-indeterminate-rotate;
+        }
+    }
+}
