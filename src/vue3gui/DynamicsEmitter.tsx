@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
+import { ComponentPublicInstance, computed, defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
 import { Button } from "./Button"
 import { Modal, useModal } from "./Modal"
 import { StateCard } from "./StateCard"
@@ -9,7 +9,7 @@ import { ComponentProps, useDebounce } from "./util"
 import { Variant } from "./variants"
 
 type PopupAlign = "top-left" | "top-right" | "left-up" | "left-down" |
-    "right-up" | "right-down" | "bottom-left" | "bottom-right"
+    "right-up" | "right-down" | "bottom-left" | "bottom-right" | "over"
 
 interface ModalDefinition {
     props: Omit<ComponentProps<typeof Modal>, keyof ReturnType<typeof useModal>["props"]>
@@ -285,8 +285,8 @@ function makeDynamicEmitter() {
             return result
         },
         modals: [] as ModalDefinition[],
-        popup(target: HTMLElement, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
-            const rect = target.getBoundingClientRect()
+        popup(target: HTMLElement | ComponentPublicInstance, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
+            const rect = ("$el" in target ? target.$el as HTMLElement : target).getBoundingClientRect()
             const [base, extend] = (options.align ?? "bottom-left").split("-")
             const pos: any = {}
             if (base == "right" || base == "left") {
@@ -313,6 +313,9 @@ function makeDynamicEmitter() {
                 } else {
                     pos.bottom = (window.innerHeight - rect.top) + "px"
                 }
+            } else if (base == "over") {
+                pos.left = rect.left + "px"
+                pos.top = rect.top + "px"
             }
 
             return this.modal(content, {
