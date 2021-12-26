@@ -26,19 +26,23 @@ export const TRANSITION_NAMES = [
 interface AsyncComputedOptions<T, R> extends WatchOptions {
     persist?: boolean
     onError?: (err: any, inputs: T, lastValue: R | null) => R | null | void,
-    onSuccess?: (value: R) => void
+    onSuccess?: (value: R) => void,
+    finalizer?: (value: R) => void
 }
 
 export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Promise<R>, options: AsyncComputedOptions<T, R> = {}) {
 
     function reload(inputs: T) {
-        if (!options.persist)
+        if (!options.persist) {
+            if (ret.value) options.finalizer?.(ret.value)
             ret.value = null
+        }
         ret.loading = true
         ret.error = null
         const lastValue = ret.value
         return getter(inputs).then(
             result => {
+                if (ret.value) options.finalizer?.(ret.value)
                 ret.value = result
                 options.onSuccess?.(result)
             },
@@ -50,6 +54,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
                     const newValue = options.onError(err, inputs, lastValue)
                     if (newValue !== undefined) {
                         ret.error = null
+                        if (ret.value) options.finalizer?.(ret.value)
                         ret.value = newValue
                     }
                 }
