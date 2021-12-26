@@ -8,6 +8,7 @@ export const Button = eventDecorator(defineComponent({
     name: "Button",
     emits: {
         click: (click: MouseEvent) => true,
+        mouseDown: (click: MouseEvent) => true,
     },
     props: {
         variant: {
@@ -64,7 +65,8 @@ export const Button = eventDecorator(defineComponent({
                         props.submit ? { type: "submit" } :
                             { type: "button" }),
                 ...(props.disabled ? { disabled: true } : {}),
-                onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) }
+                onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) },
+                onMousedown: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("mouseDown", event) }
             },
             {
                 default: ctx.slots.default ?? (() => "")
