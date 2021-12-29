@@ -1,6 +1,6 @@
 import { ComponentPublicInstance, computed, defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
 import { Button } from "./Button"
-import { Modal, useModal } from "./Modal"
+import { Modal, ModalController, useModal } from "./Modal"
 import { StateCard } from "./StateCard"
 import { StateInfo, useState } from "./StateInfo"
 import { TextField } from "./TextField"
@@ -24,6 +24,7 @@ export interface GenericModalHandle<T> {
     resultFactory: () => T
     submit(): void
     cancel(): void
+    controller: ModalController
 }
 
 interface ModalOptions {
@@ -136,7 +137,8 @@ function makeDynamicEmitter() {
             const handle: GenericModalHandle<T> = {
                 cancel: () => promise.controller.close(false),
                 submit: () => promise.controller.close(true),
-                resultFactory: () => { throw new Error("Result factory was not set") }
+                resultFactory: () => { throw new Error("Result factory was not set") },
+                controller: null!
             }
 
             if ("value" in content) {
@@ -152,6 +154,8 @@ function makeDynamicEmitter() {
                     ...options.contentProps
                 }
             })
+
+            handle.controller = promise.controller
 
             const result = promise.then(success => success ? handle.resultFactory() : null) as Promise<T | null> & { controller: typeof promise.controller }
             result.controller = promise.controller

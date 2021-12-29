@@ -146,3 +146,5 @@ export function useModal(options: { show?: boolean } = {}) {
 
     return ret
 }
+
+export type ModalController = ReturnType<typeof useModal>
