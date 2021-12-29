@@ -27,7 +27,8 @@ interface AsyncComputedOptions<T, R> extends WatchOptions {
     persist?: boolean
     onError?: (err: any, inputs: T, lastValue: R | null) => R | null | void,
     onSuccess?: (value: R) => void,
-    finalizer?: (value: R) => void
+    finalizer?: (value: R) => void,
+    errorsSilent?: boolean
 }
 
 export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Promise<R>, options: AsyncComputedOptions<T, R> = {}) {
@@ -48,7 +49,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
             },
             err => {
                 // eslint-disable-next-line no-console
-                console.error(err)
+                if (!options.errorsSilent) console.error(err)
                 ret.error = err
                 if (options.onError) {
                     const newValue = options.onError(err, inputs, lastValue)
