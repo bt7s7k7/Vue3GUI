@@ -68,7 +68,7 @@ export function useDropTarget(options: {
 
 export function useDraggable(options: {
     format: string,
-    data?: Ref<string>
+    data?: Ref<string> | (() => string)
 }) {
     const ret = reactive({
         dragged: false,
@@ -76,7 +76,7 @@ export function useDraggable(options: {
             draggable: true,
             onDragstart(event: DragEvent) {
                 ret.dragged = true
-                if (event.dataTransfer) event.dataTransfer.setData(options.format, options.data?.value ?? "")
+                if (event.dataTransfer) event.dataTransfer.setData(options.format, options.data ? (typeof options.data == "function" ? options.data() : options.data.value) : "")
             },
             onDragend() {
                 ret.dragged = false
