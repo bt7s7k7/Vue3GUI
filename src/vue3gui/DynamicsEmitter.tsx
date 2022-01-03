@@ -1,4 +1,4 @@
-import { ComponentPublicInstance, computed, defineComponent, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
+import { ComponentPublicInstance, computed, defineComponent, h, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
 import { Button } from "./Button"
 import { Modal, ModalController, useModal } from "./Modal"
 import { StateCard } from "./StateCard"
@@ -356,7 +356,7 @@ export const DynamicsEmitter = (defineComponent({
 
         return () => (
             <>
-                {ctx.slots.default?.()}
+                {ctx.slots.default ? h(ctx.slots.default, { key: "main" }) : null}
                 {emitter.modals.map(modal => <Modal {...modal.props} {...modal.controller.props} key={modal.id}>{{
                     default: () => typeof modal.content == "string" ? modal.content
                         : <modal.content {...modal.contentProps} />,
