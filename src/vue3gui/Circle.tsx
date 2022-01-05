@@ -20,8 +20,8 @@ export const Circle = (defineComponent({
                 props.transition && "transition",
                 props.variant && `text-${props.variant}`
             ]} stroke="currentColor" fill="none">
-                {props.filler && <circle class="filler" />}
-                <circle class="main" pathLength="1" stroke-dashoffset={1 * (1 - props.progress)} />
+                {props.filler && <circle r="12.5" cx="16" cy="16" class="filler" />}
+                <circle r="12.5" cx="16" cy="16" class="main" pathLength="1" stroke-dashoffset={1 * (1 - props.progress)} />
             </svg>
         )
     }
