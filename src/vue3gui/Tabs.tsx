@@ -71,9 +71,9 @@ export const Tabs = (defineComponent({
         })
 
         return () => (
-            <div>
+            <div class="flex row gap-4">
                 {props.tabs.list.map(([key, label]) => (
-                    <Button onClick={() => props.tabs.selected = key} textual flat key={key} class="pb-2 pl-1 pr-1 ml-1 mr-1">
+                    <Button onClick={() => props.tabs.selected = key} textual flat key={key} class="pb-1 px-0">
                         {label}
                         <div ref={v => indicators[key] = v as HTMLDivElement} class={["as-tabs-indicator", `bg-${props.variant}`]}></div>
                     </Button>
