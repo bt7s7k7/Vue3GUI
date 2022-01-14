@@ -59,11 +59,11 @@ export const Modal = eventDecorator(defineComponent({
                 if (modalStack.handled || instance != modalStack.stack[modalStack.stack.length - 1]) return
 
                 if (
-                    (props.okButton && event.code == "Enter") ||
-                    (backdropCancels.value && (event.code == "Escape" || event.code == "Enter"))
+                    (props.okButton && event.code == "Enter" || event.code == "NumpadEnter") ||
+                    (backdropCancels.value && (event.code == "Escape" || event.code == "Enter" || event.code == "NumpadEnter"))
                 ) {
                     modalStack.handled = true
-                    if (event.code == "Enter") ctx.emit("ok")
+                    if (event.code == "Enter" || event.code == "NumpadEnter") ctx.emit("ok")
                     else ctx.emit("cancel")
                     event.preventDefault()
                     event.stopPropagation()
@@ -82,11 +82,11 @@ export const Modal = eventDecorator(defineComponent({
 
                 if (show) {
                     if (index != -1) throw new Error("Duplicate addition of modal on stack")
-                    window.addEventListener("keypress", handler)
+                    window.addEventListener("keydown", handler)
                     modalStack.stack.push(instance)
                 } else {
                     if (index == -1) return
-                    window.removeEventListener("keypress", handler)
+                    window.removeEventListener("keydown", handler)
                     modalStack.stack.splice(index, 1)
                 }
             }, { immediate: true })
