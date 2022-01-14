@@ -31,6 +31,8 @@ export const TextField = eventDecorator(defineComponent({
         "input": (value: string) => true,
         "confirm": (value: string) => true,
         "change": (value: string) => true,
+        "blur": () => true,
+        "focus": () => true
     },
     setup(props, ctx) {
         const value = ref(props.modelValue)
@@ -76,7 +78,8 @@ export const TextField = eventDecorator(defineComponent({
                 <input
                     type={props.type}
                     onKeydown={e => (e.code == "Enter" || e.code == "NumpadEnter") && (ctx.emit("confirm", value.value), ctx.emit("change", value.value))}
-                    onBlur={() => ctx.emit("change", value.value)}
+                    onBlur={() => { ctx.emit("change", value.value); ctx.emit("blur") }}
+                    onFocus={() => ctx.emit("focus")}
                     v-model={value.value}
                     class="flex-fill"
                     ref={input}
