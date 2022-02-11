@@ -9,7 +9,10 @@ import { ComponentProps, useDebounce } from "./util"
 import { Variant } from "./variants"
 
 type PopupAlign = "top-left" | "top-right" | "left-up" | "left-down" |
-    "right-up" | "right-down" | "bottom-left" | "bottom-right" | "over"
+    "right-up" | "right-down" | "bottom-left" | "bottom-right" | "over" | {
+        offsetX: number,
+        offsetY: number
+    }
 
 interface ModalDefinition {
     props: Omit<ComponentProps<typeof Modal>, keyof ReturnType<typeof useModal>["props"]>
@@ -291,6 +294,14 @@ function makeDynamicEmitter() {
         modals: [] as ModalDefinition[],
         popup(target: HTMLElement | ComponentPublicInstance, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
             const rect = ("$el" in target ? target.$el as HTMLElement : target).getBoundingClientRect()
+            let offsetX = 0
+            let offsetY = 0
+
+            if (typeof options.align == "object") {
+                ({offsetX, offsetY} = options.align)
+                options.align = "over"
+            }
+
             const [base, extend] = (options.align ?? "bottom-left").split("-")
             const pos: any = {}
             if (base == "right" || base == "left") {
@@ -318,8 +329,8 @@ function makeDynamicEmitter() {
                     pos.bottom = (window.innerHeight - rect.top) + "px"
                 }
             } else if (base == "over") {
-                pos.left = rect.left + "px"
-                pos.top = rect.top + "px"
+                pos.left = rect.left + offsetX + "px"
+                pos.top = rect.top + offsetY + "px"
             }
 
             return this.modal(content, {
