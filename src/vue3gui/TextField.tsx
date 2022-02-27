@@ -24,7 +24,8 @@ export const TextField = eventDecorator(defineComponent({
         autocomplete: { type: String },
         clear: { type: Boolean },
         noIndicator: { type: Boolean },
-        fieldProps: { type: Object as PropType<InputHTMLAttributes> }
+        fieldProps: { type: Object as PropType<InputHTMLAttributes> },
+        disabled: { type: Boolean }
     },
     emits: {
         "update:modelValue": (value: string) => true,
@@ -86,9 +87,10 @@ export const TextField = eventDecorator(defineComponent({
                     size={1}
                     placeholder={props.placeholder}
                     autocomplete={props.autocomplete}
+                    disabled={props.disabled}
                     {...props.fieldProps}
                 />
-                {!props.noIndicator && <div class={["focus-indicator", `bg-${props.variant}`]}></div>}
+                {!props.noIndicator && !props.disabled && <div class={["focus-indicator", `border-${props.variant}`]}></div>}
             </div>
         )
     }
