@@ -20,26 +20,25 @@
     }  
 }
 
+.as-progress-bar {
+    height: 3px;
+    width:  200px;
+    
+    line {
+        stroke-width: 3px;
+    }
+
+    .main {
+        stroke-dasharray: 1;
+    }
+}
+
 .as-circle {
     height: 200px;
     width: 200px;
 
     circle {
         stroke-width: 1px;
-    }
-
-    .filler {
-        opacity: 0.25;
-    }
-
-    .main {
-        stroke-dasharray: 1;
-        transform: rotate(270deg);
-        transform-origin: center;
-    }
-    
-    &.transition {
-        transition: stroke-dashoffset 0.1s linear;
     }
 
     &.inline {
@@ -51,12 +50,30 @@
         }
     }
 
+    .main {
+        stroke-dasharray: 1;
+        transform: rotate(270deg);
+        transform-origin: center;
+    }
+
     &.indeterminate {
         .main {
             animation-duration: 2s;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
             animation-name: as-circle-indeterminate-rotate;
+        }
+    }
+}
+
+.as-circle, .as-progress-bar {
+    .filler {
+        opacity: 0.25;
+    }
+
+    &.transition {
+        .main {
+            transition: stroke-dashoffset 0.1s ease-in-out;
         }
     }
 }

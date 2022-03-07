@@ -1,8 +1,8 @@
 import { defineComponent, PropType } from "vue"
 import { Variant } from "./variants"
 
-export const Circle = (defineComponent({
-    name: "Circle",
+export const ProgressBar = (defineComponent({
+    name: "ProgressBar",
     props: {
         variant: { type: String as PropType<Variant> },
         inline: { type: Boolean },
@@ -13,15 +13,15 @@ export const Circle = (defineComponent({
     },
     setup(props, ctx) {
         return () => (
-            <svg viewBox="0 0 32 32" class={[
-                "as-circle",
+            <svg viewBox="0 0 200 2" preserveAspectRatio="none" class={[
+                "as-progress-bar",
                 props.inline && "inline",
-                (props.indeterminate || isNaN(props.progress)) && "indeterminate",
+                props.indeterminate || isNaN(props.progress) && "indeterminate",
                 props.transition && "transition",
                 props.variant && `text-${props.variant}`
             ]} stroke="currentColor" fill="none">
-                {props.filler && <circle r="12.5" cx="16" cy="16" class="filler" />}
-                <circle r="12.5" cx="16" cy="16" class="main" pathLength="1" stroke-dashoffset={1 * (1 - props.progress)} />
+                {props.filler && <line x1="0" x2="200" y1="1" y2="1" class="filler" />}
+                <line x1="0" x2="200" y1="1" y2="1" class="main" pathLength="1" stroke-dashoffset={1 * (1 - props.progress)} />
             </svg>
         )
     }
