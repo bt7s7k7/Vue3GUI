@@ -1,12 +1,23 @@
 .as-button {
+    position: relative;
+
     border: none;
     border-radius: 2px;
     padding: 3px 7px;
     box-shadow: 0 1px 0px rgba(0, 0, 0, 0.5);
     background: none;
     
-    transition: filter 0.05s;
-    filter: none;
+    &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        transition: opacity 0.05s;
+        opacity: 0;
+        content: "";
+    }
     
     display: inline-block;
     text-align: center;
@@ -16,6 +27,7 @@
     text-decoration: none;
     font-size: 13.3333px;
     color: inherit;
+    overflow: hidden;
     
     &.flat {
         box-shadow: none;
@@ -31,22 +43,28 @@
     }
 }
 
-.as-clickable-positive {
+.as-clickable-positive, .as-clickable-negative {
     &:hover:not(:disabled):not(.disabled) {
-        filter: brightness(1.2);
+        &::after {
+            opacity: 0.2;
+        }
     }
     
     &:active {
-        filter: brightness(1.4);
+        &::after {
+            opacity: 0.4;
+        }
+    }
+}
+
+.as-clickable-positive {
+    &::after {
+        background-color: #ffffff;
     }
 }
 
 .as-clickable-negative {
-    &:hover:not(:disabled):not(.disabled) {
-        filter: brightness((1 / 1.1));
-    }
-    
-    &:active {
-        filter: brightness((1 / 1.2));
+    &::after {
+        background-color: #000000;
     }
 }

@@ -50,7 +50,7 @@ export const Button = eventDecorator(defineComponent({
             {
                 class: [
                     `as-button`,
-                    !props.disabled && `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
+                    !props.disabled && !props.clear && `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
                     ...(
                         props.clear ? ["flat", !props.disabled && `bg-${variant.value}-transparent-hover`]
                             : [
