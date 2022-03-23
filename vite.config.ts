@@ -29,6 +29,8 @@ export default defineConfig(() => {
                     }
                 },
             }
-        } : undefined)
+        } : {
+            base: "./"
+        })
     }
 })
