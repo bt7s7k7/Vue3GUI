@@ -1,0 +1,1 @@
+import{e,d as a,c as s,B as t,a as c}from"./index.1844b8c1.js";import"./vendor.293dcf4f.js";const r=e(a({name:"LinkTarget",setup:(e,a)=>()=>s("div",{class:"flex-fill flex center"},[s(t,{variant:"success",to:"/"},{default:()=>[c("Back")]})])}));export default r;export{r as LinkTarget};
