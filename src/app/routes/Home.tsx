@@ -1,12 +1,14 @@
 import { mdiAlert, mdiBorderStyle, mdiLinkVariantOff, mdiTrashCan } from "@mdi/js"
-import { defineComponent, ref, Transition } from "vue"
+import { defineComponent, onUnmounted, ref, Transition } from "vue"
 import { Button } from "../../vue3gui/Button"
+import { Circle } from "../../vue3gui/Circle"
 import { useDraggable, useDropTarget, useFileDropTarget } from "../../vue3gui/dragAndDrop"
 import { useDynamicsEmitter } from "../../vue3gui/DynamicsEmitter"
 import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
 import { Modal } from "../../vue3gui/Modal"
 import { Overlay } from "../../vue3gui/Overlay"
+import { ProgressBar } from "../../vue3gui/ProgressBar"
 import { StateCard } from "../../vue3gui/StateCard"
 import { useState } from "../../vue3gui/StateInfo"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
@@ -45,6 +47,12 @@ export const Home = defineComponent({
         const transitions = ref(false)
         const state = useState()
         const emitter = useDynamicsEmitter()
+        const random = ref(Math.random())
+
+        const _1 = setInterval(() => {
+            random.value = Math.random()
+        }, 500)
+        onUnmounted(() => clearInterval(_1))
 
         return () => (
             <Overlay class="flex flex-fill" show={showOverlay.value} key={themeSwitch.selectedTheme}>{{
@@ -158,6 +166,11 @@ export const Home = defineComponent({
                     <Slider class="w-700 h-500 border" vertical type="end">{{
                         end: () => <div class="w-200 h-200 bg-primary"></div>
                     }}</Slider>
+                    <h1>Progress</h1>
+                    <Circle indeterminate />
+                    <Circle transition variant="primary" filler progress={random.value} /><br />
+                    <ProgressBar variant="success" filler progress={random.value} /><br />
+                    <ProgressBar variant="warning" transition filler progress={random.value} />
                 </div>,
                 overlay: () => <Button variant="primary" clear onClick={() => showOverlay.value = false}>Hide</Button>
             }}</Overlay>
