@@ -17,6 +17,7 @@
         transition: opacity 0.05s;
         opacity: 0;
         content: "";
+        pointer-events: none;
     }
     
     display: inline-block;
