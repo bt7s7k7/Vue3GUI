@@ -4,6 +4,8 @@ import { eventDecorator } from "../eventDecorator"
 import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
+let routerLink = defineAsyncComponent(() => import("vue-router").then(v => v.RouterLink))
+
 export const Button = eventDecorator(defineComponent({
     name: "Button",
     emits: {
@@ -45,7 +47,7 @@ export const Button = eventDecorator(defineComponent({
 
         return () => (h as any)(
             props.href ? "a" :
-                props.to ? defineAsyncComponent(() => import("vue-router").then(v => v.RouterLink)) :
+                props.to ? routerLink :
                     "button",
             {
                 class: [
