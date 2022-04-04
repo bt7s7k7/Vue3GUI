@@ -14,7 +14,7 @@ interface TabsStateBase {
     list: [string, any][]
 }
 
-export function useTabs<T extends Record<string, string>>(tabs: T, defaultValue: keyof T | null = null) {
+export function useTabs<T extends Record<string, any>>(tabs: T, defaultValue: keyof T | null = null) {
     const state = reactive<TypedTabsState<T>>({
         selected: defaultValue ?? Object.keys(tabs)[0],
         list: Object.entries(tabs),
@@ -37,7 +37,8 @@ export const Tabs = (defineComponent({
         tabs: {
             type: Object as PropType<TabsStateBase>,
             required: true
-        }
+        },
+        compact: { type: Boolean }
     },
     setup(props, ctx) {
         const indicators: Record<string, HTMLDivElement> = {}
@@ -79,7 +80,7 @@ export const Tabs = (defineComponent({
         })
 
         return () => (
-            <div class="flex row gap-4">
+            <div class={["flex row", !props.compact && "gap-4"]}>
                 {props.tabs.list.map(([key, label]) => (
                     <Button onClick={() => props.tabs.selected = key} textual flat key={key} class="pb-1 px-0">
                         {typeof label == "string" ? label : h(label)}
