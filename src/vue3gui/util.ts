@@ -122,7 +122,15 @@ export function stringifyError(error: any): string {
     return error
 }
 
-export function useEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement | Window, event: K, handler: (event: HTMLElementEventMap[K]) => void, options?: boolean | AddEventListenerOptions) {
-    target.addEventListener(event, handler as any, options)
-    onUnmounted(() => target.removeEventListener(event, handler as any))
+export function useEventListener(target: { remove(): void }): void
+export function useEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement | Window, event: K, handler: (event: HTMLElementEventMap[K]) => void, options?: boolean | AddEventListenerOptions): void
+export function useEventListener(...args: any[]): void {
+    if (args.length == 1) {
+        const [target] = args as [{ remove(): void }]
+        onUnmounted(() => target.remove())
+    } else {
+        const [target, event, handler, options] = args as [HTMLElement | Window, string, (event: Event) => void, boolean | AddEventListenerOptions]
+        target.addEventListener(event, handler as any, options)
+        onUnmounted(() => target.removeEventListener(event, handler as any))
+    }
 }
