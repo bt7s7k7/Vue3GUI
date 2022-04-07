@@ -39,6 +39,8 @@ export const TextField = eventDecorator(defineComponent({
         const value = ref(props.modelValue)
         const input = ref<HTMLInputElement>()
 
+        ctx.expose({ input })
+
         onMounted(() => {
             if (props.focus) input.value?.focus()
             setTimeout(() => {
