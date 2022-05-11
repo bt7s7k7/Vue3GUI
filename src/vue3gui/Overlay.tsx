@@ -51,7 +51,12 @@ export const Overlay = eventDecorator(defineComponent({
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
                     style="pointer-events: auto; z-index: 20"
-                    class={["absolute-fill flex", props.variant != "clear" && `bg-${props.variant}-transparent`, props.fill ? "column p-2" : "center", props.overlayClass]}
+                    class={[
+                        props.overlayClass, "flex",
+                        props.variant != "clear" && `bg-${props.variant}-transparent`,
+                        props.fill ? "column p-2" : "center",
+                        props.fullScreen ? "as-fullscreen-overlay" : "absolute-fill"
+                    ]}
                 >
                     {content?.()}
                 </div>}
