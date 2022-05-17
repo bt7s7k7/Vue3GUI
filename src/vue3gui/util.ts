@@ -119,7 +119,9 @@ export function stringifyError(error: any): string {
     if (error.error) error = error.error
     if (error.message) error = error.message
 
-    return error
+    if (error.startsWith("Server Error:")) error = error.slice(13)
+
+    return error.trim()
 }
 
 export function useEventListener(target: { remove(): void }): void
