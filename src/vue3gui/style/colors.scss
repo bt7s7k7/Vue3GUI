@@ -1,9 +1,10 @@
 @each $value-short, $color in $colors {
     .bg-#{$value-short} {
         background-color: map-get($color, "bg");
-        @if map-get($color, "invert") == true {
+        @if map-get($color, "invert")==true {
             --fg-color: #{map-get(map-get($colors, "white"), "fg")};
-        } @else {
+        }
+        @else {
             --fg-color: #{map-get(map-get($colors, "black"), "fg")};
         }
         color: var(--fg-color);
@@ -11,9 +12,10 @@
 
     .bg-#{$value-short}-transparent {
         background-color: rgba(map-get($color, "bg"), 0.75);
-        @if map-get($color, "invert") == true {
+        @if map-get($color, "invert")==true {
             --fg-color: #{map-get(map-get($colors, "white"), "fg")};
-        } @else {
+        }
+        @else {
             --fg-color: #{map-get(map-get($colors, "black"), "fg")};
         }
         color: var(--fg-color);
@@ -27,10 +29,6 @@
         }
     }
 
-    .text-#{$value-short} {
-        --fg-color: #{map-get($color, "fg")};
-        color: var(--fg-color);
-    }
 }
 
 .bg-none {
@@ -39,4 +37,11 @@
 
 .bg-text {
     background-color: var(--fg-color);
+}
+
+@each $value-short, $color in $colors {
+    .text-#{$value-short} {
+        --fg-color: #{map-get($color, "fg")};
+        color: var(--fg-color);
+    }
 }
