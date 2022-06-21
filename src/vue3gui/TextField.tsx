@@ -25,7 +25,8 @@ export const TextField = eventDecorator(defineComponent({
         clear: { type: Boolean },
         noIndicator: { type: Boolean },
         fieldProps: { type: Object as PropType<InputHTMLAttributes> },
-        disabled: { type: Boolean }
+        disabled: { type: Boolean },
+        borderVariant: { type: String as PropType<Variant> }
     },
     emits: {
         "update:modelValue": (value: string) => true,
@@ -77,7 +78,7 @@ export const TextField = eventDecorator(defineComponent({
         })
 
         return () => (
-            <div class={["flex row as-text-field", !props.clear && `border-bottom border-${Theme.selected.border}`]}>
+            <div class={["flex row as-text-field", !props.clear && `border-bottom border-${props.borderVariant ?? Theme.selected.border}`]}>
                 <input
                     type={props.type}
                     onKeydown={e => (e.code == "Enter" || e.code == "NumpadEnter") && (ctx.emit("confirm", value.value), ctx.emit("change", value.value))}
