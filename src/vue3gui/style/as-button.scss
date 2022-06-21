@@ -44,7 +44,8 @@
 }
 
 .as-clickable-positive, .as-clickable-negative {
-    &:hover:not(:disabled):not(.disabled) {
+    &:hover:not(:disabled):not(.disabled),
+    &:focus-visible:not(:disabled):not(.disabled) {
         &::after {
             opacity: 0.2;
         }
