@@ -1,11 +1,11 @@
 @each $value-short, $value in ("m": "margin", "p": "padding") {
     @for $mul from 0 to $mul-max {
-        .child-#{$value-short}-#{$mul} > * {
+        .child-#{$value-short}-#{$mul}>* {
             #{$value}: $mul * $size-int;
         }
 
         @each $axis, $dirs in ("x": ("left", "right"), "y": ("top", "bottom")) {
-            .child-#{$value-short}#{$axis}-#{$mul} > * {
+            .child-#{$value-short}#{$axis}-#{$mul}>* {
                 @each $dir in $dirs {
                     #{$value}-#{$dir}: $mul * $size-int;
                 }
@@ -13,7 +13,7 @@
         }
 
         @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
-            .child-#{$value-short}#{$dir-short}-#{$mul} > * {
+            .child-#{$value-short}#{$dir-short}-#{$mul}>* {
                 #{$value}-#{$dir}: $mul * $size-int;
             }
         }
