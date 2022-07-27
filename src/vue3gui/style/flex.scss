@@ -1,12 +1,18 @@
 .flex {
     display: flex;
+}
 
+.inline-flex {
+    display: inline-flex;
+}
+
+.flex, .inline-flex {
     @each $type in row, column {
         &.#{$type} {
             flex-direction: $type;
         }
     }
-    
+
     &.center {
         justify-content: center;
         align-items: center;
