@@ -32,7 +32,9 @@ h3 {
     font-weight: 400;
 }
 
-table, th, td {
-    border: $border-color 1px solid;
-    border-collapse: collapse;
+.as-table {
+    &, th, td {
+        border: $border-color 1px solid;
+        border-collapse: collapse;
+    }
 }
