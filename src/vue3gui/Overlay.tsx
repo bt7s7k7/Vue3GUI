@@ -1,5 +1,6 @@
 import { defineComponent, h, PropType, ref, Slot, Teleport, Transition } from "vue"
 import { eventDecorator } from "../eventDecorator"
+import { LoadingIndicator } from "./LoadingIndicator"
 import { Theme } from "./Theme"
 import { Variant } from "./variants"
 
@@ -31,7 +32,8 @@ export namespace OverlayProps {
             type: Boolean
         },
         overlayClass: { type: null },
-        tag: { type: String, default: () => "div" }
+        tag: { type: String, default: () => "div" },
+        loading: { type: Boolean }
     }
 }
 
@@ -58,7 +60,7 @@ export const Overlay = eventDecorator(defineComponent({
                         props.fullScreen ? "as-fullscreen-overlay" : "absolute-fill"
                     ]}
                 >
-                    {content?.()}
+                    {content?.() ?? (props.loading ? <LoadingIndicator /> : null)}
                 </div>}
             </Transition>
         )
