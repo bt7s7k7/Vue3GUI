@@ -38,7 +38,8 @@ export const Tabs = (defineComponent({
             type: Object as PropType<TabsStateBase>,
             required: true
         },
-        compact: { type: Boolean }
+        compact: { type: Boolean },
+        buttonClass: { type: String }
     },
     setup(props, ctx) {
         const indicators: Record<string, HTMLDivElement> = {}
@@ -82,7 +83,7 @@ export const Tabs = (defineComponent({
         return () => (
             <div class={["flex row", !props.compact && "gap-4"]}>
                 {props.tabs.list.map(([key, label]) => (
-                    <Button onClick={() => props.tabs.selected = key} textual flat key={key} class="pb-1 px-0">
+                    <Button onClick={() => props.tabs.selected = key} textual flat key={key} class={["pb-1 px-0", props.buttonClass]}>
                         {typeof label == "string" ? label : h(label)}
                         <div ref={v => indicators[key] = v as HTMLDivElement} class={["as-tabs-indicator", `bg-${props.variant}`]}></div>
                     </Button>
