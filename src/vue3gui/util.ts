@@ -1,5 +1,5 @@
 import { Ref } from "@vue/reactivity"
-import { computed, onUnmounted, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
+import { computed, getCurrentInstance, onBeforeMount, onUnmounted, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -142,4 +142,19 @@ export function useEventListener(...args: any[]): void {
         target.addEventListener(event, handler as any, options)
         onUnmounted(() => target.removeEventListener(event, handler as any))
     }
+}
+
+/** 
+ * Is this component a direct descendant of RouterView. Returned
+ * value becomes valid only after onBeforeMount event, but it is
+ * safe to use in template.
+ * */
+export function useIsRouterRoot() {
+    const ret = ref(false)
+
+    onBeforeMount(() => {
+        ret.value = getCurrentInstance()!.parent?.type.name == "RouterView"
+    })
+
+    return ret
 }
