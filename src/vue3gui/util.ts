@@ -95,7 +95,14 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, ...options }: { del
         }
     }, { ...options })
 
-    return result
+    Object.assign(result, {
+        updateNow() {
+            clearTimeout(timeoutID)
+            result.value = value.value
+        }
+    })
+
+    return result as typeof result & { updateNow(): void }
 }
 
 export function stringifyError(error: any): string {
