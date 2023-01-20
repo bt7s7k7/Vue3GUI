@@ -15,6 +15,9 @@ export namespace OverlayProps {
         },
         fill: {
             type: Boolean
+        },
+        transition: {
+            type: String
         }
     }
 
@@ -48,7 +51,7 @@ export const Overlay = eventDecorator(defineComponent({
         const backdrop = ref<HTMLDivElement>()
 
         const drawOverlay = (content: Slot | undefined) => (
-            <Transition name={!props.noTransition ? "as-transition-fade" : undefined}>
+            <Transition name={!props.noTransition ? (props.transition ?? "as-transition-fade") : undefined}>
                 {props.show && <div
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
