@@ -36,7 +36,7 @@ export function useListInput<T>(_list: Ref<T[]> | T[], options: ListInputHookOpt
             key: options.key,
             addButton: !!options.factory,
             deleteButton: !options.noDelete,
-            async onAdd(index) {
+            async onAdd(index: number) {
                 const newValue = await options.factory!(index)
                 if (newValue == null) return
                 this.items.push(newValue)

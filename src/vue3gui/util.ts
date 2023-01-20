@@ -1,5 +1,5 @@
-import { Ref } from "@vue/reactivity"
-import { computed, getCurrentInstance, onBeforeMount, onUnmounted, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
+import { markRaw, Ref } from "@vue/reactivity"
+import { computed, getCurrentInstance, onBeforeMount, onMounted, onUnmounted, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -23,12 +23,13 @@ export const TRANSITION_NAMES = [
     "shrink"
 ] as const
 
-interface AsyncComputedOptions<T, R> extends WatchOptions {
+export interface AsyncComputedOptions<T, R> extends WatchOptions {
     persist?: boolean
     onError?: (err: any, inputs: T, lastValue: R | null) => R | null | void,
     onSuccess?: (value: R) => void,
     finalizer?: (value: R) => void,
     errorsSilent?: boolean
+    markRaw?: boolean
 }
 
 export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Promise<R>, options: AsyncComputedOptions<T, R> = {}) {
@@ -44,7 +45,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
         return getter(inputs).then(
             result => {
                 if (ret.value) options.finalizer?.(ret.value)
-                ret.value = result
+                ret.value = options.markRaw && typeof result == "object" && result != null ? markRaw<any>(result) : result
                 options.onSuccess?.(result)
             },
             err => {
