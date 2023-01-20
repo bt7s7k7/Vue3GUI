@@ -159,3 +159,21 @@ export function useIsRouterRoot() {
 
     return ret
 }
+
+const WINDOW_SIZE = reactive({ width: window.innerWidth, height: window.innerHeight })
+window.addEventListener("resize", () => {
+    WINDOW_SIZE.height = window.innerHeight
+    WINDOW_SIZE.width = window.innerWidth
+})
+
+export function useResizeWatcher(callback?: (() => void) | null, options: { immediate?: boolean } = {}) {
+    watch(() => WINDOW_SIZE, () => {
+        callback?.()
+    }, { deep: true })
+
+    if (options.immediate) {
+        onMounted(() => callback?.())
+    }
+
+    return WINDOW_SIZE
+}
