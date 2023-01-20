@@ -10,7 +10,7 @@ export const Modal = eventDecorator(defineComponent({
     props: {
         ...OverlayProps.PROPS,
         background: {
-            type: String as PropType<Variant>,
+            type: String as PropType<Variant | "clear">,
             default: () => Theme.selected.background
         },
         cancelButton: {
