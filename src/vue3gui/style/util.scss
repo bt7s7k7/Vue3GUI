@@ -110,6 +110,10 @@
     pointer-events: none;
 }
 
+.stop-ignored {
+    pointer-events: initial;
+}
+
 .invisible {
     visibility: hidden;
 }
