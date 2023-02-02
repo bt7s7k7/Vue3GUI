@@ -66,6 +66,10 @@
     .#{$dir-short}-fill {
         #{$dir}: 100%
     }
+
+    .#{$dir-short}-content {
+        #{$dir}: max-content
+    }
 }
 
 @for $mul from 0 to $mul-max {
