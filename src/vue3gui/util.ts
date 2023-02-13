@@ -132,12 +132,19 @@ export function stringifyError(error: any): string {
     return error.trim()
 }
 
+export function useEventListener(target: "interval", interval: number, handler: () => void): void
 export function useEventListener(target: { remove(): void }): void
 export function useEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement | Window, event: K, handler: (event: HTMLElementEventMap[K]) => void, options?: boolean | AddEventListenerOptions): void
 export function useEventListener(...args: any[]): void {
     if (args.length == 1) {
         const [target] = args as [{ remove(): void }]
         onUnmounted(() => target.remove())
+    } if (args[0] == "interval") {
+        const [, interval, handler] = args as [void, number, () => void]
+        const id = setInterval(handler, interval)
+        onUnmounted(() => {
+            clearInterval(id)
+        })
     } else {
         const [target, event, handler, options] = args as [HTMLElement | Window, string, (event: Event) => void, boolean | AddEventListenerOptions]
         target.addEventListener(event, handler as any, options)
