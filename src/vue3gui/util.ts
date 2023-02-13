@@ -1,5 +1,5 @@
-import { markRaw, Ref } from "@vue/reactivity"
-import { computed, getCurrentInstance, onBeforeMount, onMounted, onUnmounted, reactive, ref, VNodeProps, watch, WatchOptions } from "vue"
+import { markRaw, ref, Ref, shallowRef } from "@vue/reactivity"
+import { computed, getCurrentInstance, onBeforeMount, onMounted, onUnmounted, reactive, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -176,4 +176,14 @@ export function useResizeWatcher(callback?: (() => void) | null, options: { imme
     }
 
     return WINDOW_SIZE
+}
+
+export function setPropertyReactive<T>(target: T, prop: keyof T, options?: { shallow?: boolean }) {
+    let store = (options?.shallow ? shallowRef : ref)(target[prop as keyof T])
+    Object.defineProperty(target, prop, {
+        get: () => store.value,
+        set: (value) => store.value = value,
+        enumerable: true,
+        configurable: true
+    })
 }
