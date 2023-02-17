@@ -185,14 +185,25 @@ export function useResizeWatcher(callback?: (() => void) | null, options: { imme
     return WINDOW_SIZE
 }
 
-export function setPropertyReactive<T>(target: T, prop: keyof T, options?: { shallow?: boolean }) {
-    let store = (options?.shallow ? shallowRef : ref)(target[prop as keyof T])
-    Object.defineProperty(target, prop, {
-        get: () => store.value,
-        set: (value) => store.value = value,
-        enumerable: true,
-        configurable: true
-    })
+export function setPropertyReactive<T, K extends keyof T>(target: T, prop: K, options?: { shallow?: boolean, computed?: () => T[K] }) {
+    if (options?.computed) {
+        const store = computed(options.computed)
+
+        Object.defineProperty(target, prop, {
+            get: () => store.value,
+            enumerable: true,
+            configurable: true
+        })
+    } else {
+        const store = (options?.shallow ? shallowRef : ref)(target[prop as keyof T])
+
+        Object.defineProperty(target, prop, {
+            get: () => store.value,
+            set: (value) => store.value = value,
+            enumerable: true,
+            configurable: true
+        })
+    }
 }
 
 declare module "vue" {
