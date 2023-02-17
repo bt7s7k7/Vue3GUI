@@ -194,3 +194,9 @@ export function setPropertyReactive<T>(target: T, prop: keyof T, options?: { sha
         configurable: true
     })
 }
+
+declare module "vue" {
+    interface ComponentCustomProps {
+        id?: string
+    }
+}
