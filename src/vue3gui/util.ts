@@ -139,7 +139,7 @@ export function useEventListener(...args: any[]): void {
     if (args.length == 1) {
         const [target] = args as [{ remove(): void }]
         onUnmounted(() => target.remove())
-    } if (args[0] == "interval") {
+    } else if (args[0] == "interval") {
         const [, interval, handler] = args as [void, number, () => void]
         const id = setInterval(handler, interval)
         onUnmounted(() => {
