@@ -1,5 +1,4 @@
-import { markRaw, ref, Ref, shallowRef } from "@vue/reactivity"
-import { computed, getCurrentInstance, onBeforeMount, onMounted, onUnmounted, reactive, VNodeProps, watch, WatchOptions } from "vue"
+import { computed, getCurrentInstance, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, Ref, shallowRef, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
