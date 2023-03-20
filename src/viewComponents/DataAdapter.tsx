@@ -62,7 +62,7 @@ export function useDataAdapter<T = any>(config: DataAdapterConfig<T>) {
             if (!config.add) return null
             return <div class="border-top center-cross px-2 py-1 gap-2 flex row">
                 <div class="flex-fill"></div>
-                <Button clear onClick={event => config.add!({ target: event.target as HTMLElement })}> <Icon icon={config.addIcon ?? mdiPlus} /> </Button>
+                <Button clear onClick={(event: MouseEvent) => config.add!({ target: event.target as HTMLElement })}> <Icon icon={config.addIcon ?? mdiPlus} /> </Button>
             </div>
         }
 
@@ -73,7 +73,7 @@ export function useDataAdapter<T = any>(config: DataAdapterConfig<T>) {
         public getItemActions(item: T, index: number) {
             return [
                 (config.delete != null && (config.canDelete?.(item, index) ?? true)) && (
-                    <Button clear class="if-hover-fade" onClick={event => config.delete!(item, index, { target: event.target as HTMLElement })}>
+                    <Button clear class="if-hover-fade" onClick={(event: MouseEvent) => config.delete!(item, index, { target: event.target as HTMLElement })}>
                         <Icon icon={config.deleteIcon ?? mdiTrashCan} />
                     </Button>
                 )
