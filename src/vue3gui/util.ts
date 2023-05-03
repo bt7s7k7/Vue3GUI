@@ -166,13 +166,16 @@ export function useIsRouterRoot() {
     return ret
 }
 
-const WINDOW_SIZE = reactive({ width: window.innerWidth, height: window.innerHeight })
-window.addEventListener("resize", () => {
-    WINDOW_SIZE.height = window.innerHeight
-    WINDOW_SIZE.width = window.innerWidth
-})
+const WINDOW_SIZE = self.window == undefined ? null : reactive({ width: window.innerWidth, height: window.innerHeight })
+if (WINDOW_SIZE != null) {
+    window.addEventListener("resize", () => {
+        WINDOW_SIZE.height = window.innerHeight
+        WINDOW_SIZE.width = window.innerWidth
+    })
+}
 
 export function useResizeWatcher(callback?: (() => void) | null, options: { immediate?: boolean } = {}) {
+    if (WINDOW_SIZE == null) throw new Error("Cannot useResizeWatcher because there is no window (self.window == undefined)")
     watch(() => WINDOW_SIZE, () => {
         callback?.()
     }, { deep: true })
