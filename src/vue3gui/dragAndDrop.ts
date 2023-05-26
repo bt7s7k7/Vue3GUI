@@ -12,7 +12,8 @@ function getTargetID(event: DragEvent) {
 
 export function useDropTarget(options: {
     accept: string | ((transfer: DataTransfer) => boolean),
-    onDrop?: (transfer: DataTransfer) => void
+    onDrop?: (transfer: DataTransfer) => void,
+    onStateChanged?: (over: boolean) => void
 }) {
     const accept = (transfer: DataTransfer) => {
         if (typeof options.accept == "string") {
@@ -41,12 +42,14 @@ export function useDropTarget(options: {
                 if (event.dataTransfer && accept(event.dataTransfer)) {
                     count++
                     ret.over = !!count
+                    options.onStateChanged?.(ret.over)
                 }
             },
             onDragleave() {
                 count--
                 if (count == -1) count = 0
                 ret.over = !!count
+                options.onStateChanged?.(ret.over)
             },
             onDrop(event: DragEvent) {
                 if (getTargetID(event) != id) return
@@ -54,6 +57,7 @@ export function useDropTarget(options: {
                 count--
                 if (count == -1) count = 0
                 ret.over = !!count
+                options.onStateChanged?.(ret.over)
                 if (event.dataTransfer && accept(event.dataTransfer)) {
                     event.preventDefault()
                     options.onDrop?.(event.dataTransfer)
@@ -68,7 +72,8 @@ export function useDropTarget(options: {
 
 export function useDraggable(options: {
     format: string,
-    data?: Ref<string> | (() => string)
+    data?: Ref<string> | (() => string),
+    onStateChanged?: (over: boolean) => void
 }) {
     const ret = reactive({
         dragged: false,
@@ -76,10 +81,12 @@ export function useDraggable(options: {
             draggable: true,
             onDragstart(event: DragEvent) {
                 ret.dragged = true
+                options.onStateChanged?.(ret.dragged)
                 if (event.dataTransfer) event.dataTransfer.setData(options.format, options.data ? (typeof options.data == "function" ? options.data() : options.data.value) : "")
             },
             onDragend() {
                 ret.dragged = false
+                options.onStateChanged?.(ret.dragged)
             }
         }
     })
