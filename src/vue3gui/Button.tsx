@@ -1,4 +1,4 @@
-import { computed, defineAsyncComponent, defineComponent, h, PropType } from "vue"
+import { ButtonHTMLAttributes, computed, defineAsyncComponent, defineComponent, h, PropType } from "vue"
 import type { RouteLocationRaw } from "vue-router"
 import { eventDecorator } from "../eventDecorator"
 import { Theme } from "./Theme"
@@ -39,6 +39,9 @@ export const Button = eventDecorator(defineComponent({
         },
         disabled: {
             type: Boolean
+        },
+        nativeProps: {
+            type: Object as PropType<ButtonHTMLAttributes>
         }
     },
     setup(props, ctx) {
@@ -50,6 +53,7 @@ export const Button = eventDecorator(defineComponent({
                 props.to ? routerLink :
                     "button",
             {
+                ...props.nativeProps,
                 class: [
                     `as-button`,
                     !props.disabled && !props.clear && `as-clickable-${Variant.VARIANTS[variant.value].invert ? "positive" : "negative"}`,
