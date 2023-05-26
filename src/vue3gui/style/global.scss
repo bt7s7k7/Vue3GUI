@@ -15,7 +15,22 @@ body {
     display: flex;
     flex-direction: column;
     font-family: $font;
+
     --fg-color: #{map-get(map-get($colors, $default-fg), "fg")};
+    --border-color: #{$border-color};
+
+    @each $value-short, $color in $colors {
+        --bg-#{$value-short}: #{map-get($color, "bg")};
+        --fg-#{$value-short}: #{map-get($color, "fg")};
+    }
+
+    --bg-default: #{map-get(map-get($colors, $default-bg), "bg")};
+    --fg-default: #{map-get(map-get($colors, $default-fg), "fg")};
+    --default-font: #{$font};
+    --default-border-radius: 4px;
+    --size-int: #{$size-int};
+    --size-int-em: #{$size-int-em};
+
     color: var(--fg-color);
 }
 
