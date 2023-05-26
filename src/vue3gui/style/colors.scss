@@ -10,6 +10,10 @@
         color: var(--fg-color);
     }
 
+    .bg-#{$value-short}-translucent {
+        background-color: rgba(map-get($color, "bg"), 0.25);
+    }
+
     .bg-#{$value-short}-transparent {
         background-color: rgba(map-get($color, "bg"), 0.75);
         @if map-get($color, "invert")==true {
@@ -23,7 +27,6 @@
 
     .bg-#{$value-short}-transparent-hover {
         transition: background-color 0.1s ease-in-out;
-        background: none;
         &:hover, &:focus-visible {
             background-color: rgba(map-get($color, "bg"), 0.25);
         }
