@@ -6,12 +6,12 @@ import { Overlay, OverlayProps } from "./Overlay"
 export const UploadOverlay = eventDecorator(defineComponent({
     name: "UploadOverlay",
     emits: {
-        drop: (files: File[]) => true
+        drop: (files: File[], raw: FileList) => true
     },
     props: OverlayProps.BASE_PROPS,
     setup(props, ctx) {
 
-        const fileDropTarget = useFileDropTarget({ onDrop: v => ctx.emit("drop", v) })
+        const fileDropTarget = useFileDropTarget({ onDrop: (v, w) => ctx.emit("drop", v, w) })
 
         const show = ref(false)
         const showChildren = ref(false)

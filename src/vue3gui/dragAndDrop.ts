@@ -95,7 +95,7 @@ export function useDraggable(options: {
 }
 
 export function useFileDropTarget(options: {
-    onDrop: (files: File[]) => void
+    onDrop: (files: File[], raw: FileList) => void
 }) {
     const ret = useDropTarget({
         accept(transfer) {
@@ -107,7 +107,7 @@ export function useFileDropTarget(options: {
             )) */
         },
         onDrop(transfer) {
-            options.onDrop(Array.from(transfer.files))
+            options.onDrop(Array.from(transfer.files), transfer.files)
         }
     })
 
