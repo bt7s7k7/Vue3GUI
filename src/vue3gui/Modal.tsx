@@ -23,6 +23,7 @@ export const Modal = eventDecorator(defineComponent({
             type: null as unknown as PropType<undefined | boolean | null>,
             default: null
         },
+        ignoreEnter: { type: Boolean },
         contentClass: { type: null },
         noDefaultStyle: { type: Boolean }
     },
@@ -33,7 +34,7 @@ export const Modal = eventDecorator(defineComponent({
     },
     setup(props, ctx) {
         const overlayProps = computed(() => {
-            const { background, cancelButton, okButton, backdropCancels, contentClass, noDefaultStyle, ...ret } = props
+            const { background, cancelButton, okButton, backdropCancels, contentClass, noDefaultStyle, ignoreEnter, ...ret } = props
             return ret
         })
 
@@ -59,12 +60,15 @@ export const Modal = eventDecorator(defineComponent({
 
                 if (modalStack.handled || instance != modalStack.stack[modalStack.stack.length - 1]) return
 
+                const isEnter = event.code == "Enter" || event.code == "NumpadEnter"
+                if (props.ignoreEnter) return
+
                 if (
-                    (props.okButton && event.code == "Enter" || event.code == "NumpadEnter") ||
-                    (backdropCancels.value && (event.code == "Escape" || event.code == "Enter" || event.code == "NumpadEnter"))
+                    (props.okButton && isEnter) ||
+                    (backdropCancels.value && (event.code == "Escape" || isEnter))
                 ) {
                     modalStack.handled = true
-                    if (event.code == "Enter" || event.code == "NumpadEnter") ctx.emit("ok")
+                    if (isEnter) ctx.emit("ok")
                     else ctx.emit("cancel")
                     event.preventDefault()
                     event.stopPropagation()
