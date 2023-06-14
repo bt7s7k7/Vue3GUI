@@ -60,7 +60,7 @@ export const Overlay = eventDecorator(defineComponent({
                         props.overlayClass, "flex",
                         props.variant != "clear" && `bg-${props.variant}-transparent`,
                         props.fill ? "column p-2" : "center",
-                        props.fullScreen ? "as-fullscreen-overlay" : "absolute-fill"
+                        props.fullScreen ? "as-fullscreen-overlay as-reset" : "absolute-fill"
                     ]}
                 >
                     {content?.() ?? (props.loading ? <LoadingIndicator /> : null)}
