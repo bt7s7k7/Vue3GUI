@@ -1,7 +1,7 @@
 import { CSSProperties } from "vue"
 
 function ensureValue(value: string | number) {
-    return typeof value == "string" ? value : `calc(--size-int * ${value})`
+    return typeof value == "string" ? value : `calc(var(--size-int) * ${value})`
 }
 
 /**
