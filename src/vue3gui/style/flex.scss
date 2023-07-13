@@ -12,19 +12,35 @@
             flex-direction: $type;
         }
     }
+}
 
-    &.center {
-        justify-content: center;
-        align-items: center;
-    }
+.center {
+    justify-content: center;
+    align-items: center;
+}
 
-    &.center-main {
-        justify-content: center;
-    }
+.center-main {
+    justify-content: center;
+}
 
-    &.center-cross {
-        align-items: center;
-    }
+.center-cross {
+    align-items: center;
+}
+
+.start-main {
+    justify-content: start;
+}
+
+.start-cross {
+    align-items: start;
+}
+
+.end-main {
+    justify-content: end;
+}
+
+.end-cross {
+    align-items: end;
 }
 
 .flex-fill {
