@@ -6,6 +6,7 @@ interface ThemeReference {
     element?: HTMLStyleElement
 }
 
+/** @deprecated Use the `vue3gui` mixin and `useTheme` */
 export class ThemeSwitch {
     public selectedTheme = ""
 

@@ -8,7 +8,7 @@ $translate: -10px;
     overflow: hidden;
 
     .arrow-1 {
-        transform: translate(0,-$offset + $translate);
+        transform: translate(0, -$offset + $translate);
 
         div {
             width: $triangle-width;
@@ -20,18 +20,18 @@ $translate: -10px;
     }
 
     .arrow-2 {
-        transform: translate(0,$translate);
+        transform: translate(0, $translate);
         div {
             width: $triangle-width;
             height: $triangle-height;
-            background-color: mix(#0d6efd, #ffffff, 50);
+            background-color: mix(#0d6efd, #ffffff, 50%);
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             transition-delay: 0.1s;
         }
     }
 
     .arrow-3 {
-        transform: translate(0,$offset + $translate);
+        transform: translate(0, $offset + $translate);
 
         div {
             width: $triangle-width;

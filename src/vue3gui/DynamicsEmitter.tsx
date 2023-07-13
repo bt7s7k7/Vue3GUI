@@ -7,6 +7,7 @@ import { TextField } from "./TextField"
 import { Theme } from "./Theme"
 import { ComponentProps, useDebounce } from "./util"
 import { Variant } from "./variants"
+import { useTheme } from "./vue3gui"
 
 type PopupAlign = "top-left" | "top-right" | "left-up" | "left-down" |
     "right-up" | "right-down" | "bottom-left" | "bottom-right" | "over" | {
@@ -109,7 +110,7 @@ const AlertPopup = defineComponent({
     }
 })
 
-function makeDynamicEmitter() {
+function makeDynamicEmitter(theme: { readonly value: Theme }, callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter: DynamicsEmitter) => void) {
     const emitter = reactive({
         modal(content: ModalDefinition["content"], options: ModalOptions = {}) {
             const controller = useModal()
@@ -241,7 +242,7 @@ function makeDynamicEmitter() {
                     setup: () => {
                         return () => <>
                             <div class="mb-3">{options.title ?? "Select value"}</div>
-                            <div class={["border rounder scroll contain w-500 h-500 flex column", `border-${Theme.selected.border}`, `bg-${Theme.selected.inset}`]}>
+                            <div class={["border rounder scroll contain w-500 h-500 flex column", `border-${theme.value.border}`, `bg-${theme.value.inset}`]}>
                                 {itemList.map(({ label, value }) => <Button onClick={() => { result.value = value; promise.controller.close(true) }} clear class="text-left flex row">
                                     {label.map(v => <div class="flex-fill">{v}</div>)}
                                 </Button>)}
@@ -298,7 +299,7 @@ function makeDynamicEmitter() {
             let offsetY = 0
 
             if (typeof options.align == "object") {
-                ({offsetX, offsetY} = options.align)
+                ({ offsetX, offsetY } = options.align)
                 options.align = "over"
             }
 
@@ -341,10 +342,10 @@ function makeDynamicEmitter() {
                     ...options.props
                 }
             })
-        }
+        },
     })
 
-    provide(DYNAMICS_EMITTER_KEY, emitter)
+    callback(DYNAMICS_EMITTER_KEY, emitter)
 
     return emitter
 }
@@ -363,7 +364,8 @@ export const DynamicsEmitter = (defineComponent({
     name: "DynamicsEmitter",
     setup(props, ctx) {
         if (inject(DYNAMICS_EMITTER_KEY, null)) throw new Error("Multiple dynamics emitters")
-        const emitter = makeDynamicEmitter()
+        const { theme } = useTheme()
+        const emitter = makeDynamicEmitter(theme, (key, emitter) => provide(key, emitter))
 
         return () => (
             <>

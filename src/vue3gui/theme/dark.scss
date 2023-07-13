@@ -1,0 +1,10 @@
+@use "../style.scss" with ($fg-danger: #fd8484,
+    $bg-danger: #be2a39,
+    $fg-primary: #429eff,
+    $bg-primary: #1a6ae0,
+    $fg-white: #ededed,
+    $bg-secondary: #555555,
+    $bg-warning: #cf6513,
+    $default-bg: "dark",
+    $default-fg: "white",
+    $border-color: #444444)

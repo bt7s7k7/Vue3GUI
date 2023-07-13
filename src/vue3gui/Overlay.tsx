@@ -1,14 +1,13 @@
 import { defineComponent, h, PropType, ref, Slot, Teleport, Transition } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { LoadingIndicator } from "./LoadingIndicator"
-import { Theme } from "./Theme"
 import { Variant } from "./variants"
+import { useTheme } from "./vue3gui"
 
 export namespace OverlayProps {
     export const BASE_PROPS = {
         variant: {
             type: String as PropType<Variant | "clear">,
-            default: () => Theme.selected.overlay
         },
         noTransition: {
             type: Boolean
@@ -47,6 +46,7 @@ export const Overlay = eventDecorator(defineComponent({
         backdropClick: () => true
     },
     setup(props, ctx) {
+        const { theme } = useTheme()
 
         const backdrop = ref<HTMLDivElement>()
 
@@ -58,7 +58,7 @@ export const Overlay = eventDecorator(defineComponent({
                     style="pointer-events: auto; z-index: 20"
                     class={[
                         props.overlayClass, "flex",
-                        props.variant != "clear" && `bg-${props.variant}-transparent`,
+                        props.variant != "clear" && `bg-${props.variant ?? theme.value.overlay}-transparent`,
                         props.fill ? "column p-2" : "center",
                         props.fullScreen ? "as-fullscreen-overlay as-reset" : "absolute-fill"
                     ]}

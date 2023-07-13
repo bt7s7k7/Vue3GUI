@@ -12,5 +12,6 @@ export interface Theme {
 }
 
 export namespace Theme {
+    /** @deprecated Use the `vue3gui` mixin and `useTheme` */
     export let selected: Theme = null!
 }

@@ -1,7 +1,7 @@
 import { defineComponent, h, onMounted, PropType, reactive, watch } from "vue"
 import { Button } from "./Button"
-import { Theme } from "./Theme"
 import { Variant } from "./variants"
+import { useTheme } from "./vue3gui"
 
 interface TypedTabsState<T extends Record<string, string> = Record<string, string>> {
     selected: keyof T
@@ -32,7 +32,6 @@ export const Tabs = (defineComponent({
     props: {
         variant: {
             type: String as PropType<Variant>,
-            default: () => Theme.selected.highlight
         },
         tabs: {
             type: Object as PropType<TabsStateBase>,
@@ -42,6 +41,8 @@ export const Tabs = (defineComponent({
         buttonClass: { type: String }
     },
     setup(props, ctx) {
+        const { theme } = useTheme()
+
         const indicators: Record<string, HTMLDivElement> = {}
 
         watch(() => props.tabs.selected, (selected, oldSelected) => {
@@ -85,7 +86,7 @@ export const Tabs = (defineComponent({
                 {props.tabs.list.map(([key, label]) => (
                     <Button onClick={() => props.tabs.selected = key} textual flat key={key} class={["pb-1 px-0", props.buttonClass]}>
                         {typeof label == "string" ? label : h(label)}
-                        <div ref={v => indicators[key] = v as HTMLDivElement} class={["as-tabs-indicator", `bg-${props.variant}`]}></div>
+                        <div ref={v => indicators[key] = v as HTMLDivElement} class={["as-tabs-indicator", `bg-${props.variant ?? theme.value.highlight}`]}></div>
                     </Button>
                 ))}
             </div>

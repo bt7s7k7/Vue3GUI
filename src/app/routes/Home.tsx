@@ -1,8 +1,7 @@
 import { mdiAlert, mdiBorderStyle, mdiLinkVariantOff, mdiTrashCan } from "@mdi/js"
-import { defineComponent, onUnmounted, ref, Transition } from "vue"
+import { Transition, defineComponent, onUnmounted, ref } from "vue"
 import { Button } from "../../vue3gui/Button"
 import { Circle } from "../../vue3gui/Circle"
-import { useDraggable, useDropTarget, useFileDropTarget } from "../../vue3gui/dragAndDrop"
 import { useDynamicsEmitter } from "../../vue3gui/DynamicsEmitter"
 import { Icon } from "../../vue3gui/Icon"
 import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
@@ -12,17 +11,11 @@ import { ProgressBar } from "../../vue3gui/ProgressBar"
 import { StateCard } from "../../vue3gui/StateCard"
 import { useState } from "../../vue3gui/StateInfo"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
-import { DARK_THEME } from "../../vue3gui/themes/dark"
-import { LIGHT_THEME } from "../../vue3gui/themes/light"
-import { ThemeSwitch } from "../../vue3gui/ThemeSwitch"
+import { TextField } from "../../vue3gui/TextField"
 import { UploadOverlay } from "../../vue3gui/UploadOverlay"
-import { Slider } from "../../vue3gui/useSlider"
+import { useDraggable, useDropTarget, useFileDropTarget } from "../../vue3gui/dragAndDrop"
 import { TRANSITION_NAMES } from "../../vue3gui/util"
 import { Variant } from "../../vue3gui/variants"
-
-const themeSwitch = new ThemeSwitch()
-themeSwitch.registerTheme(DARK_THEME)
-themeSwitch.registerTheme(LIGHT_THEME)
 
 export const Home = defineComponent({
     name: "Home",
@@ -55,13 +48,8 @@ export const Home = defineComponent({
         onUnmounted(() => clearInterval(_1))
 
         return () => (
-            <Overlay class="flex flex-fill" show={showOverlay.value} key={themeSwitch.selectedTheme}>{{
+            <Overlay class="flex flex-fill" show={showOverlay.value}>{{
                 default: () => <div class="pl-4 pb-5 scroll contain flex-fill">
-                    <h1>Themes</h1>
-                    Theme: {
-                        themeSwitch.selectedTheme == "light" ? <Button variant="white" onClick={() => themeSwitch.setTheme("dark")}>Light</Button>
-                            : <Button variant="black" onClick={() => themeSwitch.setTheme("light")}>Dark</Button>
-                    }
                     <h1>Buttons</h1>
                     <div class="child-mb-2">
                         <div class="child-mr-2">
@@ -82,6 +70,8 @@ export const Home = defineComponent({
                             <Button to="/link">Link test</Button>
                         </div>
                     </div>
+                    <h1>Input</h1>
+                    <TextField />
                     <h1>Text colors</h1>
                     <div>
                         {Variant.LIST.map(variant => <div class={`text-${variant}`}>{variant}</div>)}
@@ -162,10 +152,6 @@ export const Home = defineComponent({
                         <Button variant="success" onClick={() => state.done("Done!")}>Done</Button>
                     </div>
                     <StateCard state={state} />
-                    <h1>Slider</h1>
-                    <Slider class="w-700 h-500 border" vertical type="end">{{
-                        end: () => <div class="w-200 h-200 bg-primary"></div>
-                    }}</Slider>
                     <h1>Progress</h1>
                     <Circle indeterminate />
                     <Circle transition variant="primary" filler progress={random.value} /><br />

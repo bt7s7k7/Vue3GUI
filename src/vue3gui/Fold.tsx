@@ -10,10 +10,11 @@ export const Fold = eventDecorator(defineComponent({
         },
         open: {
             type: Object as PropType<Ref<boolean>>
-        }
+        },
+        hiddenText: { type: String }
     },
     setup(props, ctx) {
-        const open = props.open ?? ref(false)
+        const open = ref(props.open ?? false)
 
         return () => (
             <span>
@@ -25,7 +26,7 @@ export const Fold = eventDecorator(defineComponent({
                 </div>
                 {" "}
                 <span>
-                    {ctx.slots[open.value ? "default" : "hidden"]?.()}
+                    {open.value ? ctx.slots.default?.() : ctx.slots.hidden?.() ?? props.hiddenText}
                 </span>
             </span>
         )

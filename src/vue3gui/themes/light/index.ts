@@ -1,13 +1,9 @@
+import { Theme } from "../../Theme"
 import style from "../../style.scss"
-import type { Theme } from "../../Theme"
+import { LIGHT_THEME as orig } from "../../theme/light"
 
-export const LIGHT_THEME: Theme = {
-    name: "light",
-    highlight: "primary",
-    background: "white",
-    object: "secondary",
-    overlay: "secondary",
-    inset: "white",
-    border: "default",
+/** @deprecated Use `theme/light.ts` */
+export const LIGHT_THEME = Theme.selected = {
+    ...orig,
     style
 }

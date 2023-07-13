@@ -1,7 +1,7 @@
 import { defineComponent, InputHTMLAttributes, onMounted, PropType, ref, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
-import { Theme } from "./Theme"
 import { Variant } from "./variants"
+import { useTheme } from "./vue3gui"
 
 export const TextField = eventDecorator(defineComponent({
     name: "TextField",
@@ -16,7 +16,6 @@ export const TextField = eventDecorator(defineComponent({
         },
         variant: {
             type: String as PropType<Variant>,
-            default: () => Theme.selected.highlight
         },
         focus: { type: Boolean },
         autoResize: { type: Boolean },
@@ -37,6 +36,8 @@ export const TextField = eventDecorator(defineComponent({
         "focus": () => true
     },
     setup(props, ctx) {
+        const { theme } = useTheme()
+
         const value = ref(props.modelValue)
         const input = ref<HTMLInputElement>()
 
@@ -78,7 +79,7 @@ export const TextField = eventDecorator(defineComponent({
         })
 
         return () => (
-            <div class={["flex row as-text-field", !props.clear && `border-bottom border-${props.borderVariant ?? Theme.selected.border}`]}>
+            <div class={["flex row as-text-field", !props.clear && `border-bottom border-${props.borderVariant ?? theme.value.border}`]}>
                 <input
                     type={props.type}
                     onKeydown={e => (e.code == "Enter" || e.code == "NumpadEnter") && (ctx.emit("confirm", value.value), ctx.emit("change", value.value))}
@@ -93,7 +94,7 @@ export const TextField = eventDecorator(defineComponent({
                     disabled={props.disabled}
                     {...props.fieldProps}
                 />
-                {!props.noIndicator && !props.disabled && <div class={["focus-indicator", `border-${props.variant}`]}></div>}
+                {!props.noIndicator && !props.disabled && <div class={["focus-indicator", `border-${props.variant ?? theme.value.highlight}`]}></div>}
             </div>
         )
     }

@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes, computed, defineAsyncComponent, defineComponent, h, PropType } from "vue"
 import type { RouteLocationRaw } from "vue-router"
 import { eventDecorator } from "../eventDecorator"
-import { Theme } from "./Theme"
 import { Variant } from "./variants"
+import { useTheme } from "./vue3gui"
 
 let routerLink = defineAsyncComponent(() => import("vue-router").then(v => v.RouterLink))
 
@@ -45,8 +45,8 @@ export const Button = eventDecorator(defineComponent({
         }
     },
     setup(props, ctx) {
-
-        const variant = computed(() => props.variant ?? Theme.selected.object)
+        const { theme } = useTheme()
+        const variant = computed(() => props.variant ?? theme.value.object)
 
         return () => (h as any)(
             props.href ? "a" :

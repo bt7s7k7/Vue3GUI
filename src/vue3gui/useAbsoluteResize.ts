@@ -1,11 +1,6 @@
-import { css } from "@emotion/css"
 import { computed, onMounted, reactive, ref } from "vue"
 
 export function useAbsoluteResize(strategy: "max" | "last" | "first" = "max") {
-    const transitionClass = css({
-        transition: "height 0.1s ease-in-out"
-    })
-
     const height = ref(0)
     const target = ref<HTMLElement>()
     function recalculate() {
@@ -35,8 +30,7 @@ export function useAbsoluteResize(strategy: "max" | "last" | "first" = "max") {
     const ret = {
         targetProps: {
             ref: target,
-            class: transitionClass,
-            style: reactive({ height: computed(() => height.value + "px") })
+            style: reactive({ height: computed(() => height.value + "px"), transition: "height 0.1s ease-in-out" })
         },
         recalculate
     }
