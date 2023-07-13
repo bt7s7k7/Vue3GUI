@@ -14,6 +14,7 @@ import { Tabs, useTabs } from "../../vue3gui/Tabs"
 import { TextField } from "../../vue3gui/TextField"
 import { UploadOverlay } from "../../vue3gui/UploadOverlay"
 import { useDraggable, useDropTarget, useFileDropTarget } from "../../vue3gui/dragAndDrop"
+import { grid } from "../../vue3gui/grid"
 import { TRANSITION_NAMES } from "../../vue3gui/util"
 import { Variant } from "../../vue3gui/variants"
 
@@ -30,6 +31,8 @@ export const Home = defineComponent({
             third: "Third",
             long: "This is a long one!",
         })
+
+        const inputValue = ref("")
 
         const draggable = useDraggable({ format: "vue3gui-drag" })
         const dropTarget = useDropTarget({ accept: "vue3gui-drag" })
@@ -58,6 +61,9 @@ export const Home = defineComponent({
                         <div class="child-mr-2">
                             {Variant.LIST.map(variant => (<Button variant={variant} clear onClick={() => buttonsCounter.value++}>{capitalize(variant)}</Button>))}
                         </div>
+                        <div class="child-mr-2">
+                            {Variant.LIST.map(variant => (<Button variant={variant} plain onClick={() => buttonsCounter.value++}>{capitalize(variant)}</Button>))}
+                        </div>
                         <div>Clicks: {buttonsCounter.value}</div>
                     </div>
                     <div class="flex row child-mr-5">
@@ -70,8 +76,19 @@ export const Home = defineComponent({
                             <Button to="/link">Link test</Button>
                         </div>
                     </div>
-                    <h1>Input</h1>
-                    <TextField />
+                    <h1>Text Field</h1>
+                    <div class="gap-1 start-cross" style={grid().columns("100px", "300px").$}>
+                        Normal: <TextField placeholder="Placeholder" />
+                        Clear: <TextField clear placeholder="Placeholder" />
+                        Plain: <TextField plain placeholder="Placeholder" />
+                        <b style={grid().colspan(2).$}>Label</b>
+                        Static: <TextField modelValue="Has label" label="Said label" />
+                        Dynamic: <TextField vModel={inputValue.value} label={inputValue.value != "" ? "Something written" : ""} />
+                        <b style={grid().colspan(2).$}>Validation</b>
+                        Email: <TextField validate type="email" plain />
+                        Custom: <TextField validate pattern="^(?!error).*$" plain label="Write 'error' to error" />
+                        Number: <TextField validate type="number" min="10" max="20" step="1" plain />
+                    </div>
                     <h1>Text colors</h1>
                     <div>
                         {Variant.LIST.map(variant => <div class={`text-${variant}`}>{variant}</div>)}

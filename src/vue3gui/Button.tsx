@@ -42,7 +42,8 @@ export const Button = eventDecorator(defineComponent({
         },
         nativeProps: {
             type: Object as PropType<ButtonHTMLAttributes>
-        }
+        },
+        plain: { type: Boolean }
     },
     setup(props, ctx) {
         const { theme } = useTheme()

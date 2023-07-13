@@ -1,11 +1,25 @@
 .as-text-field {
-    input {
-        background: none;
-        border: none;
-        outline: none;
+    transition: margin-bottom 0.1s ease-in-out;
+    margin-bottom: 0;
 
+    input {
         color: inherit;
         font-family: inherit;
+        outline: none;
+        background: none;
+        border: none;
+    }
+
+    &.-plain>input {
+        border: 1px solid var(--border-color);
+        border-radius: var(--default-border-radius);
+        padding: 0 0.25rem
+    }
+
+    &:focus-within.-plain, &.-always {
+        >input {
+            border-color: var(--text-field-color)
+        }
     }
 
     .focus-indicator {
@@ -15,14 +29,42 @@
         width: 100%;
         border-bottom-width: 2px;
         border-bottom-style: solid;
-        transition: transform 0.05s ease-in-out;
+        transition: transform 0.05s ease-in-out, background-color 0.1s ease-in-out;
         transform-origin: left center;
         transform: scaleX(0);
     }
 
-    &:focus-within {
+    $label-size: 0.7rem;
+
+    >.-label {
+        color: var(--default-fg);
+        font-size: $label-size;
+        position: absolute;
+        left: 0;
+        bottom: calc(-#{$label-size} - 5px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.1s ease-in-out, color 0.1s ease-in-out;
+        white-space: nowrap;
+    }
+
+    &.-show-label {
+        margin-bottom: calc(#{$label-size} + 5px);
+
+        >.-label {
+            opacity: 1;
+            pointer-events: initial;
+        }
+    }
+
+    &:focus-within, &.-always {
         .focus-indicator {
             transform: none;
         }
+
+        >.-label {
+            color: var(--text-field-color);
+        }
     }
+
 }
