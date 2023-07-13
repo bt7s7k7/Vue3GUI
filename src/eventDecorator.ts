@@ -12,8 +12,10 @@ type GetComponentEventListeners<T extends Constraint> = ToListenerObject<FilterN
 
 type ExpandProps<T extends Constraint, A extends Record<string, any>> = Omit<T, "ffff"> & { new(...args: ConstructorParameters<T>): InstanceType<T> & { $props: A } }
 
+type AddVModel<T extends Record<string, any>> = T extends { "onUpdate:modelValue"?: (v: any) => void } ? T & { vModel?: Parameters<NonNullable<T["onUpdate:modelValue"]>>[0] } : T
+
 type Constraint = { new(...args: any): any, emits?: any }
 
-export function eventDecorator<T extends Constraint>(ctor: T): ExpandProps<T, GetComponentEventListeners<T>> {
+export function eventDecorator<T extends Constraint>(ctor: T): ExpandProps<T, AddVModel<GetComponentEventListeners<T>>> {
     return ctor as any
 }
