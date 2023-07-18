@@ -21,6 +21,8 @@ export const Slider = eventDecorator(defineComponent({
     emits: {
         "update:modelValue": (value: number) => true,
         "input": (value: number) => true,
+        "dragStart": () => true,
+        "dragEnd": () => true
     },
     setup(props, ctx) {
         const { theme } = useTheme()
@@ -36,17 +38,17 @@ export const Slider = eventDecorator(defineComponent({
             value.value = newValue
         })
 
-        watch(value, (value, oldValue) => {
-            if (value == oldValue) return
-            ctx.emit("update:modelValue", value)
-            ctx.emit("input", value)
-        })
+        function update() {
+            ctx.emit("update:modelValue", value.value)
+            ctx.emit("input", value.value)
+        }
 
         let rect: DOMRect = null!
         function handleStart(event: MouseEvent | TouchEvent) {
             input.value.focus()
             if (props.disabled) return
             rect = input.value.parentElement!.getBoundingClientRect()
+            ctx.emit("dragStart")
             grab(event)
         }
 
@@ -60,11 +62,15 @@ export const Slider = eventDecorator(defineComponent({
             }
 
             value.value = newValue * (props.max - props.min) + props.min
+            update()
         }
 
         const grab = useGrab({
             onMoveStart: handleUpdate,
-            onMove: handleUpdate
+            onMove: handleUpdate,
+            onMoveEnd() {
+                ctx.emit("dragEnd")
+            }
         })
 
         const steps = computed(() => {
@@ -85,7 +91,7 @@ export const Slider = eventDecorator(defineComponent({
                     <input
                         type="range" ref={input}
                         min={props.min} max={props.max} step={props.step} value={value.value}
-                        onInput={() => value.value = +input.value.value}
+                        onInput={() => (value.value = +input.value.value, update())}
                         class="ignored absolute"
                         disabled={props.disabled}
                     />
