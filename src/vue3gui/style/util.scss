@@ -86,7 +86,7 @@
         transition: opacity 0.1s ease-in-out;
     }
 
-    &:not(:hover) {
+    &:not(:hover, .hover-check-force) {
         .if-hover {
             display: none;
         }
@@ -100,7 +100,7 @@
         }
     }
 
-    &:hover {
+    &:hover, &.hover-check-force {
         .if-not-hover {
             display: none;
         }
