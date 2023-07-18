@@ -1,7 +1,7 @@
 import { defineComponent, nextTick, PropType, ref, shallowReactive, watch } from "vue"
-import { eventDecorator } from "../eventDecorator"
-import { useEventListener } from "./util"
-import { useTheme } from "./vue3gui"
+import { eventDecorator } from "../../eventDecorator"
+import { useEventListener } from "../util"
+import { useTheme } from "../vue3gui"
 
 interface SliderHookOptions {
     direction: "horizontal" | "vertical"
@@ -12,6 +12,7 @@ interface SliderHookOptions {
     onError?: (error: number) => void
 }
 
+/** @deprecated */
 export function useSlider(options: SliderHookOptions) {
     const slider = ref<HTMLDivElement>()
     const container = ref<HTMLDivElement>()
@@ -125,7 +126,8 @@ export function useSlider(options: SliderHookOptions) {
     return ret
 }
 
-export const Slider = eventDecorator(defineComponent({
+/** @deprecated */
+export const LegacySlider = eventDecorator(defineComponent({
     name: "Slider",
     props: {
         horizontal: { type: Boolean },

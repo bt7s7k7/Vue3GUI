@@ -1,7 +1,8 @@
 import { defineComponent, markRaw, PropType, reactive } from "vue"
-import { eventDecorator } from "../eventDecorator"
-import { Button } from "./Button"
+import { eventDecorator } from "../../eventDecorator"
+import { Button } from "../Button"
 
+/** @deprecated */
 export function useListController<T>(options: {
     initial?: T[]
     factory: () => T,

@@ -1,7 +1,7 @@
 import { defineComponent, isRef, PropType, reactive, ref, Ref } from "vue"
-import { eventDecorator } from "../eventDecorator"
-import { Button } from "./Button"
-import { ComponentProps } from "./util"
+import { eventDecorator } from "../../eventDecorator"
+import { Button } from "../Button"
+import { ComponentProps } from "../util"
 
 interface ChangeEventBase<T> {
     index: number,
@@ -27,6 +27,7 @@ interface ListInputHookOptions<T> {
     noDelete?: boolean
 }
 
+/** @deprecated */
 export function useListInput<T>(_list: Ref<T[]> | T[], options: ListInputHookOptions<T>) {
     const list = !isRef(_list) ? (ref(_list) as Ref<T[]>) : _list
 
@@ -56,6 +57,7 @@ export function useListInput<T>(_list: Ref<T[]> | T[], options: ListInputHookOpt
     return reactive(ret) as typeof ret
 }
 
+/** @deprecated */
 export const ListInput = eventDecorator(defineComponent({
     name: "ListInput",
     props: {
@@ -120,6 +122,7 @@ export const ListInput = eventDecorator(defineComponent({
     }
 }))
 
+/** @deprecated */
 export namespace ListInput {
     export interface Slots<T = any> {
         title?: () => any,
