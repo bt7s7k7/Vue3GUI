@@ -1,6 +1,10 @@
 .as-slider {
     height: calc(5 * var(--size-int));
 
+    >svg {
+        width: 100%;
+    }
+
     >input {
         opacity: 0.0001;
     }
