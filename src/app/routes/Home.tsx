@@ -8,6 +8,7 @@ import { LoadingIndicator } from "../../vue3gui/LoadingIndicator"
 import { Modal } from "../../vue3gui/Modal"
 import { Overlay } from "../../vue3gui/Overlay"
 import { ProgressBar } from "../../vue3gui/ProgressBar"
+import { Slider } from "../../vue3gui/Slider"
 import { StateCard } from "../../vue3gui/StateCard"
 import { useState } from "../../vue3gui/StateInfo"
 import { Tabs, useTabs } from "../../vue3gui/Tabs"
@@ -88,6 +89,13 @@ export const Home = defineComponent({
                         Email: <TextField validate type="email" plain />
                         Custom: <TextField validate pattern="^(?!error).*$" plain label="Write 'error' to error" />
                         Number: <TextField validate type="number" min="10" max="20" step="1" plain />
+                    </div>
+                    <h1>Slider</h1>
+                    <div class="gap-1 start-cross" style={grid().columns("100px", "300px").$}>
+                        Smooth: <Slider modelValue={0.5} />
+                        Step: <Slider modelValue={0.5} stepped />
+                        Color: <Slider modelValue={0.5} variant="warning" />
+                        Disabled: <Slider modelValue={0.5} disabled />
                     </div>
                     <h1>Text colors</h1>
                     <div>
