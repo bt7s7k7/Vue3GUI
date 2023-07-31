@@ -43,7 +43,8 @@ export const Button = eventDecorator(defineComponent({
         nativeProps: {
             type: Object as PropType<ButtonHTMLAttributes>
         },
-        plain: { type: Boolean }
+        plain: { type: Boolean },
+        replace: { type: Boolean },
     },
     setup(props, ctx) {
         const { theme } = useTheme()
@@ -72,6 +73,7 @@ export const Button = eventDecorator(defineComponent({
                         props.submit ? { type: "submit" } :
                             { type: "button" }),
                 ...(props.disabled ? { disabled: true } : {}),
+                ...(props.replace ? { replace: true } : {}),
                 onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) },
                 onMousedown: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("mouseDown", event) }
             },
