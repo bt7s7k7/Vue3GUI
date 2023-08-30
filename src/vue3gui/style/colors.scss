@@ -42,6 +42,10 @@
     background-color: var(--fg-color);
 }
 
+.bg-blur {
+    backdrop-filter: blur(10px);
+}
+
 @each $value-short, $color in $colors {
     .text-#{$value-short} {
         --fg-color: #{map-get($color, "fg")};
