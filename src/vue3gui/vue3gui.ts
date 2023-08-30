@@ -16,6 +16,7 @@ export function useTheme() {
 
     if (!didWarning) {
         didWarning = true
+        // @ts-ignore
         if (import.meta.env.DEV) {
             // eslint-disable-next-line no-console
             console.warn("[Vue3GUI] Using the deprecated global theme constant, in the future use the `vue3gui` Vue plugin to set a theme")
