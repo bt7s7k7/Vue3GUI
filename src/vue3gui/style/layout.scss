@@ -77,6 +77,10 @@
         #{$dir}: 100%
     }
 
+    .#{$dir-short}-max-fill {
+        max-#{$dir}: 100%
+    }
+
     .#{$dir-short}-content {
         #{$dir}: max-content
     }
