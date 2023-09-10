@@ -96,7 +96,7 @@ const AlertPopup = defineComponent({
         const content = computed(() => typeof props.content != "function" ? (() => <>{props.content}</>) : props.content)
 
         return () => (
-            <div class="pre mb-5 mt-5 ml-2 mr-4">
+            <div class="mb-5 mt-5 ml-2 mr-4">
                 {props.state ? <div class="flex row">
                     <h3 class="m-0 mb-3 mr-7">
                         <StateCard state={{ text: "", type: props.state }}></StateCard>
