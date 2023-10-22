@@ -78,7 +78,13 @@ export const Tabs = (defineComponent({
         })
 
         onMounted(() => {
-            if (props.tabs.selected) indicators[props.tabs.selected].classList.add("active")
+            if (props.tabs.selected) {
+                if (!(props.tabs.selected in indicators)) {
+                    props.tabs.selected = Object.keys(indicators)[0]
+                }
+
+                indicators[props.tabs.selected].classList.add("active")
+            }
         })
 
         return () => (
