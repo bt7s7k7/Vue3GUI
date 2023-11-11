@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, Ref, shallowRef, VNodeProps, watch, WatchOptions } from "vue"
+import { computed, getCurrentInstance, InjectionKey, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, Ref, shallowRef, VNodeProps, watch, WatchOptions } from "vue"
 
 export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -220,6 +220,15 @@ export function setPropertyReactive<T, K extends keyof T>(target: T, prop: K, op
             configurable: true
         })
     }
+}
+
+const _classSymbols = new Map<abstract new (...args: any) => any, Symbol>()
+export function getClassSymbol<T extends abstract new (...args: any) => any, R = { value: InstanceType<T> | null }>(ctor: T): InjectionKey<R> {
+    let symbol = _classSymbols.get(ctor)
+    if (symbol != null) return symbol
+    symbol = Symbol(ctor.name)
+    _classSymbols.set(ctor, symbol)
+    return symbol
 }
 
 declare module "vue" {
