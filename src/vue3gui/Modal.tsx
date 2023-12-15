@@ -68,6 +68,10 @@ export const Modal = eventDecorator(defineComponent({
                     (props.okButton && isEnter) ||
                     (backdropCancels.value && (event.code == "Escape" || isEnter))
                 ) {
+                    if (event.target instanceof HTMLInputElement && event.target.form != null) {
+                        return
+                    }
+
                     modalStack.handled = true
                     if (isEnter) ctx.emit("ok")
                     else ctx.emit("cancel")
