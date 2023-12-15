@@ -43,6 +43,14 @@
     align-items: end;
 }
 
+.justify-main {
+    justify-content: space-between;
+}
+
+.justify-cross {
+    align-items: normal;
+}
+
 .flex-fill {
     flex: 1 1;
 }
