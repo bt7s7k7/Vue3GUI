@@ -29,6 +29,7 @@ export interface AsyncComputedOptions<T, R> extends WatchOptions {
     finalizer?: (value: R) => void,
     errorsSilent?: boolean
     markRaw?: boolean
+    initialValue?: R
 }
 
 export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Promise<R>, options: AsyncComputedOptions<T, R> = {}) {
@@ -36,7 +37,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
     function reload(inputs: T) {
         if (!options.persist) {
             if (ret.value) options.finalizer?.(ret.value)
-            ret.value = null
+            ret.value = options.initialValue ?? null
         }
         ret.loading = true
         ret.error = null
