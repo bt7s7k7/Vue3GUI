@@ -160,6 +160,7 @@ export const TextField = eventDecorator(defineComponent({
                         step={props.step}
                         {...props.fieldProps}
                     />
+                    {ctx.slots.default?.()}
                     {!props.noIndicator && !props.disabled && !props.plain && <div class={["focus-indicator", `border-${highlight}`]}></div>}
                     {hasLabel && <div class={["-label", `text-${highlight}`]}>{label}</div>}
                 </div>
