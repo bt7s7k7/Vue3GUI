@@ -14,34 +14,41 @@ export function grid() {
         display: "grid"
     }
 
+    let isContainer = false
+    let isChild = false
+
     return {
         /** Sets the `grid-template-rows` property. All values are concatenated by a space. */
         rows(...value: (string | number)[]) {
             data.gridTemplateRows = value.map(ensureValue).join(" ")
+            isContainer = true
 
             return this
         },
         /** Sets the `grid-template-columns` property. All values are concatenated by a space. */
         columns(...value: (string | number)[]) {
             data.gridTemplateColumns = value.map(ensureValue).join(" ")
+            isContainer = true
 
             return this
         },
         /** Sets the `grid-auto-rows` property. All values are concatenated by a space. */
         autoRows(value: string | number) {
             data.gridAutoRows = ensureValue(value)
+            isContainer = true
 
             return this
         },
         /** Sets the `grid-auto-column` property. All values are concatenated by a space. */
         autoColumns(value: string | number) {
             data.gridAutoColumns = ensureValue(value)
+            isContainer = true
 
             return this
         },
         /** Sets the `grid-column` property to specific coordinates. **The numbers start at 1!**. When end is not specified it is the same as start. */
         left(start: number | string, end?: number | string) {
-            delete data["display"]
+            isChild = true
 
             if (end == null) {
                 data.gridColumn = start.toString()
@@ -53,7 +60,7 @@ export function grid() {
         },
         /** Sets the `grid-row` property to specific coordinates. **The numbers start at 1!**. When end is not specified it is the same as start. */
         top(start: number | string, end?: number | string) {
-            delete data["display"]
+            isChild = true
 
             if (end == null) {
                 data.gridRow = start.toString()
@@ -76,6 +83,9 @@ export function grid() {
             (data as any)["--debug"] = JSON.stringify(JSON.stringify(data))
             return this
         },
-        $: data
+        get $() {
+            if (isChild && !isContainer) delete data["display"]
+            return data
+        }
     }
 }
