@@ -1,4 +1,4 @@
-import { ComponentPublicInstance, computed, defineComponent, h, inject, InjectionKey, markRaw, PropType, provide, reactive, Ref, ref, watch } from "vue"
+import { ComponentPublicInstance, computed, defineComponent, h, inject, InjectionKey, markRaw, nextTick, PropType, provide, reactive, Ref, ref, watch } from "vue"
 import { Button } from "./Button"
 import { Modal, ModalController, useModal } from "./Modal"
 import { StateCard } from "./StateCard"
@@ -35,6 +35,7 @@ interface ModalOptions {
     props?: ModalDefinition["props"]
     contentProps?: ModalDefinition["contentProps"]
     buttons?: ModalDefinition["buttons"]
+    onMounted?: (element: HTMLElement) => void
 }
 
 interface BaseOptions extends ModalOptions {
@@ -113,7 +114,7 @@ const AlertPopup = defineComponent({
 function makeDynamicEmitter(theme: { readonly value: Theme }, callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter: DynamicsEmitter) => void) {
     const emitter = reactive({
         modal(content: ModalDefinition["content"], options: ModalOptions = {}) {
-            const controller = useModal()
+            const controller = useModal({ onMounted: options.onMounted })
 
             const modal: ModalDefinition = {
                 content: typeof content == "object" ? markRaw(content) : content,
@@ -343,6 +344,42 @@ function makeDynamicEmitter(theme: { readonly value: Theme }, callback: (key: ty
                 }
             })
         },
+        menu(target: HTMLElement | ComponentPublicInstance | { x: number, y: number }, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
+            let start: { x: number, y: number }
+            if (target instanceof HTMLElement) {
+                const rect = target.getBoundingClientRect()
+                start = { x: rect.x, y: rect.y + rect.height }
+            } else if ("x" in target && "y" in target) {
+                start = target
+            } else {
+                const rect = target.$el.getBoundingClientRect()
+                start = { x: rect.x, y: rect.y + rect.height }
+            }
+
+            const modal = this.modal(content, {
+                ...options,
+                props: {
+                    variant: "clear",
+                    style: { position: "absolute", minWidth: "unset", minHeight: "unset", left: `${start.x}px`, top: `${start.y}px` },
+                    ...options.props,
+                    noTransition: true,
+                },
+                onMounted(element) {
+                    nextTick(() => {
+                        const rect = element.getBoundingClientRect()
+                        if (rect.x + rect.width > window.innerWidth) {
+                            element.style.left = `${start.x - rect.width}px`
+                        }
+
+                        if (rect.y + rect.height > window.innerHeight) {
+                            element.style.top = `${start.y - rect.height}px`
+                        }
+                    })
+                }
+            })
+
+            return modal
+        }
     })
 
     callback(DYNAMICS_EMITTER_KEY, emitter)

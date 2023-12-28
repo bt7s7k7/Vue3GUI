@@ -29,7 +29,8 @@ export const Modal = eventDecorator(defineComponent({
     inheritAttrs: false,
     emits: {
         cancel: () => true,
-        ok: () => true
+        ok: () => true,
+        mounted: (element: HTMLDivElement) => true
     },
     setup(props, ctx) {
         const { theme } = useTheme()
@@ -105,6 +106,13 @@ export const Modal = eventDecorator(defineComponent({
             })
         }
 
+        let mounted = false
+        function notify(element: any) {
+            if (mounted) return
+            ctx.emit("mounted", element)
+            mounted = true
+        }
+
         const cancel = () => ctx.emit("cancel")
 
         return () => <Overlay onBackdropClick={() => backdropCancels.value && ctx.emit("cancel")} {...overlayProps.value} fullScreen>
@@ -116,6 +124,7 @@ export const Modal = eventDecorator(defineComponent({
                         props.fill && "flex-fill"
                     ]}
                     {...ctx.attrs}
+                    ref={notify}
                 >
                     <div class={["flex-fill flex column", props.contentClass]}>
                         {ctx.slots.default?.()}
@@ -133,10 +142,11 @@ export const Modal = eventDecorator(defineComponent({
     }
 }))
 
-export function useModal(options: { show?: boolean } = {}) {
+export function useModal(options: { show?: boolean, onMounted?: (element: HTMLElement) => void } = {}) {
     let resolve: ((v: boolean) => void) | null = null
 
     const ret = reactive({
+        element: null! as HTMLElement,
         props: {
             show: options.show ?? false,
             onCancel: () => {
@@ -145,6 +155,10 @@ export function useModal(options: { show?: boolean } = {}) {
             onOk: () => {
                 if (ret.okBlocked) return
                 ret.close(true)
+            },
+            onMounted: (element: any) => {
+                ret.element = element
+                options?.onMounted?.(element)
             }
         },
         open: () => {
