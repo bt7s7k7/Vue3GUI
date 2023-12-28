@@ -50,6 +50,17 @@
     border-radius: 4px;
 }
 
+.rounded-0 {
+    border-radius: initial;
+}
+
+@each $side in "top-left", "top-right", "bottom-left", "bottom-right" {
+    .rounded-#{$side} {
+        border-#{$side}-radius: 4px;
+        --test: 1;
+    }
+}
+
 .circle {
     border-radius: 100%;
 }
