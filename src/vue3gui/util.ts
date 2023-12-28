@@ -1,6 +1,6 @@
 import { computed, getCurrentInstance, InjectionKey, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, Ref, shallowRef, VNodeProps, watch, WatchOptions } from "vue"
 
-export function numberModel(ref: Ref<number>, options: { integer?: boolean } = {}): Ref<string> {
+export function numberModel(ref: { value: number }, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
         get() {
             return ref.value.toString()
