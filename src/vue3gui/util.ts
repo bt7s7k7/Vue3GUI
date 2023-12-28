@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, InjectionKey, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, Ref, shallowRef, VNodeProps, watch, WatchOptions } from "vue"
+import { Events, Fragment, InjectionKey, Ref, VNodeArrayChildren, VNodeNormalizedChildren, VNodeProps, WatchOptions, computed, getCurrentInstance, isVNode, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, shallowRef, watch } from "vue"
 
 export function numberModel(ref: { value: number }, options: { integer?: boolean } = {}): Ref<string> {
     return computed({
@@ -237,3 +237,16 @@ declare module "vue" {
         id?: string
     }
 }
+
+export function normalizeVNodeChildren(target: VNodeNormalizedChildren | VNodeArrayChildren[number]): Exclude<VNodeArrayChildren[number], any[]>[] {
+    if (target == null) return []
+    if (typeof target == "string" || typeof target == "number" || typeof target == "boolean") return [target]
+    if (target instanceof Array) return target.flatMap(normalizeVNodeChildren)
+    if (isVNode(target)) {
+        if (target.type == Fragment) return normalizeVNodeChildren(target.children)
+        return [target]
+    }
+    return []
+}
+
+export const NATIVE_EVENTS = {} as { [P in Exclude<keyof Events, "style" | "class">]: { type: { new(): (event: Events[P]) => void } } }
