@@ -27,7 +27,7 @@
 
     .bg-#{$value-short}-transparent-hover {
         transition: background-color 0.1s ease-in-out;
-        &:hover, &:focus-visible {
+        &:hover, &:focus-visible, &.force-focus {
             background-color: rgba(map-get($color, "bg"), 0.25);
         }
     }

@@ -45,7 +45,8 @@
     }
 
     &:hover:not(:disabled):not(.disabled),
-    &:focus-visible:not(:disabled):not(.disabled) {
+    &:focus-visible:not(:disabled):not(.disabled),
+    &.force-focus {
         &::after {
             opacity: 0.2;
         }
