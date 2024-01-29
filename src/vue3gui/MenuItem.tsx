@@ -1,7 +1,7 @@
 import { ComponentPublicInstance, ExtractPropTypes, InjectionKey, computed, defineComponent, inject, normalizeClass, provide, ref, toRef } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Button, ButtonGroup, ButtonProps } from "./Button"
-import { useDynamicsEmitter } from "./DynamicsEmitter"
+import { DynamicsEmitter, useDynamicsEmitter } from "./DynamicsEmitter"
 import { Icon } from "./Icon"
 import { normalizeVNodeChildren } from "./util"
 
@@ -25,12 +25,14 @@ export namespace MenuItemProps {
 }
 
 const _MENU_PROPS = Object.keys(MenuItemProps.STYLE).concat(Object.keys(MenuItemProps.FUNCTION))
+export type MenuOpenEvent = ReturnType<DynamicsEmitter["menu"]>
 
 export const MenuItem = eventDecorator(defineComponent({
     name: "MenuItem",
     emits: {
         click: (event: MouseEvent) => true,
-        mouseDown: (event: MouseEvent) => true
+        mouseDown: (event: MouseEvent) => true,
+        open: (menu: MenuOpenEvent) => true
     },
     props: {
         ...ButtonProps.STYLE,
@@ -101,6 +103,7 @@ export const MenuItem = eventDecorator(defineComponent({
 
             menuOpen.value = true
             menu.finally(() => menuOpen.value = false)
+            ctx.emit("open", menu)
 
             return true
         }
