@@ -31,7 +31,7 @@ export interface GenericModalHandle<T> {
     controller: ModalController
 }
 
-interface ModalOptions {
+export interface ModalOptions {
     props?: ModalDefinition["props"]
     contentProps?: ModalDefinition["contentProps"]
     buttons?: ModalDefinition["buttons"]
@@ -60,6 +60,9 @@ interface ButtonDefinition {
     variant?: Variant
     callback: (close: (success?: boolean) => void) => void
 }
+
+export type PopupTarget = HTMLElement | ComponentPublicInstance
+export type MenuTarget = PopupTarget | { x: number, y: number }
 
 let nextID = 0
 
@@ -294,7 +297,7 @@ function makeDynamicEmitter(theme: { readonly value: Theme }, callback: (key: ty
             return result
         },
         modals: [] as ModalDefinition[],
-        popup(target: HTMLElement | ComponentPublicInstance, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
+        popup(target: PopupTarget, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
             const rect = ("$el" in target ? target.$el as HTMLElement : target).getBoundingClientRect()
             let offsetX = 0
             let offsetY = 0
@@ -344,7 +347,7 @@ function makeDynamicEmitter(theme: { readonly value: Theme }, callback: (key: ty
                 }
             })
         },
-        menu(target: HTMLElement | ComponentPublicInstance | { x: number, y: number }, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
+        menu(target: MenuTarget, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
             let start: { x: number, y: number }
             if (target instanceof HTMLElement) {
                 const rect = target.getBoundingClientRect()
