@@ -31,15 +31,21 @@ export function useTabs<T extends Record<string, any>>(tabs: T = {} as T, defaul
 }
 
 const _TABS_PROPS = {
+    /** Variant of the selected tab indicator */
     variant: {
         type: String as PropType<Variant>,
     },
+    /** Tabs definition from `useTabs` */
     tabs: {
         type: Object as PropType<TabsStateBase>,
         required: true as const
     },
+    /** Remove gap between tab buttons */
     compact: { type: Boolean },
-    buttonClass: { type: String }
+    /** Set style for individual tab buttons */
+    buttonClass: { type: String },
+    /** Retro-style skeuomorphic tabs */
+    border: { type: Boolean }
 }
 type _TabsProps = ExtractPropTypes<typeof _TABS_PROPS>
 
@@ -47,6 +53,20 @@ export const Tabs = (defineComponent({
     name: "Tabs",
     props: _TABS_PROPS,
     setup(props, ctx) {
+        if (props.border) {
+            return () => (
+                <div class={["flex row pt-1", !props.compact && "gap-1"]}>
+                    {props.tabs.list.map(([key, label]) => (
+                        <Button onClick={() => props.tabs.selected = key} textual key={key} class={[props.buttonClass, "as-retro-tab", props.tabs.selected == key && "-selected"]}>
+                            {typeof label == "string" ? label : label()}
+                            <div class="-border"></div>
+                            <div class="-connector"></div>
+                        </Button>
+                    ))}
+                </div>
+            )
+        }
+
         const { theme } = useTheme()
 
         const indicators: Record<string, HTMLDivElement> = {}
@@ -195,7 +215,7 @@ export const Tab = (defineComponent({
     name: "TabbedContainer",
     props: {
         name: { type: String, required: true },
-        label: { type: String },
+        label: { type: null as unknown as PropType<String | (() => any)> },
     },
     setup(props, ctx) {
         return () => (
