@@ -1,9 +1,9 @@
-import { ComponentPublicInstance, ExtractPropTypes, InjectionKey, computed, defineComponent, inject, normalizeClass, provide, ref, toRef } from "vue"
+import { ComponentPublicInstance, ExtractPropTypes, InjectionKey, computed, defineComponent, inject, provide, ref, toRef } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Button, ButtonGroup, ButtonProps } from "./Button"
 import { DynamicsEmitter, useDynamicsEmitter } from "./DynamicsEmitter"
 import { Icon } from "./Icon"
-import { normalizeVNodeChildren } from "./util"
+import { normalizeClass, normalizeVNodeChildren } from "./util"
 
 const _PARENT = Symbol.for("vue3gui.menuParent") as InjectionKey<{ done(): void }>
 

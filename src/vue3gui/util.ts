@@ -250,3 +250,25 @@ export function normalizeVNodeChildren(target: VNodeNormalizedChildren | VNodeAr
 }
 
 export const NATIVE_EVENTS = {} as { [P in Exclude<keyof Events, "style" | "class">]: { type: { new(): (event: Events[P]) => void } } }
+
+/** Polyfill for older vue versions */
+export function normalizeClass(value: unknown): string {
+    let res = ""
+    if (typeof value == "string") {
+        res = value
+    } else if (value instanceof Array) {
+        for (let i = 0; i < value.length; i++) {
+            const normalized = normalizeClass(value[i])
+            if (normalized) {
+                res += normalized + " "
+            }
+        }
+    } else if (value != null && typeof value == "object") {
+        for (const name in value) {
+            if (value[name as keyof typeof value]) {
+                res += name + " "
+            }
+        }
+    }
+    return res.trim()
+}
