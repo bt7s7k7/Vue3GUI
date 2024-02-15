@@ -52,3 +52,13 @@
         color: var(--fg-color);
     }
 }
+
+.text-fg {
+    --fg-color: var(--fg-default);
+    color: var(--fg-color);
+}
+
+.text-bg {
+    --bg-color: var(--bg-default);
+    color: var(--bg-color);
+}
