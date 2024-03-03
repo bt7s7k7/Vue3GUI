@@ -1,5 +1,7 @@
-import { computed, defineComponent, InputHTMLAttributes, onMounted, PropType, ref, watch } from "vue"
+import { ComponentPublicInstance, computed, defineComponent, InputHTMLAttributes, onMounted, PropType, ref, shallowRef, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
+import { Button } from "./Button"
+import { useDynamicsEmitter } from "./DynamicsEmitter"
 import { Variant } from "./variants"
 import { useTheme } from "./vue3gui"
 
@@ -36,6 +38,7 @@ export const TextField = eventDecorator(defineComponent({
         min: { type: [Number, String] },
         max: { type: [Number, String] },
         step: { type: [Number, String] },
+        explicit: { type: Boolean }
     },
     emits: {
         "update:modelValue": (value: string) => true,
@@ -47,6 +50,7 @@ export const TextField = eventDecorator(defineComponent({
     },
     setup(props, ctx) {
         const { theme } = useTheme()
+        const emitter = useDynamicsEmitter()
 
         const value = ref(props.modelValue)
         const input = ref<HTMLInputElement>()
@@ -58,6 +62,7 @@ export const TextField = eventDecorator(defineComponent({
         ctx.expose({ input })
 
         onMounted(() => {
+            if (props.explicit) return
             if (props.focus) input.value!.focus()
             if ("computedStyleMap" in input.value!) computedStyle = (input.value as any).computedStyleMap()
             setTimeout(() => {
@@ -95,8 +100,11 @@ export const TextField = eventDecorator(defineComponent({
 
         watch(value, (value, oldValue) => {
             if (value == oldValue) return
-            ctx.emit("update:modelValue", value)
-            ctx.emit("input", value)
+
+            if (!props.explicit) {
+                ctx.emit("update:modelValue", value)
+                ctx.emit("input", value)
+            }
 
             if (props.validate) {
                 const invalid = input.value!.validationMessage
@@ -118,13 +126,15 @@ export const TextField = eventDecorator(defineComponent({
             const newValue = (event.target as HTMLInputElement).value
             if (newValue != value.value) value.value = newValue
 
+            if (props.explicit) return
+
             if (event.code == "Enter" || event.code == "NumpadEnter") {
                 ctx.emit("confirm", value.value)
                 ctx.emit("change", value.value)
             }
         }
 
-        return () => {
+        const render = () => {
             const always = props.alwaysHighlight || error.value != ""
             const highlight = error.value != "" ? "danger" : props.variant ?? theme.value.highlight
             const hasLabel = props.label != null || error.value != "" || props.validate
@@ -145,7 +155,7 @@ export const TextField = eventDecorator(defineComponent({
                     <input
                         type={props.type}
                         onKeydown={keydown}
-                        onBlur={() => { ctx.emit("change", value.value); ctx.emit("blur") }}
+                        onBlur={() => { !props.explicit && ctx.emit("change", value.value); ctx.emit("blur") }}
                         onFocus={() => ctx.emit("focus")}
                         v-model={value.value}
                         class="flex-fill"
@@ -166,5 +176,59 @@ export const TextField = eventDecorator(defineComponent({
                 </div>
             )
         }
+
+        const explicitButton = shallowRef<ComponentPublicInstance>()
+        function openEditor(event: MouseEvent) {
+            if (explicitButton.value == null) return
+            const target = explicitButton.value.$el as HTMLElement
+            const rect = target.getBoundingClientRect()
+
+            const popup = emitter.popup(explicitButton.value, { render }, {
+                align: "over",
+                contentProps: { style: `width: ${rect.width}px` },
+                props: {
+                    backdropCancels: true,
+                    class: `shadow`,
+                    style: {
+                        marginLeft: `calc(-1 * var(--size-int))`,
+                        marginTop: `calc(-1 * var(--size-int))`,
+                    }
+                },
+                onMounted() {
+                    setTimeout(() => {
+                        input.value?.focus()
+                    }, 100)
+                },
+            })
+
+            const errorWatchDispose = watch(error, (error) => {
+                if (error == "") {
+                    popup.controller.okBlocked = false
+                } else {
+                    popup.controller.okBlocked = true
+                }
+            })
+
+            popup.then(success => {
+                if (success) {
+                    ctx.emit("change", value.value)
+                    ctx.emit("confirm", value.value)
+                    ctx.emit("update:modelValue", value.value)
+                    ctx.emit("input", value.value)
+                } else {
+                    value.value = props.modelValue
+                }
+            }).finally(() => {
+                errorWatchDispose()
+            })
+        }
+
+        return () => (
+            props.explicit ? (
+                <Button class="text-left" clear onClick={openEditor} ref={explicitButton}>{value.value}</Button>
+            ) : (
+                render()
+            )
+        )
     }
 }))
