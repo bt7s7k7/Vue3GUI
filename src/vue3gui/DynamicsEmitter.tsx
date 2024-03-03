@@ -342,8 +342,11 @@ function makeDynamicEmitter(theme: { readonly value: Theme }, callback: (key: ty
                 ...options,
                 props: {
                     variant: "clear",
-                    style: { position: "absolute", ...pos, minWidth: "unset", minHeight: "unset" },
-                    ...options.props
+                    ...options.props,
+                    style: {
+                        position: "absolute", ...pos, minWidth: "unset", minHeight: "unset",
+                        ...(options.props?.style != null && typeof options.props.style == "object" ? options.props.style : undefined)
+                    }
                 }
             })
         },
