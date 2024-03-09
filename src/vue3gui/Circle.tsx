@@ -4,7 +4,7 @@ import { Variant } from "./variants"
 export const Circle = (defineComponent({
     name: "Circle",
     props: {
-        variant: { type: String as PropType<Variant> },
+        variant: { type: String as PropType<Variant>, default: () => "primary" },
         inline: { type: Boolean },
         filler: { type: Boolean },
         transition: { type: Boolean },
