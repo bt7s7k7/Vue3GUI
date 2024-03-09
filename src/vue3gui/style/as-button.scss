@@ -11,7 +11,7 @@
     text-align: center;
     cursor: pointer;
     user-select: none;
-    font-family: $font;
+    font-family: var(--default-font);
     text-decoration: none;
     font-size: 13.3333px;
     color: inherit;
@@ -30,7 +30,7 @@
     }
 }
 
-.as-clickable-positive, .as-clickable-negative {
+.as-clickable {
     &::after {
         position: absolute;
         top: 0;
@@ -59,14 +59,8 @@
     }
 }
 
-.as-clickable-positive {
+.as-clickable {
     &::after {
-        background-color: #ffffff;
-    }
-}
-
-.as-clickable-negative {
-    &::after {
-        background-color: #000000;
+        background-color: var(--replace-color);
     }
 }

@@ -19,7 +19,7 @@ export const Fold = eventDecorator(defineComponent({
         return () => (
             <span>
                 <div
-                    class={["as-fold", props.negative ? "as-clickable-negative" : "as-clickable-positive", open.value && "open", "inline-block", "muted"]}
+                    class={["as-fold", "as-clickable", open.value && "open", "inline-block", "muted"]}
                     onClick={() => open.value = !open.value}
                 >
                     ▶

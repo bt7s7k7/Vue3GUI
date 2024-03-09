@@ -1,4 +1,5 @@
-$border-style: 1px solid $border-color;
+@use "./support.scss";
+$border-style: 1px solid var(--border-color);
 
 .border {
     border: $border-style
@@ -22,8 +23,8 @@ $border-style: 1px solid $border-color;
     border-color: rgba(0, 0, 0, 0);
 }
 
-@each $value-short, $color in $colors {
-    .border-#{$value-short} {
-        border-color: map-get($color, "bg");
+@each $color in support.$colors-list {
+    .border-#{$color} {
+        border-color: var(--bg-#{$color});
     }
 }

@@ -1,57 +1,22 @@
-$bg-danger: #dc3545 !default;
-$bg-white: #ffffff !default;
-$bg-black: #000000 !default;
-$bg-secondary: #555555 !default;
-$bg-primary: #0d6efd !default;
-$bg-warning: #ff6f00 !default;
-$bg-success: #28a745 !default;
-$bg-dark: #1a1a1a !default;
+@use "./style/support.scss";
 
-$fg-danger: #ff0000 !default;
-$fg-white: #ffffff !default;
-$fg-black: #000000 !default;
-$fg-secondary: #555555 !default;
-$fg-primary: #006ee0 !default;
-$fg-warning: #cf4600 !default;
-$fg-success: #1f8236 !default;
-$fg-dark: #1a1a1a !default;
+:root, .as-light-theme {
+    @include support.generate-theme();
+}
 
-$default-fg: "black" !default;
-$default-bg: "white" !default;
+.as-dark-theme {
+    @include support.generate-theme($fg-danger: #fd8484,
+        $bg-danger: #be2a39,
+        $fg-primary: #429eff,
+        $bg-primary: #1a6ae0,
+        $fg-white: #ededed,
+        $bg-secondary: #555555,
+        $bg-warning: #cf6513,
+        $default-bg: "dark",
+        $default-fg: "white",
+        $border-color: #444444,
+        $fg-success: #28a745,
+        $fg-warning: #ff7b00);
+}
 
-$border-color: #cccccc !default;
-$colors: ("danger": ("bg": $bg-danger, "fg": $fg-danger, "invert": true),
-        "white": ("bg": $bg-white, "fg": $fg-white, "invert": false),
-        "black": ("bg": $bg-black, "fg": $fg-black, "invert": true),
-        "secondary": ("bg": $bg-secondary, "fg": $fg-secondary, "invert": true),
-        "primary": ("bg": $bg-primary, "fg": $fg-primary, "invert": true),
-        "warning": ("bg": $bg-warning, "fg": $fg-warning, "invert": true),
-        "success": ("bg": $bg-success, "fg": $fg-success, "invert": true),
-        "dark": ("bg": $bg-dark, "fg": $fg-dark, "invert": true));
-
-$size-int: 0.25rem !default;
-$size-int-em: 0.25em !default;
-$px-int: 50px !default;
-$px-int-n: 50 !default;
-$mul-max: 11 !default;
-$font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-
-@import './style/global.scss';
-
-@import './style/as-button.scss';
-@import './style/as-icon.scss';
-@import './style/as-circle.scss';
-@import './style/as-fold.scss';
-@import './style/as-loading-indicator.scss';
-@import './style/as-tabs.scss';
-@import './style/as-text-field.scss';
-@import './style/as-slider.scss';
-@import './style/as-upload-overlay.scss';
-@import './style/as-fullscreen-overlay.scss';
-
-@import './style/util.scss';
-@import './style/border.scss';
-@import './style/colors.scss';
-@import './style/flex.scss';
-@import './style/layout.scss';
-@import './style/transitions.scss';
+@import "./style/index.scss";

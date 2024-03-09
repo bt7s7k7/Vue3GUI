@@ -1,3 +1,5 @@
+@use "./support.scss";
+
 .as-page {
     max-width: 1050px;
     width: 100%;
@@ -9,67 +11,67 @@
 }
 
 @each $value-short, $value in ("m": "margin", "p": "padding") {
-    @for $mul from 0 to $mul-max {
+    @for $mul from 0 to support.$mul-max {
         .child-#{$value-short}-#{$mul}>* {
-            #{$value}: $mul * $size-int;
+            #{$value}: calc($mul * var(--size-int));
         }
 
         @each $axis, $dirs in ("x": ("left", "right"), "y": ("top", "bottom")) {
             .child-#{$value-short}#{$axis}-#{$mul}>* {
                 @each $dir in $dirs {
-                    #{$value}-#{$dir}: $mul * $size-int;
+                    #{$value}-#{$dir}: calc($mul * var(--size-int));
                 }
             }
         }
 
         @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
             .child-#{$value-short}#{$dir-short}-#{$mul}>* {
-                #{$value}-#{$dir}: $mul * $size-int;
+                #{$value}-#{$dir}: calc($mul * var(--size-int));
             }
         }
     }
 
-    @for $mul from 0 to $mul-max {
+    @for $mul from 0 to support.$mul-max {
         .#{$value-short}-#{$mul} {
-            #{$value}: $mul * $size-int;
+            #{$value}: calc($mul * var(--size-int));
         }
 
         @each $axis, $dirs in ("x": ("left", "right"), "y": ("top", "bottom")) {
             .#{$value-short}#{$axis}-#{$mul} {
                 @each $dir in $dirs {
-                    #{$value}-#{$dir}: $mul * $size-int;
+                    #{$value}-#{$dir}: calc($mul * var(--size-int));
                 }
             }
         }
 
         @each $dir-short, $dir in ("l": "left", "r": "right", "t": "top", "b": "bottom") {
             .#{$value-short}#{$dir-short}-#{$mul} {
-                #{$value}-#{$dir}: $mul * $size-int;
+                #{$value}-#{$dir}: calc($mul * var(--size-int));
             }
         }
     }
 }
 
 @each $dir-short, $dir in ("w": "width", "h": "height") {
-    @for $mul from 0 to $mul-max {
+    @for $mul from 0 to support.$mul-max {
         .#{$dir-short}-#{$mul} {
-            #{$dir}: $mul * $size-int;
+            #{$dir}: calc($mul * var(--size-int));
         }
 
         .#{$dir-short}-#{$mul}-em {
-            #{$dir}: $mul * $size-int-em;
+            #{$dir}: calc($mul * var(--size-int-em));
         }
 
-        .#{$dir-short}-max-#{$mul * $px-int-n} {
-            max-#{$dir}: $mul * $px-int;
+        .#{$dir-short}-max-#{$mul * support.$px-int-n} {
+            max-#{$dir}: calc($mul * support.$px-int);
         }
 
-        .#{$dir-short}-min-#{$mul * $px-int-n} {
-            min-#{$dir}: $mul * $px-int;
+        .#{$dir-short}-min-#{$mul * support.$px-int-n} {
+            min-#{$dir}: calc($mul * support.$px-int);
         }
 
-        .#{$dir-short}-#{$mul * $px-int-n} {
-            #{$dir}: $mul * $px-int;
+        .#{$dir-short}-#{$mul * support.$px-int-n} {
+            #{$dir}: calc($mul * support.$px-int);
         }
     }
 
@@ -86,9 +88,9 @@
     }
 }
 
-@for $mul from 0 to $mul-max {
+@for $mul from 0 to support.$mul-max {
     .gap-#{$mul} {
-        gap: $mul * $size-int;
+        gap: calc($mul * var(--size-int));
     }
 }
 

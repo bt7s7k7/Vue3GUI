@@ -2,7 +2,6 @@ import { defineComponent, ExtractPropTypes, h, nextTick, onMounted, PropType, re
 import { Button } from "./Button"
 import { NATIVE_EVENTS, normalizeVNodeChildren } from "./util"
 import { Variant } from "./variants"
-import { useTheme } from "./vue3gui"
 
 interface TypedTabsState<T extends Record<string, string> = Record<string, string>> {
     selected: keyof T
@@ -67,8 +66,6 @@ export const Tabs = (defineComponent({
             )
         }
 
-        const { theme } = useTheme()
-
         const indicators: Record<string, HTMLDivElement> = {}
 
         function doIndicatorAnimation(selected: string | null, oldSelected: string | null, deferred: boolean) {
@@ -129,7 +126,7 @@ export const Tabs = (defineComponent({
                 {props.tabs.list.map(([key, label]) => (
                     <Button onClick={() => props.tabs.selected = key} textual flat key={key} class={["pb-1 px-0", props.buttonClass]}>
                         {typeof label == "string" ? label : h(label)}
-                        <div ref={v => indicators[key] = v as HTMLDivElement} class={["as-tabs-indicator", `bg-${props.variant ?? theme.value.highlight}`]}></div>
+                        <div ref={v => indicators[key] = v as HTMLDivElement} class={["as-tabs-indicator", props.variant ? `bg-${props.variant}` : "bg-highlight"]}></div>
                     </Button>
                 ))}
             </div>

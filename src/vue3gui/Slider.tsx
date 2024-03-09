@@ -3,7 +3,6 @@ import { eventDecorator } from "../eventDecorator"
 import { ProgressBar } from "./ProgressBar"
 import { GrabMoveEvent, useGrab } from "./useGrab"
 import { Variant } from "./variants"
-import { useTheme } from "./vue3gui"
 
 export const Slider = eventDecorator(defineComponent({
     name: "Slider",
@@ -25,8 +24,6 @@ export const Slider = eventDecorator(defineComponent({
         "dragEnd": () => true
     },
     setup(props, ctx) {
-        const { theme } = useTheme()
-
         const value = ref(props.modelValue)
         const input = ref<HTMLInputElement>(null!)
 
@@ -83,7 +80,7 @@ export const Slider = eventDecorator(defineComponent({
         })
 
         return () => {
-            const variant = props.variant ?? theme.value.highlight
+            const variant = props.variant ?? "primary"
             const progress = (value.value - props.min) / (props.max - props.min)
 
             return (
@@ -103,7 +100,7 @@ export const Slider = eventDecorator(defineComponent({
                         variant={variant} class="flex-fill"
                     />
                     {steps.value.map(step => (
-                        <div class={["-progress -step", step > progress ? "bg-text" : `bg-${theme.value.background}`]} style={`---progress: ${step}`}></div>
+                        <div class={["-progress -step", step > progress ? "bg-text" : `bg-default`]} style={`---progress: ${step}`}></div>
                     ))}
                     <div class={["-handle -progress circle bg-text"]} style={`---progress: ${progress}`} />
                 </div>

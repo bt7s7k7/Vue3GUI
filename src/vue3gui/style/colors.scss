@@ -1,34 +1,28 @@
-@each $value-short, $color in $colors {
-    .bg-#{$value-short} {
-        background-color: map-get($color, "bg");
-        @if map-get($color, "invert")==true {
-            --fg-color: #{map-get(map-get($colors, "white"), "fg")};
-        }
-        @else {
-            --fg-color: #{map-get(map-get($colors, "black"), "fg")};
-        }
+@use "./support.scss";
+
+@each $color in support.$colors-list {
+    .bg-#{$color} {
+        background-color: var(--bg-#{$color});
+        --fg-color: var(--fg-replace-#{$color});
+        --replace-color: var(--fg-replace-#{$color});
         color: var(--fg-color);
     }
 
-    .bg-#{$value-short}-translucent {
-        background-color: rgba(map-get($color, "bg"), 0.25);
+    .bg-#{$color}-translucent {
+        background-color: var(--bg-#{$color}-translucent);
     }
 
-    .bg-#{$value-short}-transparent {
-        background-color: rgba(map-get($color, "bg"), 0.75);
-        @if map-get($color, "invert")==true {
-            --fg-color: #{map-get(map-get($colors, "white"), "fg")};
-        }
-        @else {
-            --fg-color: #{map-get(map-get($colors, "black"), "fg")};
-        }
+    .bg-#{$color}-transparent {
+        background-color: var(--bg-#{$color}-transparent);
+        --fg-color: var(--fg-replace-#{$color});
+        --replace-color: var(--fg-replace-#{$color});
         color: var(--fg-color);
     }
 
-    .bg-#{$value-short}-transparent-hover {
+    .bg-#{$color}-transparent-hover {
         transition: background-color 0.1s ease-in-out;
         &:hover, &:focus-visible, &.force-focus {
-            background-color: rgba(map-get($color, "bg"), 0.25);
+            background-color: var(--bg-#{$color}-translucent);
         }
     }
 
@@ -46,9 +40,9 @@
     backdrop-filter: blur(10px);
 }
 
-@each $value-short, $color in $colors {
-    .text-#{$value-short} {
-        --fg-color: #{map-get($color, "fg")};
+@each $color in support.$colors-list {
+    .text-#{$color} {
+        --fg-color: var(--fg-#{$color});
         color: var(--fg-color);
     }
 }

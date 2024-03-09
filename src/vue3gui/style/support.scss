@@ -1,0 +1,78 @@
+@mixin generate-theme($bg-danger: #dc3545,
+    $bg-white: #ffffff,
+    $bg-black: #000000,
+    $bg-secondary: #555555,
+    $bg-primary: #0d6efd,
+    $bg-warning: #ff6f00,
+    $bg-success: #28a745,
+    $bg-dark: #1a1a1a,
+
+    $fg-danger: #ff0000,
+    $fg-white: #ffffff,
+    $fg-black: #000000,
+    $fg-secondary: #555555,
+    $fg-primary: #006ee0,
+    $fg-warning: #cf4600,
+    $fg-success: #1f8236,
+    $fg-dark: #1a1a1a,
+
+    $invert-danger: true,
+    $invert-white: false,
+    $invert-black: true,
+    $invert-secondary: true,
+    $invert-primary: true,
+    $invert-warning: true,
+    $invert-success: true,
+    $invert-dark: true,
+
+    $default-fg: "black",
+    $default-bg: "white",
+    $highlight: "primary",
+
+    $border-color: #cccccc,
+
+    $size-int: 0.25rem,
+    $size-int-em: 0.25em,
+
+    $font: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+) {
+    $colors: ("danger": ("bg": $bg-danger, "fg": $fg-danger, "invert": $invert-danger),
+            "white": ("bg": $bg-white, "fg": $fg-white, "invert": $invert-white),
+            "black": ("bg": $bg-black, "fg": $fg-black, "invert": $invert-black),
+            "secondary": ("bg": $bg-secondary, "fg": $fg-secondary, "invert": $invert-secondary),
+            "primary": ("bg": $bg-primary, "fg": $fg-primary, "invert": $invert-primary),
+            "warning": ("bg": $bg-warning, "fg": $fg-warning, "invert": $invert-warning),
+            "success": ("bg": $bg-success, "fg": $fg-success, "invert": $invert-success),
+            "dark": ("bg": $bg-dark, "fg": $fg-dark, "invert": $invert-dark));
+
+    --fg-color: #{map-get(map-get($colors, $default-fg), "fg")};
+    --replace-color: #{map-get(map-get($colors, $default-fg), "fg")};
+    --border-color: #{$border-color};
+
+    @each $value-short, $color in $colors {
+        --bg-#{$value-short}: #{map-get($color, "bg")};
+        --bg-#{$value-short}-translucent: #{rgba(map-get($color, "bg"), 0.25)};
+        --bg-#{$value-short}-transparent: #{rgba(map-get($color, "bg"), 0.75)};
+        --fg-#{$value-short}: #{map-get($color, "fg")};
+        --fg-replace-#{$value-short}: #{if(map-get($color, "invert"), map-get(map-get($colors, "white"), "fg"), map-get(map-get($colors, "black"), "fg"))};
+    }
+
+    --bg-highlight: #{map-get(map-get($colors, $highlight), "bg")};
+    --bg-highlight-translucent: #{rgba(map-get(map-get($colors, $highlight), "bg"), 0.25)};
+    --bg-highlight-transparent: #{rgba(map-get(map-get($colors, $highlight), "bg"), 0.75)};
+    --fg-highlight: #{map-get(map-get($colors, $highlight), "fg")};
+    --fg-replace-highlight: #{if(map-get(map-get($colors, $highlight), "invert"), map-get(map-get($colors, "white"), "fg"), map-get(map-get($colors, "black"), "fg"))};
+
+    --bg-default: #{map-get(map-get($colors, $default-bg), "bg")};
+    --fg-default: #{map-get(map-get($colors, $default-fg), "fg")};
+    --fg-replace-default: var(--fg-default);
+    --default-border-radius: 4px;
+    --size-int: #{$size-int};
+    --size-int-em: #{$size-int-em};
+    --default-font: #{$font};
+}
+
+$px-int: 50px;
+$px-int-n: 50;
+$mul-max: 11;
+$colors-list: ("danger", "white", "black", "secondary", "primary", "warning", "success", "dark", "default", "highlight")

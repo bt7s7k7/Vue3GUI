@@ -3,7 +3,6 @@ import type { RouteLocationRaw } from "vue-router"
 import { eventDecorator } from "../eventDecorator"
 import { Icon } from "./Icon"
 import { Variant } from "./variants"
-import { useTheme } from "./vue3gui"
 
 let routerLink = defineAsyncComponent(() => import("vue-router").then(v => v.RouterLink))
 
@@ -57,14 +56,13 @@ export const Button = eventDecorator(defineComponent({
         ...ButtonProps.FUNCTION
     },
     setup(props, ctx) {
-        const { theme } = useTheme()
         const groupData = inject(ButtonProps.GROUP_SYMBOL, undefined)
 
         return () => {
             const inherited = groupData?.props
             const plain = props.plain || inherited?.plain
             const disabled = props.disabled || inherited?.disabled
-            const variant = props.variant ?? inherited?.variant ?? theme.value.object
+            const variant = props.variant ?? inherited?.variant ?? "secondary"
             const clear = props.clear || inherited?.clear
             const flat = props.flat || inherited?.flat
             const textual = props.textual || inherited?.textual
@@ -78,7 +76,7 @@ export const Button = eventDecorator(defineComponent({
                     ...props.nativeProps,
                     class: !plain && [
                         `as-button`,
-                        !disabled && !clear && !textual && `as-clickable-${Variant.VARIANTS[variant].invert ? "positive" : "negative"}`,
+                        !disabled && !clear && !textual && "as-clickable",
                         ...(
                             clear ? ["flat", !disabled && `bg-${variant}-transparent-hover`]
                                 : [

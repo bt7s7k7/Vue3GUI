@@ -1,7 +1,6 @@
 import { defineComponent, nextTick, PropType, ref, shallowReactive, watch } from "vue"
 import { eventDecorator } from "../../eventDecorator"
 import { useEventListener } from "../util"
-import { useTheme } from "../vue3gui"
 
 interface SliderHookOptions {
     direction: "horizontal" | "vertical"
@@ -154,14 +153,12 @@ export const LegacySlider = eventDecorator(defineComponent({
             onError: v => ctx.emit("error", v)
         })
 
-        const { theme } = useTheme()
-
         return () => (
             <div class={["flex", slider.direction.type]} ref={slider.container}>
                 <div {...slider.startProps}>
                     {ctx.slots.start?.()}
                 </div>
-                <div class={`bg-${theme.value.object}`} style={{ flexBasis: "2px", cursor: slider.direction.cursor }} onMousedown={slider.start} ref={slider.slider}></div>
+                <div class={`bg-secondary`} style={{ flexBasis: "2px", cursor: slider.direction.cursor }} onMousedown={slider.start} ref={slider.slider}></div>
                 <div {...slider.endProps}>
                     {ctx.slots.end?.()}
                 </div>

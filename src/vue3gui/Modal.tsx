@@ -3,7 +3,6 @@ import { eventDecorator } from "../eventDecorator"
 import { Button } from "./Button"
 import { Overlay, OverlayProps } from "./Overlay"
 import { Variant } from "./variants"
-import { useTheme } from "./vue3gui"
 
 export const Modal = eventDecorator(defineComponent({
     name: "Modal",
@@ -33,8 +32,6 @@ export const Modal = eventDecorator(defineComponent({
         mounted: (element: HTMLDivElement) => true
     },
     setup(props, ctx) {
-        const { theme } = useTheme()
-
         const overlayProps = computed(() => {
             const { background, cancelButton, okButton, backdropCancels, contentClass, noDefaultStyle, ignoreEnter, ...ret } = props
             return ret
@@ -119,7 +116,7 @@ export const Modal = eventDecorator(defineComponent({
             <Transition name={overlayProps.value.noTransition ? undefined : (overlayProps.value.transition ?? "as-transition-shrink")} appear>
                 <div
                     class={[
-                        `bg-${props.background ?? theme.value.background}`,
+                        props.background ? `bg-${props.background}` : "bg-default",
                         !props.noDefaultStyle && "p-2 w-min-200 h-min-100 as-reset rounded w-max-fill",
                         props.fill && "flex-fill"
                     ]}

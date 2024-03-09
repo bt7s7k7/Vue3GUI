@@ -3,7 +3,6 @@ import { eventDecorator } from "../eventDecorator"
 import { Button } from "./Button"
 import { useDynamicsEmitter } from "./DynamicsEmitter"
 import { Variant } from "./variants"
-import { useTheme } from "./vue3gui"
 
 export const TextField = eventDecorator(defineComponent({
     name: "TextField",
@@ -49,7 +48,6 @@ export const TextField = eventDecorator(defineComponent({
         "focus": () => true
     },
     setup(props, ctx) {
-        const { theme } = useTheme()
         const emitter = useDynamicsEmitter()
 
         const value = ref(props.modelValue)
@@ -136,7 +134,7 @@ export const TextField = eventDecorator(defineComponent({
 
         const render = () => {
             const always = props.alwaysHighlight || error.value != ""
-            const highlight = error.value != "" ? "danger" : props.variant ?? theme.value.highlight
+            const highlight = error.value != "" ? "danger" : props.variant ?? "highlight"
             const hasLabel = props.label != null || error.value != "" || props.validate
             const showLabel = hasLabel && (!!props.label || error.value != "")
             const label = error.value || props.label
@@ -145,7 +143,8 @@ export const TextField = eventDecorator(defineComponent({
                 <div
                     class={[
                         "flex row as-text-field",
-                        !props.clear && !props.plain && `border-bottom border-${props.borderVariant ?? theme.value.border}`,
+                        !props.clear && !props.plain && `border-bottom`,
+                        props.borderVariant && `border-${props.borderVariant}`,
                         props.plain && "-plain",
                         showLabel && "-show-label",
                         always && "-always"
