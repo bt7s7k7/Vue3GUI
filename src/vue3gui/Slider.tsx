@@ -57,8 +57,10 @@ export const Slider = eventDecorator(defineComponent({
             if (newValue > 1) newValue = 1
             if (newValue < 0) newValue = 0
 
+            const step = props.step / (props.max - props.min)
+
             if (props.stepped) {
-                newValue = Math.round(newValue / props.step) * props.step
+                newValue = Math.round(newValue / step) * step
             }
 
             value.value = newValue * (props.max - props.min) + props.min
@@ -75,7 +77,8 @@ export const Slider = eventDecorator(defineComponent({
 
         const steps = computed(() => {
             if (props.stepped == false) return []
-            const count = Math.floor(1 / props.step)
+            const step = props.step / (props.max - props.min)
+            const count = Math.floor(1 / step)
             return Array.from({ length: count }, (_, i) => i / count)
         })
 
