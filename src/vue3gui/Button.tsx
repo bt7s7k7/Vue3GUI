@@ -15,6 +15,7 @@ export namespace ButtonProps {
         small: { type: Boolean },
         disabled: { type: Boolean },
         plain: { type: Boolean },
+        shadow: { type: Boolean },
     }
 
     export type Style = Partial<ExtractPropTypes<typeof STYLE>>
@@ -67,6 +68,7 @@ export const Button = eventDecorator(defineComponent({
             const flat = props.flat || inherited?.flat
             const textual = props.textual || inherited?.textual
             const small = props.small || inherited?.small
+            const shadow = props.shadow || inherited?.shadow
 
             return (h as any)(
                 props.href ? "a" :
@@ -78,13 +80,14 @@ export const Button = eventDecorator(defineComponent({
                         `as-button`,
                         !disabled && !clear && !textual && "as-clickable",
                         ...(
-                            clear ? ["flat", !disabled && `bg-${variant}-transparent-hover`]
+                            clear ? ["flat", !disabled && `as-clickable`]
                                 : [
                                     flat && "flat",
                                     !textual ? `bg-${variant}` : "textual flat",
                                 ]
                         ),
                         small && "small",
+                        shadow && "as-clickable-shadow",
                         props.forceFocus && "force-focus",
                     ],
                     ...(props.href ? { href: props.href } :
