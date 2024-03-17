@@ -23,7 +23,8 @@ export const Modal = eventDecorator(defineComponent({
         },
         ignoreEnter: { type: Boolean },
         contentClass: { type: null },
-        noDefaultStyle: { type: Boolean }
+        noDefaultStyle: { type: Boolean },
+        contain: { type: Boolean }
     },
     inheritAttrs: false,
     emits: {
@@ -33,7 +34,7 @@ export const Modal = eventDecorator(defineComponent({
     },
     setup(props, ctx) {
         const overlayProps = computed(() => {
-            const { background, cancelButton, okButton, backdropCancels, contentClass, noDefaultStyle, ignoreEnter, ...ret } = props
+            const { background, cancelButton, okButton, backdropCancels, contentClass, noDefaultStyle, ignoreEnter, contain, ...ret } = props
             return ret
         })
 
@@ -118,7 +119,8 @@ export const Modal = eventDecorator(defineComponent({
                     class={[
                         props.background ? `bg-${props.background}` : "bg-default",
                         !props.noDefaultStyle && "p-2 w-min-200 h-min-100 as-reset rounded w-max-fill",
-                        props.fill && "flex-fill"
+                        props.fill && "flex-fill",
+                        props.contain && "as-overlay-contain"
                     ]}
                     {...ctx.attrs}
                     ref={notify}

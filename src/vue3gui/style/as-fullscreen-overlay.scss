@@ -5,3 +5,8 @@
     top: 0;
     left: 0;
 }
+
+.as-overlay-contain {
+    max-width: calc(100vw - 4 * var(--size-int));
+    max-height: calc(100vh - 4 * var(--size-int));
+}
