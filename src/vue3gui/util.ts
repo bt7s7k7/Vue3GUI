@@ -1,11 +1,19 @@
 import { Events, Fragment, InjectionKey, Ref, VNodeArrayChildren, VNodeNormalizedChildren, VNodeProps, WatchOptions, computed, getCurrentInstance, isVNode, markRaw, onBeforeMount, onMounted, onUnmounted, reactive, ref, shallowRef, watch } from "vue"
 
-export function numberModel(ref: { value: number }, options: { integer?: boolean } = {}): Ref<string> {
+interface _NumberModelOptions<N = false> {
+    integer?: boolean
+    nullable?: N
+}
+
+export function numberModel(ref: { value: number }, options?: _NumberModelOptions<false>): Ref<string>
+export function numberModel(ref: { value: number | null }, options?: _NumberModelOptions<boolean>): Ref<string>
+export function numberModel(ref: { value: number | null }, options: _NumberModelOptions<boolean> = {}): Ref<string> {
     return computed({
         get() {
-            return ref.value.toString()
+            return ref.value?.toString() ?? ""
         },
         set(newValue) {
+            if (options.nullable && newValue == "") ref.value = null as never
             let number = (options.integer ? parseInt : parseFloat)(newValue)
             if (isNaN(number)) number = 0
             ref.value = number
