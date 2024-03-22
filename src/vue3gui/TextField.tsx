@@ -1,8 +1,14 @@
-import { ComponentPublicInstance, computed, defineComponent, InputHTMLAttributes, onMounted, PropType, ref, shallowRef, watch } from "vue"
+import { ComponentPublicInstance, computed, defineComponent, InputHTMLAttributes, nextTick, onMounted, PropType, ref, shallowRef, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Button } from "./Button"
 import { useDynamicsEmitter } from "./DynamicsEmitter"
 import { Variant } from "./variants"
+
+type TextFieldValidity = ValidityState & { customError: boolean }
+const _DEFAULT_VALIDITY: TextFieldValidity = {
+    badInput: false, customError: false, patternMismatch: false, rangeOverflow: false, rangeUnderflow: false,
+    stepMismatch: false, tooLong: false, tooShort: false, typeMismatch: false, valid: true, valueMissing: false
+}
 
 export const TextField = eventDecorator(defineComponent({
     name: "TextField",
@@ -32,12 +38,14 @@ export const TextField = eventDecorator(defineComponent({
         alwaysHighlight: { type: Boolean },
         pattern: { type: String },
         error: { type: String },
-        validate: { type: Boolean },
+        validate: { type: null as unknown as PropType<boolean | "always"> },
+        validator: { type: Function as PropType<(value: string) => string | null | undefined | false> },
         errorOverride: { type: String },
         min: { type: [Number, String] },
         max: { type: [Number, String] },
         step: { type: [Number, String] },
-        explicit: { type: Boolean }
+        explicit: { type: Boolean },
+        required: { type: Boolean },
     },
     emits: {
         "update:modelValue": (value: string) => true,
@@ -45,7 +53,8 @@ export const TextField = eventDecorator(defineComponent({
         "confirm": (value: string) => true,
         "change": (value: string) => true,
         "blur": () => true,
-        "focus": () => true
+        "focus": () => true,
+        "errorChanged": (error: string, state: TextFieldValidity) => true
     },
     setup(props, ctx) {
         const emitter = useDynamicsEmitter()
@@ -66,6 +75,10 @@ export const TextField = eventDecorator(defineComponent({
             setTimeout(() => {
                 if (props.autoResize && input.value) autoResize()
             }, 10)
+
+            if (props.validate == "always") {
+                validate()
+            }
         })
 
         watch(() => props.modelValue, (newValue) => {
@@ -96,6 +109,33 @@ export const TextField = eventDecorator(defineComponent({
             container.style.width = `${width + 5}px`
         }
 
+        function validate() {
+            if (input.value == null) {
+                selfError.value = ""
+                ctx.emit("errorChanged", selfError.value, _DEFAULT_VALIDITY)
+                return
+            }
+
+            let invalid = input.value!.validationMessage
+            const state: TextFieldValidity = { ...input.value!.validity, customError: false }
+
+            if (props.validator) {
+                const validatorInvalid = props.validator(value.value)
+
+                if (validatorInvalid) {
+                    invalid = validatorInvalid
+                    state.customError = true
+                }
+            }
+
+            if (invalid) {
+                selfError.value = props.errorOverride ?? invalid
+            } else {
+                selfError.value = ""
+            }
+            ctx.emit("errorChanged", selfError.value, state)
+        }
+
         watch(value, (value, oldValue) => {
             if (value == oldValue) return
 
@@ -105,12 +145,7 @@ export const TextField = eventDecorator(defineComponent({
             }
 
             if (props.validate) {
-                const invalid = input.value!.validationMessage
-                if (invalid) {
-                    selfError.value = props.errorOverride ?? invalid
-                } else {
-                    selfError.value = ""
-                }
+                validate()
             }
 
             if (props.autoResize) {
@@ -120,9 +155,13 @@ export const TextField = eventDecorator(defineComponent({
 
         watch(() => props.autoResize, enabled => enabled && autoResize())
 
-        function keydown(event: KeyboardEvent) {
+        function handleInput(event: Event) {
             const newValue = (event.target as HTMLInputElement).value
             if (newValue != value.value) value.value = newValue
+        }
+
+        function keydown(event: KeyboardEvent) {
+            handleInput(event)
 
             if (props.explicit) return
 
@@ -154,9 +193,9 @@ export const TextField = eventDecorator(defineComponent({
                     <input
                         type={props.type}
                         onKeydown={keydown}
+                        onInput={handleInput} value={value.value}
                         onBlur={() => { !props.explicit && ctx.emit("change", value.value); ctx.emit("blur") }}
                         onFocus={() => ctx.emit("focus")}
-                        v-model={value.value}
                         class="flex-fill"
                         ref={input}
                         size={1}
@@ -167,6 +206,7 @@ export const TextField = eventDecorator(defineComponent({
                         min={props.min}
                         max={props.max}
                         step={props.step}
+                        required={props.required}
                         {...props.fieldProps}
                     />
                     {ctx.slots.default?.()}
@@ -197,6 +237,10 @@ export const TextField = eventDecorator(defineComponent({
                     setTimeout(() => {
                         input.value?.focus()
                     }, 100)
+
+                    if (props.validate) {
+                        nextTick(validate)
+                    }
                 },
             })
 
@@ -210,10 +254,10 @@ export const TextField = eventDecorator(defineComponent({
 
             popup.then(success => {
                 if (success) {
-                    ctx.emit("change", value.value)
-                    ctx.emit("confirm", value.value)
                     ctx.emit("update:modelValue", value.value)
                     ctx.emit("input", value.value)
+                    ctx.emit("change", value.value)
+                    ctx.emit("confirm", value.value)
                 } else {
                     value.value = props.modelValue
                 }
@@ -224,7 +268,10 @@ export const TextField = eventDecorator(defineComponent({
 
         return () => (
             props.explicit ? (
-                <Button class="text-left" clear onClick={openEditor} ref={explicitButton}>{value.value}</Button>
+                <Button class="text-left" clear onClick={openEditor} ref={explicitButton}>
+                    <span class="absolute-fill p-1 nowrap overflow-ellipsis">{value.value || "\xa0"}</span>
+                    &nbsp;
+                </Button>
             ) : (
                 render()
             )
