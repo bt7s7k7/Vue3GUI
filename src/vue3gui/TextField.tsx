@@ -269,7 +269,11 @@ export const TextField = eventDecorator(defineComponent({
         return () => (
             props.explicit ? (
                 <Button class="text-left" clear onClick={openEditor} ref={explicitButton}>
-                    <span class="absolute-fill p-1 nowrap overflow-ellipsis">{value.value || "\xa0"}</span>
+                    <span class="absolute-fill p-1 nowrap overflow-ellipsis">
+                        {value.value || (props.placeholder ? (
+                            <span class="muted">{props.placeholder}</span>
+                        ) : "\xa0")}
+                    </span>
                     &nbsp;
                 </Button>
             ) : (
