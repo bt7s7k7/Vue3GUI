@@ -13,7 +13,11 @@ export function numberModel(ref: { value: number | null }, options: _NumberModel
             return ref.value?.toString() ?? ""
         },
         set(newValue) {
-            if (options.nullable && newValue == "") ref.value = null as never
+            if (options.nullable && newValue == "") {
+                ref.value = null
+                return
+            }
+
             let number = (options.integer ? parseInt : parseFloat)(newValue)
             if (isNaN(number)) number = 0
             ref.value = number
