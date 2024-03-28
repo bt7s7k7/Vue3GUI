@@ -59,17 +59,17 @@
 
 @for $mul from 0 to support.$mul-max {
     .flex-basis-#{$mul} {
-        flex-basis: calc($mul * var(--size-int));
+        flex-basis: calc(#{$mul} * var(--size-int));
         flex-shrink: 0;
     }
 
     .flex-basis-#{$mul}-em {
-        flex-basis: calc($mul * var(--size-int-em));
+        flex-basis: calc(#{$mul} * var(--size-int-em));
         flex-shrink: 0;
     }
 
     .flex-basis-#{$mul * support.$px-int-n} {
-        flex-basis: calc($mul * support.$px-int);
+        flex-basis: calc(#{$mul} * #{support.$px-int});
         flex-shrink: 0;
     }
 }
