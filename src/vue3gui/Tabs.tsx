@@ -144,8 +144,9 @@ export const TabbedContainer = (defineComponent({
     name: "TabbedContainer",
     props: {
         defaultValue: { type: String },
-        tabsProps: { type: Object as PropType<Omit<_TabsProps, "tabs"> & { class: any, style: any }> },
+        tabsProps: { type: Object as PropType<Partial<Omit<_TabsProps, "tabs"> & { class: any, style: any }>> },
         tabsWrapper: { type: Function as PropType<(vnode: any) => any> },
+        /** By default this component renders both the tabs and the content, by using this only content will be rendered and the provided state updated for your own `Tabs` component. */
         externalTabs: { type: Object as PropType<TabsStateBase> },
         ...NATIVE_EVENTS
     },
@@ -209,7 +210,7 @@ export const TabbedContainer = (defineComponent({
 }))
 
 export const Tab = (defineComponent({
-    name: "TabbedContainer",
+    name: "Tab",
     props: {
         name: { type: String, required: true },
         label: { type: null as unknown as PropType<String | (() => any)> },
