@@ -101,7 +101,7 @@ export const Button = eventDecorator(defineComponent({
                 },
                 {
                     default: (props.label || props.icon) ? (
-                        () => [props.icon && <Icon icon={props.icon} />, " ", props.label, ctx.slots.default?.()]
+                        () => [props.icon && <Icon icon={props.icon} />, props.label && props.icon && " ", props.label, ctx.slots.default?.()]
                     ) : (
                         ctx.slots.default ?? (() => "")
                     )
