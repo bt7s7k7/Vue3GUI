@@ -123,8 +123,8 @@ export const TextField = eventDecorator(defineComponent({
                 const validatorInvalid = props.validator(value.value)
 
                 if (validatorInvalid) {
-                    invalid = validatorInvalid
-                    state.customError = true
+                    invalid = validatorInvalid;
+                    (state as any).customError = true
                 }
             }
 
