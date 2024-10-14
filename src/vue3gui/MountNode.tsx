@@ -1,4 +1,4 @@
-import { ComponentInternalInstance, PropType, createCommentVNode, defineComponent, getCurrentInstance, onMounted, onUpdated, watch } from "vue"
+import { ComponentInternalInstance, PropType, createCommentVNode, defineComponent, getCurrentInstance, onMounted, onUnmounted, onUpdated, watch } from "vue"
 
 export const MountNode = (defineComponent({
     name: "MountElement",
@@ -25,6 +25,8 @@ export const MountNode = (defineComponent({
                 lastNode.parentNode?.removeChild(lastNode)
             }
 
+            lastNode = null
+
             if (!(element instanceof Comment)) throw new Error("MountNode root is not a comment")
             if (!element.parentElement) return
 
@@ -37,6 +39,10 @@ export const MountNode = (defineComponent({
         onMounted(() => {
             instance = getCurrentInstance()
             update()
+        })
+
+        onUnmounted(() => {
+            lastNode?.parentNode?.removeChild(lastNode)
         })
 
         watch(() => props.node, update)
