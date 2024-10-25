@@ -16,6 +16,7 @@ export namespace ButtonProps {
         disabled: { type: Boolean },
         plain: { type: Boolean },
         shadow: { type: Boolean },
+        selected: { type: Boolean }
     }
 
     export type Style = Partial<ExtractPropTypes<typeof STYLE>>
@@ -63,7 +64,8 @@ export const Button = eventDecorator(defineComponent({
             const inherited = groupData?.props
             const plain = props.plain || inherited?.plain
             const disabled = props.disabled || inherited?.disabled
-            const variant = props.variant ?? inherited?.variant ?? "secondary"
+            const selected = props.selected || inherited?.selected
+            const variant = selected ? "primary" : props.variant ?? inherited?.variant ?? "secondary"
             const clear = props.clear || inherited?.clear
             const flat = props.flat || inherited?.flat
             const textual = props.textual || inherited?.textual
@@ -80,7 +82,7 @@ export const Button = eventDecorator(defineComponent({
                         `as-button`,
                         !disabled && !clear && !textual && "as-clickable",
                         ...(
-                            clear ? ["flat", !disabled && `as-clickable`]
+                            clear ? ["flat", !disabled && `as-clickable`, selected && `bg-primary-translucent`]
                                 : [
                                     flat && "flat",
                                     !textual ? `bg-${variant}` : "textual flat",
