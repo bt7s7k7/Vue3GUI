@@ -1,6 +1,6 @@
-import { ComponentPublicInstance, computed, defineComponent, InputHTMLAttributes, nextTick, onMounted, PropType, ref, shallowRef, watch } from "vue"
+import { ComponentPublicInstance, computed, defineComponent, inject, InputHTMLAttributes, nextTick, onMounted, PropType, ref, shallowRef, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
-import { Button } from "./Button"
+import { Button, ButtonProps } from "./Button"
 import { useDynamicsEmitter } from "./DynamicsEmitter"
 import { Variant } from "./variants"
 
@@ -171,12 +171,15 @@ export const TextField = eventDecorator(defineComponent({
             }
         }
 
+        const inherited = inject(ButtonProps.GROUP_SYMBOL, undefined)?.props
+
         const render = () => {
             const always = props.alwaysHighlight || error.value != ""
             const highlight = error.value != "" ? "danger" : props.variant ?? "highlight"
             const hasLabel = props.label != null || error.value != "" || props.validate
             const showLabel = hasLabel && (!!props.label || error.value != "")
             const label = error.value || props.label
+            const disabled = props.disabled || inherited?.disabled
 
             return (
                 <div
@@ -201,7 +204,7 @@ export const TextField = eventDecorator(defineComponent({
                         size={1}
                         placeholder={props.placeholder}
                         autocomplete={props.autocomplete}
-                        disabled={props.disabled}
+                        disabled={disabled}
                         pattern={props.pattern}
                         min={props.min}
                         max={props.max}
