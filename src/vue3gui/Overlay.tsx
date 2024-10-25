@@ -1,4 +1,4 @@
-import { defineComponent, h, PropType, ref, Slot, Teleport, Transition } from "vue"
+import { defineComponent, h, PropType, Ref, ref, Slot, Teleport, toRef, Transition, watch } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { LoadingIndicator } from "./LoadingIndicator"
 import { Variant } from "./variants"
@@ -16,6 +16,9 @@ export namespace OverlayProps {
         },
         transition: {
             type: String
+        },
+        debounce: {
+            type: Boolean
         }
     }
 
@@ -47,9 +50,31 @@ export const Overlay = eventDecorator(defineComponent({
     setup(props, ctx) {
         const backdrop = ref<HTMLDivElement>()
 
+        let show: Ref<boolean>
+        if (props.debounce) {
+            let timerId: ReturnType<typeof setTimeout> | null = null
+            show = ref(false)
+            watch(() => props.show, shouldShow => {
+                if (shouldShow) {
+                    if (timerId != null) return
+                    timerId = setTimeout(() => {
+                        show.value = true
+                    }, 100)
+                } else {
+                    if (timerId != null) {
+                        clearTimeout(timerId)
+                        timerId = null
+                    }
+                    show.value = false
+                }
+            }, { immediate: true })
+        } else {
+            show = toRef(props, "show")
+        }
+
         const drawOverlay = (content: Slot | undefined) => (
             <Transition name={!props.noTransition ? (props.transition ?? "as-transition-fade") : undefined}>
-                {props.show && <div
+                {show.value && <div
                     ref={backdrop}
                     onClick={event => event.target == backdrop.value && ctx.emit("backdropClick")}
                     style="pointer-events: auto; z-index: 20"
