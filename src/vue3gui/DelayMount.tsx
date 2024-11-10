@@ -3,7 +3,7 @@ import { defineComponent, onMounted, onUnmounted, ref } from "vue"
 export const DelayMount = (defineComponent({
     name: "DelayMount",
     props: {
-        time: { type: Number }
+        time: { type: Number },
     },
     setup(props, ctx) {
         const mount = ref(false)
@@ -22,5 +22,5 @@ export const DelayMount = (defineComponent({
         return () => (
             mount.value && ctx.slots.default?.()
         )
-    }
+    },
 }))

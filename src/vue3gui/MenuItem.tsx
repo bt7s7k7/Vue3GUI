@@ -11,14 +11,14 @@ export namespace MenuItemProps {
     export const STYLE = {
         noContextMenu: { type: Boolean },
         noKebab: { type: Boolean },
-        forceWidth: { type: Boolean }
+        forceWidth: { type: Boolean },
     }
 
     export type Style = Partial<ExtractPropTypes<typeof STYLE>>
 
     export const FUNCTION = {
         defaultAction: { type: Boolean },
-        elevated: { type: Boolean }
+        elevated: { type: Boolean },
     }
 
     export type Function = Partial<ExtractPropTypes<typeof FUNCTION>>
@@ -32,13 +32,13 @@ export const MenuItem = eventDecorator(defineComponent({
     emits: {
         click: (event: MouseEvent) => true,
         mouseDown: (event: MouseEvent) => true,
-        open: (menu: MenuOpenEvent) => true
+        open: (menu: MenuOpenEvent) => true,
     },
     props: {
         ...ButtonProps.STYLE,
         ...ButtonProps.FUNCTION,
         ...MenuItemProps.STYLE,
-        ...MenuItemProps.FUNCTION
+        ...MenuItemProps.FUNCTION,
     },
     setup(props, ctx) {
         const emitter = useDynamicsEmitter()
@@ -91,14 +91,14 @@ export const MenuItem = eventDecorator(defineComponent({
                             </ButtonGroup>
                         </div>
                     )
-                }
+                },
             }, {
                 props: {
                     backdropCancels: true,
                     class: "border rounded p-0",
                     noDefaultStyle: true,
-                    noTransition: true
-                }
+                    noTransition: true,
+                },
             })
 
             menuOpen.value = true
@@ -178,7 +178,7 @@ export const MenuItem = eventDecorator(defineComponent({
                 <ButtonGroup clear>{elevated}</ButtonGroup>
             </Button>
         }
-    }
+    },
 }))
 
 export const MenuContent = (defineComponent({
@@ -187,5 +187,5 @@ export const MenuContent = (defineComponent({
         return () => (
             <div>{ctx.slots.default?.()}</div>
         )
-    }
+    },
 }))

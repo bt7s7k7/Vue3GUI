@@ -6,12 +6,12 @@ export const Fold = eventDecorator(defineComponent({
     props: {
         negative: {
             type: Boolean,
-            default: false
+            default: false,
         },
         open: {
-            type: Object as PropType<Ref<boolean>>
+            type: Object as PropType<Ref<boolean>>,
         },
-        hiddenText: { type: String }
+        hiddenText: { type: String },
     },
     setup(props, ctx) {
         const open = ref(props.open ?? false)
@@ -30,5 +30,5 @@ export const Fold = eventDecorator(defineComponent({
                 </span>
             </span>
         )
-    }
+    },
 }))

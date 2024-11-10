@@ -2,10 +2,10 @@ import { computed, defineComponent, PropType, Transition } from "vue"
 import { LoadingIndicator } from "./LoadingIndicator"
 import { StateInfo } from "./StateInfo"
 
-const stateTypeLookup: Record<StateInfo["type"], Function> = {
+const stateTypeLookup: Record<StateInfo["type"], (...args: any[]) => any> = {
     error: () => <div class="w-5-em h-5-em bg-danger circle flex center user-select-none"><b>!</b></div>,
     done: () => <div class="w-2-em h-2-em bg-success circle"></div>,
-    working: () => <LoadingIndicator prewarm inline />
+    working: () => <LoadingIndicator prewarm inline />,
 }
 
 export const StateCard = (defineComponent({
@@ -17,14 +17,14 @@ export const StateCard = (defineComponent({
         error: { type: Boolean },
         working: { type: Boolean },
         done: { type: Boolean },
-        textClass: { type: null }
+        textClass: { type: null },
     },
     setup(props, ctx) {
         const type = computed<StateInfo["type"]>(() =>
             props.done ? "done"
                 : props.error ? "error"
                     : props.working ? "working"
-                        : props.state?.type ?? "working"
+                        : props.state?.type ?? "working",
         )
 
         return () => (
@@ -44,5 +44,5 @@ export const StateCard = (defineComponent({
                 </div>
             </div>
         )
-    }
+    },
 }))

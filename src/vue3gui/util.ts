@@ -21,7 +21,7 @@ export function numberModel(ref: { value: number | null }, options: _NumberModel
             let number = (options.integer ? parseInt : parseFloat)(newValue)
             if (isNaN(number)) number = 0
             ref.value = number
-        }
+        },
     })
 }
 
@@ -31,7 +31,7 @@ export const TRANSITION_NAMES = [
     "slide-down",
     "slide-left",
     "slide-right",
-    "shrink"
+    "shrink",
 ] as const
 
 export interface AsyncComputedOptions<T, R> extends WatchOptions {
@@ -72,7 +72,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
                         ret.value = newValue
                     }
                 }
-            }
+            },
         ).finally(() => ret.loading = false)
     }
 
@@ -81,7 +81,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
         value: null,
         loading: true,
         error: null,
-        reload: () => reload(inputs())
+        reload: () => reload(inputs()),
     }) as { value: R | null, loading: boolean, error: any | null, reload: () => Promise<void> }
 
     watch(inputs, (inputs) => {
@@ -126,7 +126,7 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, intermediateUpdates
         updateNow() {
             clearTimeout(timeoutID)
             result.value = value.value
-        }
+        },
     })
 
     return result as typeof result & { updateNow(): void }
@@ -221,7 +221,7 @@ export function setPropertyReactive<T, K extends keyof T>(target: T, prop: K, op
         Object.defineProperty(target, prop, {
             get: () => store.value,
             enumerable: true,
-            configurable: true
+            configurable: true,
         })
     } else {
         const store = (options?.shallow ? shallowRef : ref)(target[prop as keyof T])
@@ -230,12 +230,12 @@ export function setPropertyReactive<T, K extends keyof T>(target: T, prop: K, op
             get: () => store.value,
             set: (value) => store.value = value,
             enumerable: true,
-            configurable: true
+            configurable: true,
         })
     }
 }
 
-const _classSymbols = new Map<abstract new (...args: any) => any, Symbol>()
+const _classSymbols = new Map<abstract new (...args: any) => any, symbol>()
 export function getClassSymbol<T extends abstract new (...args: any) => any, R = { value: InstanceType<T> | null }>(ctor: T): InjectionKey<R> {
     let symbol = _classSymbols.get(ctor)
     if (symbol != null) return symbol

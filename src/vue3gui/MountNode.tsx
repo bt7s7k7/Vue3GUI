@@ -3,7 +3,7 @@ import { ComponentInternalInstance, PropType, createCommentVNode, defineComponen
 export const MountNode = (defineComponent({
     name: "MountElement",
     props: {
-        node: { type: Node as PropType<Node | null> }
+        node: { type: Node as PropType<Node | null> },
     },
     setup(props, ctx) {
         let instance: ComponentInternalInstance | null = null
@@ -51,5 +51,5 @@ export const MountNode = (defineComponent({
         return () => (
             createCommentVNode("MountNode")
         )
-    }
+    },
 }))

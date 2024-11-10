@@ -19,7 +19,7 @@ export function useGrab<T = null>({
     button = 0,
     onMove = (event: GrabMoveEvent, state: T) => { },
     onMoveEnd = (event: GrabMoveEvent, state: T) => { },
-    onMoveStart = (event: GrabMoveEvent & { nativeEvent: Event }, reject: () => void): T => { return null! as T }
+    onMoveStart = (event: GrabMoveEvent & { nativeEvent: Event }, reject: () => void): T => { return null! as T },
 } = {}) {
     let dragging = false
     let startX = 0
@@ -67,7 +67,7 @@ export function useGrab<T = null>({
             onMove({
                 startX, startY, currentX, currentY,
                 deltaX: currentX - startX, deltaY: currentY - startY,
-                moveX, moveY
+                moveX, moveY,
             }, state)
         }
 
@@ -83,7 +83,7 @@ export function useGrab<T = null>({
             onMoveEnd({
                 startX, startY, currentX, currentY,
                 deltaX: currentX - startX, deltaY: currentY - startY,
-                moveX, moveY
+                moveX, moveY,
             }, state)
         }
 

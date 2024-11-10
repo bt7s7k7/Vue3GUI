@@ -12,25 +12,25 @@ export const Modal = eventDecorator(defineComponent({
             type: String as PropType<Variant | "clear">,
         },
         cancelButton: {
-            type: [Boolean, String]
+            type: [Boolean, String],
         },
         okButton: {
-            type: [Boolean, String]
+            type: [Boolean, String],
         },
         backdropCancels: {
             type: null as unknown as PropType<undefined | boolean | null>,
-            default: null
+            default: null,
         },
         ignoreEnter: { type: Boolean },
         contentClass: { type: null },
         noDefaultStyle: { type: Boolean },
-        contain: { type: Boolean }
+        contain: { type: Boolean },
     },
     inheritAttrs: false,
     emits: {
         cancel: () => true,
         ok: () => true,
-        mounted: (element: HTMLDivElement) => true
+        mounted: (element: HTMLDivElement) => true,
     },
     setup(props, ctx) {
         const overlayProps = computed(() => {
@@ -120,7 +120,7 @@ export const Modal = eventDecorator(defineComponent({
                         props.background ? `bg-${props.background}` : "bg-default",
                         !props.noDefaultStyle && "p-2 w-min-200 h-min-100 as-reset rounded w-max-fill",
                         props.fill && "flex-fill",
-                        props.contain && "as-overlay-contain"
+                        props.contain && "as-overlay-contain",
                     ]}
                     {...ctx.attrs}
                     ref={notify}
@@ -138,7 +138,7 @@ export const Modal = eventDecorator(defineComponent({
                 </div>
             </Transition>
         </Overlay>
-    }
+    },
 }))
 
 export function useModal(options: { show?: boolean, onMounted?: (element: HTMLElement) => void } = {}) {
@@ -158,7 +158,7 @@ export function useModal(options: { show?: boolean, onMounted?: (element: HTMLEl
             onMounted: (element: any) => {
                 ret.element = element
                 options?.onMounted?.(element)
-            }
+            },
         },
         open: () => {
             return new Promise<boolean>(v => {
@@ -171,7 +171,7 @@ export function useModal(options: { show?: boolean, onMounted?: (element: HTMLEl
             ret.props.show = false
             resolve?.(success)
             resolve = null
-        }
+        },
     })
 
     return ret

@@ -19,7 +19,7 @@ function useState() {
             this.type = "working"
             this.text = text
             return this
-        }
+        },
     })
 }
 

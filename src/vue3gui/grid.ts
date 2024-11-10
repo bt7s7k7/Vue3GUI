@@ -11,7 +11,7 @@ function ensureValue(value: string | number) {
  * */
 export function grid() {
     const data: CSSProperties = {
-        display: "grid"
+        display: "grid",
     }
 
     let isContainer = false
@@ -86,6 +86,6 @@ export function grid() {
         get $() {
             if (isChild && !isContainer) delete data["display"]
             return data
-        }
+        },
     }
 }

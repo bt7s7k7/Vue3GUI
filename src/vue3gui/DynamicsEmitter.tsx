@@ -69,18 +69,18 @@ const ButtonDefinitionRenderer = defineComponent({
     props: {
         definition: {
             type: Array as PropType<ButtonDefinition[]>,
-            required: true
+            required: true,
         },
         close: {
             type: null as unknown as PropType<(success?: boolean) => void>,
-            required: true
-        }
+            required: true,
+        },
     },
     setup(props) {
         return () => props.definition.map(({ callback, label, variant }, i) =>
-            <Button clear onClick={() => callback(props.close)} variant={variant} class={[!!variant && `text-${variant}`]} key={i}>{label}</Button>
+            <Button clear onClick={() => callback(props.close)} variant={variant} class={[!!variant && `text-${variant}`]} key={i}>{label}</Button>,
         )
-    }
+    },
 })
 
 export interface DynamicsEmitter extends ReturnType<typeof makeDynamicEmitter> { }
@@ -91,7 +91,7 @@ const AlertPopup = defineComponent({
     name: "AlertPopup",
     props: {
         state: { type: String as PropType<StateInfo["type"]> },
-        content: { type: null, required: true }
+        content: { type: null, required: true },
     },
     setup(props) {
 
@@ -109,7 +109,7 @@ const AlertPopup = defineComponent({
                 </div> : <content.value />}
             </div>
         )
-    }
+    },
 })
 
 function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter: DynamicsEmitter) => void) {
@@ -123,7 +123,7 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                 props: options.props ?? {},
                 id: nextID++,
                 buttons: options.buttons ?? [],
-                contentProps: options.contentProps
+                contentProps: options.contentProps,
             }
 
             this.modals.push(modal)
@@ -144,7 +144,7 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                 cancel: () => promise.controller.close(false),
                 submit: () => promise.controller.close(true),
                 resultFactory: () => { throw new Error("Result factory was not set") },
-                controller: null!
+                controller: null!,
             }
 
             if ("value" in content) {
@@ -157,8 +157,8 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                 ...options,
                 contentProps: {
                     handle,
-                    ...options.contentProps
-                }
+                    ...options.contentProps,
+                },
             })
 
             handle.controller = promise.controller
@@ -215,7 +215,7 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                                 {state && <StateCard class="mt-3" state={state} />}
                             </>
                         )
-                    }
+                    },
                 })
 
                 const promise = this.modal(component, {
@@ -223,8 +223,8 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                     props: {
                         okButton: true,
                         cancelButton: options.cancelable ?? true,
-                        ...options.props
-                    }
+                        ...options.props,
+                    },
                 })
 
                 promise.then(ok => resolve(ok ? result.value : null))
@@ -250,15 +250,15 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                                 </Button>)}
                             </div>
                         </>
-                    }
+                    },
                 })
 
                 const promise = this.modal(component, {
                     ...options,
                     props: {
                         cancelButton: options.cancelable ?? true,
-                        ...options.props
-                    }
+                        ...options.props,
+                    },
                 })
 
                 promise.then(ok => resolve(ok ? result.value : null))
@@ -270,7 +270,7 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
             return this.modal(AlertPopup, {
                 ...options,
                 props: { cancelButton: true, ...options.props },
-                contentProps: { content, state, ...options.props }
+                contentProps: { content, state, ...options.props },
             })
         },
         confirm(content: ModalDefinition["content"], options: ModalOptions = {}) {
@@ -279,13 +279,13 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                 props: {
                     okButton: true,
                     ...options.props,
-                }
+                },
             })
         },
         work(message: any = "", options: ModalOptions = {}) {
             const result = reactive({
                 message,
-                done: null! as () => void
+                done: null! as () => void,
             })
 
             const { controller } = this.modal(AlertPopup, { ...options, contentProps: { content: computed(() => result.message), state: "working", ...options.contentProps } })
@@ -343,9 +343,9 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                     ...options.props,
                     style: {
                         position: "absolute", ...pos, minWidth: "unset", minHeight: "unset",
-                        ...(options.props?.style != null && typeof options.props.style == "object" ? options.props.style : undefined)
-                    }
-                }
+                        ...(options.props?.style != null && typeof options.props.style == "object" ? options.props.style : undefined),
+                    },
+                },
             })
         },
         menu(target: MenuTarget, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
@@ -379,11 +379,11 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
                             element.style.top = `${start.y - rect.height}px`
                         }
                     })
-                }
+                },
             })
 
             return modal
-        }
+        },
     })
 
     callback(DYNAMICS_EMITTER_KEY, emitter)
@@ -413,9 +413,9 @@ export const DynamicsEmitter = (defineComponent({
                 {emitter.modals.map(modal => <Modal {...modal.props} {...modal.controller.props} key={modal.id}>{{
                     default: () => typeof modal.content == "string" ? modal.content
                         : <modal.content {...modal.contentProps} />,
-                    buttons: () => modal.buttons && <ButtonDefinitionRenderer definition={modal.buttons} close={(v = false) => modal.controller.close(v)} />
+                    buttons: () => modal.buttons && <ButtonDefinitionRenderer definition={modal.buttons} close={(v = false) => modal.controller.close(v)} />,
                 }}</Modal>)}
             </>
         )
-    }
+    },
 }))

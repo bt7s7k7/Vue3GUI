@@ -15,13 +15,13 @@ export const Slider = eventDecorator(defineComponent({
         min: { type: Number, default: 0 },
         max: { type: Number, default: 1 },
         step: { type: Number, default: 0.1 },
-        stepped: { type: Boolean }
+        stepped: { type: Boolean },
     },
     emits: {
         "update:modelValue": (value: number) => true,
         "input": (value: number) => true,
         "dragStart": () => true,
-        "dragEnd": () => true
+        "dragEnd": () => true,
     },
     setup(props, ctx) {
         const value = ref(props.modelValue)
@@ -69,7 +69,7 @@ export const Slider = eventDecorator(defineComponent({
             onMove: handleUpdate,
             onMoveEnd() {
                 ctx.emit("dragEnd")
-            }
+            },
         })
 
         const steps = computed(() => {
@@ -106,5 +106,5 @@ export const Slider = eventDecorator(defineComponent({
                 </div>
             )
         }
-    }
+    },
 }))

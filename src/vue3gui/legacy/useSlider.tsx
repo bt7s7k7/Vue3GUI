@@ -49,7 +49,7 @@ export function useSlider(options: SliderHookOptions) {
             initialValue: value.value,
             containerSize: containerRect[direction.size],
             containerPos: containerRect[direction.axis],
-            initialError: 0
+            initialError: 0,
         }
     }
 
@@ -109,7 +109,7 @@ export function useSlider(options: SliderHookOptions) {
         direction,
         container: container,
         slider,
-        start
+        start,
     })
 
     watch(value, value => {
@@ -134,13 +134,13 @@ export const LegacySlider = eventDecorator(defineComponent({
         type: { type: String as PropType<"start" | "end">, default: "start" },
         initialValue: {
             type: Number,
-            default: 0
-        }
+            default: 0,
+        },
     },
     emits: {
         "input": (value: number) => true,
         "changed": (value: number) => true,
-        "error": (error: number) => true
+        "error": (error: number) => true,
     },
     setup(props, ctx) {
 
@@ -150,7 +150,7 @@ export const LegacySlider = eventDecorator(defineComponent({
             pivot: props.type,
             onChange: v => ctx.emit("changed", v),
             onUpdate: v => ctx.emit("input", v),
-            onError: v => ctx.emit("error", v)
+            onError: v => ctx.emit("error", v),
         })
 
         return () => (
@@ -164,5 +164,5 @@ export const LegacySlider = eventDecorator(defineComponent({
                 </div>
             </div>
         )
-    }
+    },
 }))

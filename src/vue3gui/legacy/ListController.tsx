@@ -13,12 +13,12 @@ export function useListController<T>(options: {
         props: {
             renderElem: {
                 type: Function as PropType<(elem: T, index: number) => any>,
-                required: true
+                required: true,
             },
             label: {
                 type: String,
-                required: false
-            }
+                required: false,
+            },
         },
         setup(props, ctx) {
             return () => (
@@ -40,7 +40,7 @@ export function useListController<T>(options: {
                     </div>}
                 </div>
             )
-        }
+        },
     }))
 
     class Controller {

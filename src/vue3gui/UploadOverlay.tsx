@@ -6,7 +6,7 @@ import { Overlay, OverlayProps } from "./Overlay"
 export const UploadOverlay = eventDecorator(defineComponent({
     name: "UploadOverlay",
     emits: {
-        drop: (files: File[], raw: FileList) => true
+        drop: (files: File[], raw: FileList) => true,
     },
     props: OverlayProps.BASE_PROPS,
     setup(props, ctx) {
@@ -40,8 +40,8 @@ export const UploadOverlay = eventDecorator(defineComponent({
                             {showChildren.value && <div></div>}
                         </Transition>
                     </div>
-                </div>
+                </div>,
             }}</Overlay>
         )
-    }
+    },
 }))

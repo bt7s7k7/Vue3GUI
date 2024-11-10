@@ -23,7 +23,7 @@ export function useTabs<T extends Record<string, any>>(tabs: T = {} as T, defaul
         next() {
             const index = this.list.findIndex(v => v[0] == this.selected) % this.list.length
             this.selected = this.list[index][0]
-        }
+        },
     })
 
     return state as any
@@ -37,14 +37,14 @@ const _TABS_PROPS = {
     /** Tabs definition from `useTabs` */
     tabs: {
         type: Object as PropType<TabsStateBase>,
-        required: true as const
+        required: true as const,
     },
     /** Remove gap between tab buttons */
     compact: { type: Boolean },
     /** Set style for individual tab buttons */
     buttonClass: { type: String },
     /** Retro-style skeuomorphic tabs */
-    border: { type: Boolean }
+    border: { type: Boolean },
 }
 type _TabsProps = ExtractPropTypes<typeof _TABS_PROPS>
 
@@ -131,7 +131,7 @@ export const Tabs = (defineComponent({
                 ))}
             </div>
         )
-    }
+    },
 }))
 
 interface _ChildTab {
@@ -148,7 +148,7 @@ export const TabbedContainer = (defineComponent({
         tabsWrapper: { type: Function as PropType<(vnode: any) => any> },
         /** By default this component renders both the tabs and the content, by using this only content will be rendered and the provided state updated for your own `Tabs` component. */
         externalTabs: { type: Object as PropType<TabsStateBase> },
-        ...NATIVE_EVENTS
+        ...NATIVE_EVENTS,
     },
     setup(props, ctx) {
         function getChildren() {
@@ -206,18 +206,18 @@ export const TabbedContainer = (defineComponent({
                 )
             }
         }
-    }
+    },
 }))
 
 export const Tab = (defineComponent({
     name: "Tab",
     props: {
         name: { type: String, required: true },
-        label: { type: null as unknown as PropType<String | (() => any)> },
+        label: { type: null as unknown as PropType<string | (() => any)> },
     },
     setup(props, ctx) {
         return () => (
             ctx.slots.default?.()
         )
-    }
+    },
 }))

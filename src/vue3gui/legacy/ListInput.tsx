@@ -47,8 +47,8 @@ export function useListInput<T>(_list: Ref<T[]> | T[], options: ListInputHookOpt
                 options.disposer?.(value)
                 this.items.splice(index, 1)
                 options.onChange?.({ type: "delete", index, value, state: this.items as T[] })
-            }
-        } as ComponentProps<typeof ListInput>
+            },
+        } as ComponentProps<typeof ListInput>,
     }
 
     ret.props.onAdd = ret.props.onAdd!.bind(ret.props)
@@ -62,21 +62,21 @@ export const ListInput = eventDecorator(defineComponent({
     name: "ListInput",
     props: {
         listClass: {
-            type: null
+            type: null,
         },
         itemClass: {
-            type: null
+            type: null,
         },
         titleClass: { type: null },
         title: {
-            type: String
+            type: String,
         },
         items: {
             type: Array,
-            required: true
+            required: true,
         },
         key: {
-            type: Function as PropType<(v: any, index: number) => string>
+            type: Function as PropType<(v: any, index: number) => string>,
         },
         addButton: { type: Boolean },
         deleteButton: { type: Boolean },
@@ -84,7 +84,7 @@ export const ListInput = eventDecorator(defineComponent({
     },
     emits: {
         add: (length: number) => true,
-        remove: (index: number, value: any) => true
+        remove: (index: number, value: any) => true,
     },
     setup(props, ctx) {
         const slots = ctx.slots as ListInput.Slots
@@ -119,7 +119,7 @@ export const ListInput = eventDecorator(defineComponent({
                 </div>}
             </div>
         )
-    }
+    },
 }))
 
 /** @deprecated */

@@ -53,7 +53,7 @@ export abstract class Menu<T> {
                         this.renderItem(item),
                         <div class="ml-2" key={this.getKey(item) + "_children"}>
                             {this.renderItems(children)}
-                        </div>
+                        </div>,
                     ]
                 }
             })}

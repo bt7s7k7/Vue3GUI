@@ -30,9 +30,9 @@ export function useAbsoluteResize(strategy: "max" | "last" | "first" = "max") {
     const ret = {
         targetProps: {
             ref: target,
-            style: reactive({ height: computed(() => height.value + "px"), transition: "height 0.1s ease-in-out" })
+            style: reactive({ height: computed(() => height.value + "px"), transition: "height 0.1s ease-in-out" }),
         },
-        recalculate
+        recalculate,
     }
 
     return ret

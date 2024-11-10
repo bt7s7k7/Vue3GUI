@@ -18,11 +18,11 @@ export const ProgressBar = (defineComponent({
                 props.inline && "inline",
                 props.indeterminate || isNaN(props.progress) && "indeterminate",
                 props.transition && "transition",
-                props.variant && `text-${props.variant}`
+                props.variant && `text-${props.variant}`,
             ]} stroke="currentColor" fill="none">
                 {props.filler && <line x1="0" x2="200" y1="1" y2="1" class="filler" />}
                 <line x1="0" x2="200" y1="1" y2="1" class="main" pathLength="1" stroke-dashoffset={1 * (1 - props.progress)} />
             </svg>
         )
-    }
+    },
 }))

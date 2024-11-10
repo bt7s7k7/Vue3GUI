@@ -7,7 +7,7 @@ import { Variant } from "./variants"
 type TextFieldValidity = ValidityState & { customError: boolean }
 const _DEFAULT_VALIDITY: TextFieldValidity = {
     badInput: false, customError: false, patternMismatch: false, rangeOverflow: false, rangeUnderflow: false,
-    stepMismatch: false, tooLong: false, tooShort: false, typeMismatch: false, valid: true, valueMissing: false
+    stepMismatch: false, tooLong: false, tooShort: false, typeMismatch: false, valid: true, valueMissing: false,
 }
 
 export const TextField = eventDecorator(defineComponent({
@@ -15,11 +15,11 @@ export const TextField = eventDecorator(defineComponent({
     props: {
         modelValue: {
             type: String,
-            default: ""
+            default: "",
         },
         type: {
             type: String as PropType<"text" | "number" | "password" | "email" | "date" | "datetime-local" | "month" | "tel" | "url" | "time" | "week">,
-            default: "text"
+            default: "text",
         },
         variant: {
             type: String as PropType<Variant>,
@@ -54,7 +54,7 @@ export const TextField = eventDecorator(defineComponent({
         "change": (value: string) => true,
         "blur": () => true,
         "focus": () => true,
-        "errorChanged": (error: string, state: TextFieldValidity) => true
+        "errorChanged": (error: string, state: TextFieldValidity) => true,
     },
     setup(props, ctx) {
         const emitter = useDynamicsEmitter()
@@ -189,7 +189,7 @@ export const TextField = eventDecorator(defineComponent({
                         props.borderVariant && `border-${props.borderVariant}`,
                         props.plain && "-plain",
                         showLabel && "-show-label",
-                        always && "-always"
+                        always && "-always",
                     ]}
                     style={[props.plain || hasLabel ? `--text-field-color: var(--bg-${highlight})` : ""]}
                 >
@@ -234,7 +234,7 @@ export const TextField = eventDecorator(defineComponent({
                     style: {
                         marginLeft: `calc(-1 * var(--size-int))`,
                         marginTop: `calc(-1 * var(--size-int))`,
-                    }
+                    },
                 },
                 onMounted() {
                     setTimeout(() => {
@@ -283,5 +283,5 @@ export const TextField = eventDecorator(defineComponent({
                 render()
             )
         )
-    }
+    },
 }))

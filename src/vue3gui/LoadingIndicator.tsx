@@ -14,5 +14,5 @@ export const LoadingIndicator = (defineComponent({
                 <div></div>
             </div>
         )
-    }
+    },
 }))

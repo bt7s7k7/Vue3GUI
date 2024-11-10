@@ -9,35 +9,35 @@ export namespace OverlayProps {
             type: String as PropType<Variant | "clear">,
         },
         noTransition: {
-            type: Boolean
+            type: Boolean,
         },
         fill: {
-            type: Boolean
+            type: Boolean,
         },
         transition: {
-            type: String
+            type: String,
         },
         debounce: {
-            type: Boolean
-        }
+            type: Boolean,
+        },
     }
 
     export const PROPS = {
         ...BASE_PROPS,
         show: {
             type: Boolean,
-            required: false
-        }
+            required: false,
+        },
     }
 
     export const EXTENDED_PROPS = {
         ...PROPS,
         fullScreen: {
-            type: Boolean
+            type: Boolean,
         },
         overlayClass: { type: null },
         tag: { type: String, default: () => "div" },
-        loading: { type: Boolean }
+        loading: { type: Boolean },
     }
 }
 
@@ -45,7 +45,7 @@ export const Overlay = eventDecorator(defineComponent({
     name: "Overlay",
     props: OverlayProps.EXTENDED_PROPS,
     emits: {
-        backdropClick: () => true
+        backdropClick: () => true,
     },
     setup(props, ctx) {
         const backdrop = ref<HTMLDivElement>()
@@ -82,7 +82,7 @@ export const Overlay = eventDecorator(defineComponent({
                         props.overlayClass, "flex",
                         props.variant != "clear" && `bg-${props.variant ?? "black"}-transparent`,
                         props.fill ? "column p-2" : "center",
-                        props.fullScreen ? "as-fullscreen-overlay as-reset" : "absolute-fill"
+                        props.fullScreen ? "as-fullscreen-overlay as-reset" : "absolute-fill",
                     ]}
                 >
                     {content?.() ?? (props.loading ? <LoadingIndicator /> : null)}
@@ -99,11 +99,11 @@ export const Overlay = eventDecorator(defineComponent({
             else return (
                 h(props.tag, {}, [
                     ctx.slots.default?.(),
-                    drawOverlay(ctx.slots.overlay)
+                    drawOverlay(ctx.slots.overlay),
                 ])
             )
         }
-    }
+    },
 }))
 
 Overlay.fullScreenTarget = "body"

@@ -16,7 +16,7 @@ export namespace ButtonProps {
         disabled: { type: Boolean },
         plain: { type: Boolean },
         shadow: { type: Boolean },
-        selected: { type: Boolean }
+        selected: { type: Boolean },
     }
 
     export type Style = Partial<ExtractPropTypes<typeof STYLE>>
@@ -33,7 +33,7 @@ export namespace ButtonProps {
         nativeProps: { type: Object as PropType<ButtonHTMLAttributes> },
         label: { type: String },
         icon: { type: String },
-        forceFocus: { type: Boolean }
+        forceFocus: { type: Boolean },
     }
 
     export type Function = Partial<ExtractPropTypes<typeof FUNCTION>> & { onClick?(click: MouseEvent): void, onMouseDown?(click: MouseEvent): void, }
@@ -55,7 +55,7 @@ export const Button = eventDecorator(defineComponent({
     },
     props: {
         ...ButtonProps.STYLE,
-        ...ButtonProps.FUNCTION
+        ...ButtonProps.FUNCTION,
     },
     setup(props, ctx) {
         const groupData = inject(ButtonProps.GROUP_SYMBOL, undefined)
@@ -99,18 +99,18 @@ export const Button = eventDecorator(defineComponent({
                     ...(disabled ? { disabled: true } : {}),
                     ...(props.replace ? { replace: true } : {}),
                     onClick: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("click", event) },
-                    onMousedown: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("mouseDown", event) }
+                    onMousedown: (event: MouseEvent) => { event.stopPropagation(); ctx.emit("mouseDown", event) },
                 },
                 {
                     default: (props.label || props.icon) ? (
                         () => [props.icon && <Icon icon={props.icon} />, props.label && props.icon && " ", props.label, ctx.slots.default?.()]
                     ) : (
                         ctx.slots.default ?? (() => "")
-                    )
-                }
+                    ),
+                },
             )
         }
-    }
+    },
 }))
 
 export const _STYLE_KEYS = Object.keys(ButtonProps.STYLE) as (keyof typeof ButtonProps.STYLE | "class" | "style")[]
@@ -148,5 +148,5 @@ export const ButtonGroup = defineComponent({
             ))}
             {ctx.slots.default?.()}
         </>
-    }
+    },
 })

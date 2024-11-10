@@ -63,8 +63,8 @@ export function useDropTarget(options: {
                     options.onDrop?.(event.dataTransfer)
                 }
             },
-            "data-drop-target-id": id
-        }
+            "data-drop-target-id": id,
+        },
     })
 
     return ret
@@ -87,8 +87,8 @@ export function useDraggable(options: {
             onDragend() {
                 ret.dragged = false
                 options.onStateChanged?.(ret.dragged)
-            }
-        }
+            },
+        },
     })
 
     return ret
@@ -108,7 +108,7 @@ export function useFileDropTarget(options: {
         },
         onDrop(transfer) {
             options.onDrop(Array.from(transfer.files), transfer.files)
-        }
+        },
     })
 
     return ret

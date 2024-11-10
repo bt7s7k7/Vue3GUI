@@ -7,20 +7,20 @@ export const Icon = eventDecorator(defineComponent({
     props: {
         icon: {
             type: String,
-            required: true
+            required: true,
         },
         scale: {
-            type: [Number, String]
+            type: [Number, String],
         },
         color: {
-            type: String
+            type: String,
         },
         variant: {
-            type: String as PropType<Variant>
+            type: String as PropType<Variant>,
         },
         rotate: {
-            type: [Number, String]
-        }
+            type: [Number, String],
+        },
     },
     setup(props, ctx) {
         const style = computed(() => {
@@ -53,5 +53,5 @@ export const Icon = eventDecorator(defineComponent({
                 </g>
             </svg>
         )
-    }
+    },
 }))
