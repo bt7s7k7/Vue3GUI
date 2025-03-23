@@ -34,6 +34,7 @@ export namespace ButtonProps {
         label: { type: String },
         icon: { type: String },
         forceFocus: { type: Boolean },
+        nativeElement: { type: String, default: "button" },
     }
 
     export type Function = Partial<ExtractPropTypes<typeof FUNCTION>> & { onClick?(click: MouseEvent): void, onMouseDown?(click: MouseEvent): void, }
@@ -75,7 +76,7 @@ export const Button = eventDecorator(defineComponent({
             return (h as any)(
                 props.href ? "a" :
                     props.to ? routerLink :
-                        "button",
+                        props.nativeElement,
                 {
                     ...props.nativeProps,
                     class: !plain && [
