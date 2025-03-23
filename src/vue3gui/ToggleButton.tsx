@@ -49,8 +49,9 @@ export const ToggleButton = eventDecorator(defineComponent({
             const { modelValue: _0, focus: _1, fieldProps: _2, required: _3, ...buttonProps } = props
 
             return (
-                <Button {...buttonProps} nativeElement={"label"} class="px-0 pr-1">
+                <Button {...buttonProps} nativeElement={"label"} class="px-1 gap-1 flex row center-cross">
                     <input
+                        class="m-0"
                         type="checkbox"
                         required={props.required}
                         disabled={disabled}
