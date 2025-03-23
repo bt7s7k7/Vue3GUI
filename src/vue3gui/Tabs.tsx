@@ -3,13 +3,13 @@ import { Button } from "./Button"
 import { NATIVE_EVENTS, normalizeVNodeChildren } from "./util"
 import { Variant } from "./variants"
 
-interface TypedTabsState<T extends Record<string, string> = Record<string, string>> {
+export interface TypedTabsState<T extends Record<string, string> = Record<string, string>> {
     selected: keyof T
     list: [keyof T, string][]
     next(): void
 }
 
-interface TabsStateBase {
+export interface TabsStateBase {
     selected: string | null
     list: [string, any][]
 }
