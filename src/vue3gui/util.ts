@@ -284,3 +284,24 @@ export function normalizeClass(value: unknown): string {
     }
     return res.trim()
 }
+
+export function useLocalStorageValue<T = string>(key: string, {
+    defaultValue = "" as T,
+    store = ref<T>(defaultValue) as Ref<T>,
+    serialize = (v => v) as (value: T) => string,
+    deserialize = (v => v) as (value: string) => T | null,
+} = {}) {
+    const existing = localStorage.getItem(key)
+    if (existing != null) {
+        const deserialized = deserialize(existing)
+        if (deserialized != null) {
+            store.value = deserialized as T
+        }
+    }
+
+    watch(store, value => {
+        localStorage.setItem(key, serialize(value))
+    })
+
+    return store
+}
