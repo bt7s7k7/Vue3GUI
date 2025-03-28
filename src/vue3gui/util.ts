@@ -201,14 +201,14 @@ if (WINDOW_SIZE != null) {
     })
 }
 
-export function useResizeWatcher(callback?: (() => void) | null, options: { immediate?: boolean } = {}) {
+export function useResizeWatcher(callback?: ((size: NonNullable<typeof WINDOW_SIZE>) => void) | null, options: { immediate?: boolean } = {}) {
     if (WINDOW_SIZE == null) throw new Error("Cannot useResizeWatcher because there is no window (self.window == undefined)")
     watch(() => WINDOW_SIZE, () => {
-        callback?.()
+        callback?.(WINDOW_SIZE)
     }, { deep: true })
 
     if (options.immediate) {
-        onMounted(() => callback?.())
+        onMounted(() => callback?.(WINDOW_SIZE))
     }
 
     return WINDOW_SIZE
