@@ -18,35 +18,48 @@ export function grid() {
     let isChild = false
 
     return {
-        /** Sets the `grid-template-rows` property. All values are concatenated by a space. */
+        /**
+         * Sets the `grid-template-rows` property.
+         * Number values are multipliers for the `--size-int` CSS variable, string variables are copied verbatim
+         * (you can use `<>fr` for fill and `auto` for fit). All values are concatenated by a space.
+        */
         rows(...value: (string | number)[]) {
             data.gridTemplateRows = value.map(ensureValue).join(" ")
             isContainer = true
 
             return this
         },
-        /** Sets the `grid-template-columns` property. All values are concatenated by a space. */
+        /** Sets the `grid-template-columns` property.
+         * Number values are multipliers for the `--size-int` CSS variable, string variables are copied verbatim
+         * (you can use `<>fr` for fill and `auto` for fit). All values are concatenated by a space.
+        */
         columns(...value: (string | number)[]) {
             data.gridTemplateColumns = value.map(ensureValue).join(" ")
             isContainer = true
 
             return this
         },
-        /** Sets the `grid-auto-rows` property. All values are concatenated by a space. */
+        /** Sets the `grid-auto-rows` property.
+         * Number values are multipliers for the `--size-int` CSS variable, string variables are copied verbatim
+         * (you can use `<>fr` for fill and `auto` for fit). All values are concatenated by a space.
+        */
         autoRows(value: string | number) {
             data.gridAutoRows = ensureValue(value)
             isContainer = true
 
             return this
         },
-        /** Sets the `grid-auto-column` property. All values are concatenated by a space. */
+        /** Sets the `grid-auto-column` property.
+         * Number values are multipliers for the `--size-int` CSS variable, string variables are copied verbatim
+         * (you can use `<>fr` for fill and `auto` for fit). All values are concatenated by a space.
+        */
         autoColumns(value: string | number) {
             data.gridAutoColumns = ensureValue(value)
             isContainer = true
 
             return this
         },
-        /** Sets the `grid-column` property to specific coordinates. **The numbers start at 1!**. When end is not specified it is the same as start. */
+        /** Sets the `grid-column` property to specific coordinates. **The numbers start at 1!**. You can use `span <>` for size. When end is not specified it is the same as start. */
         left(start: number | string, end?: number | string) {
             isChild = true
 
@@ -58,7 +71,7 @@ export function grid() {
 
             return this
         },
-        /** Sets the `grid-row` property to specific coordinates. **The numbers start at 1!**. When end is not specified it is the same as start. */
+        /** Sets the `grid-row` property to specific coordinates. **The numbers start at 1!**. You can use `span <>` for size. When end is not specified it is the same as start. */
         top(start: number | string, end?: number | string) {
             isChild = true
 
