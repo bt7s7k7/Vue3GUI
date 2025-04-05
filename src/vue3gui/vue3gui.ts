@@ -3,7 +3,7 @@ import { App, DirectiveBinding, normalizeClass, normalizeStyle } from "vue"
 
 function* _applyChildDirective(el: unknown, binding: DirectiveBinding) {
     if (!(el instanceof HTMLElement)) {
-        throw new TypeError("Can only use v-affect on HTMLElement")
+        throw new TypeError("Can only use this directive on a HTMLElement")
     }
 
     let stride = 1
@@ -79,7 +79,7 @@ export const vue3gui = {
 
         app.directive("label", (el, binding, vnode, prevVNode) => {
             if (!(el instanceof HTMLElement)) {
-                throw new TypeError("Can only use v-affect on HTMLElement")
+                throw new TypeError("Can only use this directive on a HTMLElement")
             }
 
             _addClass(el, "hover-check")
