@@ -36,6 +36,10 @@
     background-color: var(--fg-color);
 }
 
+.bg-default {
+    background-color: var(--bg-default);
+}
+
 .bg-blur {
     backdrop-filter: blur(10px);
 }

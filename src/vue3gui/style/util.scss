@@ -123,7 +123,7 @@
         }
     }
 
-    &:hover, &.hover-check-force, &.force-focus {
+    &.hover-check-force, &.force-focus {
         .if-not-hover {
             display: none;
         }
@@ -134,6 +134,12 @@
 
         .if-not-hover-fade {
             opacity: 0;
+        }
+    }
+
+    &:hover {
+        .fade-delay {
+            transition: opacity 0.1s ease-in-out 0.5s;
         }
     }
 }
