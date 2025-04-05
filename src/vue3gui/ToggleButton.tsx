@@ -9,6 +9,7 @@ export const ToggleButton = eventDecorator(defineComponent({
         focus: { type: Boolean },
         fieldProps: { type: Object as PropType<InputHTMLAttributes> },
         required: { type: Boolean },
+        enabledStyle: { type: Object as PropType<ButtonProps.Style & { class?: any, style?: any }> },
         ...ButtonProps.FUNCTION,
         ...ButtonProps.STYLE,
     },
@@ -46,19 +47,23 @@ export const ToggleButton = eventDecorator(defineComponent({
 
         return () => {
             const disabled = props.disabled || inherited?.disabled
-            const { modelValue: _0, focus: _1, fieldProps: _2, required: _3, ...buttonProps } = props
+            const { modelValue: _0, focus: _1, fieldProps, required, enabledStyle, ...buttonProps } = props
+            const renderCheckbox = enabledStyle == null
 
             return (
-                <Button {...buttonProps} nativeElement={"label"} class="px-1 gap-1 flex row center-cross">
+                <Button
+                    {...buttonProps} nativeElement={"label"} class="px-1 gap-1 flex row center-cross"
+                    {...(enabledStyle != null && value.value ? enabledStyle : undefined)}
+                >
                     <input
-                        class="m-0"
+                        class={renderCheckbox ? "m-0" : "hidden"}
                         type="checkbox"
-                        required={props.required}
+                        required={required}
                         disabled={disabled}
                         onChange={handleChanged}
                         checked={value.value}
                         ref={input}
-                        {...props.fieldProps}
+                        {...fieldProps}
                     />
                     {renderSlot(ctx.slots, "default")}
                 </Button>
