@@ -2,6 +2,10 @@ import { computed, defineComponent, PropType } from "vue"
 import { eventDecorator } from "../eventDecorator"
 import { Variant } from "./variants"
 
+export function getIconHtml(icon: string, className: string | null) {
+    return `<svg class="as-icon${className != null ? " " + className : ""}" fill="currentColor" viewBox="0 0 24 24"><g><path d="${icon}" /><rect width="24" height="24" fill="transparent" /></g></svg>`
+}
+
 export const Icon = eventDecorator(defineComponent({
     name: "Icon",
     props: {
