@@ -7,6 +7,7 @@ export interface GrabMoveEvent {
     deltaY: number
     moveX: number
     moveY: number
+    forceStop(): void
 }
 
 interface HandlerInput {
@@ -47,7 +48,14 @@ export function useGrab<T = null>({
 
         dragging = true
 
-        const state = onMoveStart({ startX, startY, currentX: startX, currentY: startY, deltaX: 0, deltaY: 0, moveX: 0, moveY: 0, nativeEvent: event }, () => dragging = false)
+        let forceStop = () => { dragging = false }
+
+        const state = onMoveStart({
+            startX, startY, currentX: startX, currentY: startY,
+            deltaX: 0, deltaY: 0, moveX: 0, moveY: 0,
+            nativeEvent: event, forceStop: () => forceStop()
+        }, forceStop)
+
         if (!dragging) return
 
         event.preventDefault()
@@ -67,7 +75,7 @@ export function useGrab<T = null>({
             onMove({
                 startX, startY, currentX, currentY,
                 deltaX: currentX - startX, deltaY: currentY - startY,
-                moveX, moveY,
+                moveX, moveY, forceStop,
             }, state)
         }
 
@@ -83,7 +91,7 @@ export function useGrab<T = null>({
             onMoveEnd({
                 startX, startY, currentX, currentY,
                 deltaX: currentX - startX, deltaY: currentY - startY,
-                moveX, moveY,
+                moveX, moveY, forceStop,
             }, state)
         }
 
@@ -104,6 +112,13 @@ export function useGrab<T = null>({
 
             window.addEventListener("mousemove", moveListener)
             window.addEventListener("mouseup", upListener)
+
+            forceStop = () => {
+                window.removeEventListener("mousemove", moveListener)
+                window.removeEventListener("mouseup", upListener)
+
+                upHandler({ pageX: currentX, pageY: currentY })
+            }
         } else if (event instanceof TouchEvent) {
             const moveListener = (event: TouchEvent) => {
                 const newTouch = event.changedTouches.item(0)!
@@ -125,6 +140,13 @@ export function useGrab<T = null>({
 
             window.addEventListener("touchmove", moveListener)
             window.addEventListener("touchend", upListener)
+
+            forceStop = () => {
+                window.removeEventListener("touchmove", moveListener)
+                window.removeEventListener("touchend", upListener)
+
+                upHandler({ pageX: currentX, pageY: currentY })
+            }
         }
     }
 }
