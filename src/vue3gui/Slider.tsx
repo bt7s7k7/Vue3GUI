@@ -36,6 +36,11 @@ export const Slider = eventDecorator(defineComponent({
         })
 
         function update() {
+            // Prevent floating point errors when expecting whole number steps
+            if (props.stepped && props.step == 1) {
+                value.value = Math.round(value.value)
+            }
+
             ctx.emit("update:modelValue", value.value)
             ctx.emit("input", value.value)
         }
@@ -54,9 +59,8 @@ export const Slider = eventDecorator(defineComponent({
             if (newValue > 1) newValue = 1
             if (newValue < 0) newValue = 0
 
-            const step = props.step / (props.max - props.min)
-
             if (props.stepped) {
+                const step = props.step / (props.max - props.min)
                 newValue = Math.round(newValue / step) * step
             }
 
