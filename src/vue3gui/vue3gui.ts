@@ -57,7 +57,11 @@ function _addClass(element: Element, classToAdd: string) {
 const _LABEL_HOST = Symbol.for("vue3gui.labelHost")
 const _LABEL_ALIGNMENTS: Record<string, [string, string]> = {
     "bottom": ["top-100 left-0 w-fill h-0 flex center", "top-100 mt-1"],
+    "bottom-right": ["top-100 left-0 w-fill h-0 flex", "top-100 mt-1"],
+    "bottom-left": ["top-100 left-0 w-fill h-0 flex end-main", "top-100 mt-1"],
     "top": ["bottom-100 left-0 w-fill h-0 flex center", "bottom-100 mb-1"],
+    "top-right": ["bottom-100 left-0 w-fill h-0 flex", "bottom-100 mb-1"],
+    "top-left": ["bottom-100 left-0 w-fill h-0 flex end-main", "bottom-100 mb-1"],
     "right": ["left-100 top-0 h-fill w-0 flex center", "left-100 ml-1"],
     "left": ["right-100 top-0 h-fill w-0 flex center", "right-100 mr-1"],
 }
