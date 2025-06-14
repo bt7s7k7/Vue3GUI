@@ -123,10 +123,11 @@ export const ButtonGroup = defineComponent({
         actions: { type: Array as PropType<ButtonProps.Function[]> },
         style: { type: null },
         class: { type: null },
+        override: { type: Boolean },
     },
     inheritAttrs: false,
     setup(props, ctx) {
-        const inherited = inject(ButtonProps.GROUP_SYMBOL, undefined)
+        const inherited = props.override ? undefined : inject(ButtonProps.GROUP_SYMBOL, undefined)
 
         const finalProps: ButtonProps.Group["props"] = reactive({})
         watch(() => [props, inherited?.props], ([props, inherited]: any) => {
