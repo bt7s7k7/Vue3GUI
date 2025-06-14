@@ -59,7 +59,7 @@ interface ButtonDefinition {
     callback: (close: (success?: boolean) => void) => void
 }
 
-export type PopupTarget = HTMLElement | ComponentPublicInstance
+export type PopupTarget = HTMLElement | ComponentPublicInstance | { x: number, y: number }
 export type MenuTarget = PopupTarget | { x: number, y: number }
 
 let nextID = 0
@@ -296,44 +296,51 @@ function makeDynamicEmitter(callback: (key: typeof DYNAMICS_EMITTER_KEY, emitter
         },
         modals: [] as ModalDefinition[],
         popup(target: PopupTarget, content: ModalDefinition["content"], options: ModalOptions & { align?: PopupAlign } = {}) {
-            const rect = ("$el" in target ? target.$el as HTMLElement : target).getBoundingClientRect()
-            let offsetX = 0
-            let offsetY = 0
-
-            if (typeof options.align == "object") {
-                ({ offsetX, offsetY } = options.align)
-                options.align = "over"
-            }
-
-            const [base, extend] = (options.align ?? "bottom-left").split("-")
             const pos: any = {}
-            if (base == "right" || base == "left") {
-                if (extend == "down") {
-                    pos.top = rect.top + "px"
-                } else {
-                    pos.bottom = (window.innerHeight - rect.bottom) + "px"
+
+            if ("$el" in target || target instanceof HTMLElement) {
+                const rect = ("$el" in target ? target.$el as HTMLElement : target).getBoundingClientRect()
+
+                let offsetX = 0
+                let offsetY = 0
+                if (typeof options.align == "object") {
+                    ({ offsetX, offsetY } = options.align)
+                    options.align = "over"
                 }
 
-                if (base == "right") {
-                    pos.left = rect.right + "px"
-                } else {
-                    pos.right = (window.innerWidth - rect.left) + "px"
-                }
-            } else if (base == "top" || base == "bottom") {
-                if (extend == "right") {
-                    pos.left = rect.left + "px"
-                } else {
-                    pos.right = (window.innerWidth - rect.right) + "px"
-                }
+                const [base, extend] = (options.align ?? "bottom-left").split("-")
 
-                if (base == "bottom") {
-                    pos.top = rect.bottom + "px"
-                } else {
-                    pos.bottom = (window.innerHeight - rect.top) + "px"
+                if (base == "right" || base == "left") {
+                    if (extend == "down") {
+                        pos.top = rect.top + "px"
+                    } else {
+                        pos.bottom = (window.innerHeight - rect.bottom) + "px"
+                    }
+
+                    if (base == "right") {
+                        pos.left = rect.right + "px"
+                    } else {
+                        pos.right = (window.innerWidth - rect.left) + "px"
+                    }
+                } else if (base == "top" || base == "bottom") {
+                    if (extend == "right") {
+                        pos.left = rect.left + "px"
+                    } else {
+                        pos.right = (window.innerWidth - rect.right) + "px"
+                    }
+
+                    if (base == "bottom") {
+                        pos.top = rect.bottom + "px"
+                    } else {
+                        pos.bottom = (window.innerHeight - rect.top) + "px"
+                    }
+                } else if (base == "over") {
+                    pos.left = rect.left + offsetX + "px"
+                    pos.top = rect.top + offsetY + "px"
                 }
-            } else if (base == "over") {
-                pos.left = rect.left + offsetX + "px"
-                pos.top = rect.top + offsetY + "px"
+            } else {
+                pos.left = target.x + "px"
+                pos.top = target.y + "px"
             }
 
             return this.modal(content, {
