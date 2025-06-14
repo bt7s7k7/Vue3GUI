@@ -29,6 +29,10 @@
     align-items: center;
 }
 
+.center-cross-self {
+    align-self: center;
+}
+
 .start-main {
     justify-content: start;
 }
@@ -37,12 +41,20 @@
     align-items: start;
 }
 
+.start-cross-self {
+    align-self: start;
+}
+
 .end-main {
     justify-content: end;
 }
 
 .end-cross {
     align-items: end;
+}
+
+.end-cross-self {
+    align-self: end;
 }
 
 .justify-main {
