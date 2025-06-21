@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin generate-theme($bg-danger: #dc3545,
     $bg-white: #ffffff,
     $bg-black: #000000,
@@ -45,26 +47,26 @@
             "success": ("bg": $bg-success, "fg": $fg-success, "invert": $invert-success),
             "dark": ("bg": $bg-dark, "fg": $fg-dark, "invert": $invert-dark));
 
-    --fg-color: #{map-get(map-get($colors, $default-fg), "fg")};
-    --replace-color: #{map-get(map-get($colors, $default-fg), "fg")};
+    --fg-color: #{map.get(map.get($colors, $default-fg), "fg")};
+    --replace-color: #{map.get(map.get($colors, $default-fg), "fg")};
     --border-color: #{$border-color};
 
     @each $value-short, $color in $colors {
-        --bg-#{$value-short}: #{map-get($color, "bg")};
-        --bg-#{$value-short}-translucent: #{rgba(map-get($color, "bg"), 0.25)};
-        --bg-#{$value-short}-transparent: #{rgba(map-get($color, "bg"), 0.75)};
-        --fg-#{$value-short}: #{map-get($color, "fg")};
-        --fg-replace-#{$value-short}: #{if(map-get($color, "invert"), map-get(map-get($colors, "white"), "fg"), map-get(map-get($colors, "black"), "fg"))};
+        --bg-#{$value-short}: #{map.get($color, "bg")};
+        --bg-#{$value-short}-translucent: #{rgba(map.get($color, "bg"), 0.25)};
+        --bg-#{$value-short}-transparent: #{rgba(map.get($color, "bg"), 0.75)};
+        --fg-#{$value-short}: #{map.get($color, "fg")};
+        --fg-replace-#{$value-short}: #{if(map.get($color, "invert"), map.get(map.get($colors, "white"), "fg"), map.get(map.get($colors, "black"), "fg"))};
     }
 
-    --bg-highlight: #{map-get(map-get($colors, $highlight), "bg")};
-    --bg-highlight-translucent: #{rgba(map-get(map-get($colors, $highlight), "bg"), 0.25)};
-    --bg-highlight-transparent: #{rgba(map-get(map-get($colors, $highlight), "bg"), 0.75)};
-    --fg-highlight: #{map-get(map-get($colors, $highlight), "fg")};
-    --fg-replace-highlight: #{if(map-get(map-get($colors, $highlight), "invert"), map-get(map-get($colors, "white"), "fg"), map-get(map-get($colors, "black"), "fg"))};
+    --bg-highlight: #{map.get(map.get($colors, $highlight), "bg")};
+    --bg-highlight-translucent: #{rgba(map.get(map.get($colors, $highlight), "bg"), 0.25)};
+    --bg-highlight-transparent: #{rgba(map.get(map.get($colors, $highlight), "bg"), 0.75)};
+    --fg-highlight: #{map.get(map.get($colors, $highlight), "fg")};
+    --fg-replace-highlight: #{if(map.get(map.get($colors, $highlight), "invert"), map.get(map.get($colors, "white"), "fg"), map.get(map.get($colors, "black"), "fg"))};
 
-    --bg-default: #{map-get(map-get($colors, $default-bg), "bg")};
-    --fg-default: #{map-get(map-get($colors, $default-fg), "fg")};
+    --bg-default: #{map.get(map.get($colors, $default-bg), "bg")};
+    --fg-default: #{map.get(map.get($colors, $default-fg), "fg")};
     --fg-replace-default: var(--fg-default);
     --default-border-radius: 4px;
     --size-int: #{$size-int};

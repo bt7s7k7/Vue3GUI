@@ -1,4 +1,5 @@
 @use "./style/support.scss";
+@use "sass:meta";
 
 :root, .as-light-theme {
     @include support.generate-theme();
@@ -21,4 +22,4 @@
     color-scheme: dark;
 }
 
-@import "./style/index.scss";
+@include meta.load-css("./style/index.scss");

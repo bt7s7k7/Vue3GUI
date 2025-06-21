@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $diameter: 100px;
 $triangle-height: 50px;
 $triangle-width: 100px;
@@ -24,7 +26,7 @@ $translate: -10px;
         div {
             width: $triangle-width;
             height: $triangle-height;
-            background-color: mix(#0d6efd, #ffffff, 50%);
+            background-color: color.mix(#0d6efd, #ffffff, 50%);
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             transition-delay: 0.1s;
         }
