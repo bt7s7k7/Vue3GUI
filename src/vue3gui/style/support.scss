@@ -36,6 +36,9 @@
     $size-int: 0.25rem,
     $size-int-em: 0.25em,
 
+    $flip-duration: 0.1s,
+    $flip-transition: ease-in-out,
+
     $font: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
 ) {
     $colors: ("danger": ("bg": $bg-danger, "fg": $fg-danger, "invert": $invert-danger),
@@ -72,6 +75,9 @@
     --size-int: #{$size-int};
     --size-int-em: #{$size-int-em};
     --default-font: #{$font};
+
+    --flip-duration: #{$flip-duration};
+    --flip-transition: #{$flip-transition};
 }
 
 $px-int: 50px;
