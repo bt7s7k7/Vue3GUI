@@ -85,3 +85,7 @@
         box-shadow: 0 0 2.5px rgba(0, 0, 0, 0.5);
     }
 }
+
+.as-clickable.circle::after {
+    border-radius: 100%;
+}
