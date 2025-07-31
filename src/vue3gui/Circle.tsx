@@ -21,7 +21,13 @@ export const Circle = (defineComponent({
                 props.variant && `text-${props.variant}`,
             ]} stroke="currentColor" fill="none">
                 {props.filler && <circle r="12.5" cx="16" cy="16" class="filler" />}
-                <circle r="12.5" cx="16" cy="16" class="main" pathLength="1" stroke-dashoffset={1 * (1 - props.progress)} />
+                <circle
+                    r="12.5" cx="16" cy="16" class="main"
+                    pathLength="1"
+                    stroke-dashoffset={1 * (1 - props.progress)}
+                    stroke={props.progress <= 0 && !props.indeterminate ? "none" : undefined}
+                    style={props.progress >= 1 && !props.indeterminate ? "stroke-dasharray: none" : undefined}
+                />
             </svg>
         )
     },
