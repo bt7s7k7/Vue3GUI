@@ -90,6 +90,22 @@ export const vue3gui = {
 
             const prevLabel = el.ariaLabel
             const label = binding.value as string
+            if (!label) {
+                if (prevLabel == null) {
+                    return
+                }
+
+                el.ariaLabel = null
+
+                const labelHost = (el as any)[_LABEL_HOST] as [HTMLElement, HTMLElement] | null
+                if (labelHost) {
+                    labelHost[0].remove()
+                }
+
+                (el as any)[_LABEL_HOST] = null
+                return
+            }
+
             if (prevLabel == label) return
 
             el.ariaLabel = label
