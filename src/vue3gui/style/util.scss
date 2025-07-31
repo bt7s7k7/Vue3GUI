@@ -57,7 +57,6 @@
 @each $side in "top-left", "top-right", "bottom-left", "bottom-right" {
     .rounded-#{$side} {
         border-#{$side}-radius: 4px;
-        --test: 1;
     }
 }
 
