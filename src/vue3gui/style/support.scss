@@ -39,7 +39,9 @@
     $flip-duration: 0.1s,
     $flip-transition: ease-in-out,
 
-    $font: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    $font: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+
+    $transition-duration: 0.1s,
 ) {
     $colors: ("danger": ("bg": $bg-danger, "fg": $fg-danger, "invert": $invert-danger),
             "white": ("bg": $bg-white, "fg": $fg-white, "invert": $invert-white),
@@ -78,6 +80,8 @@
 
     --flip-duration: #{$flip-duration};
     --flip-transition: #{$flip-transition};
+
+    --transition-duration: #{$transition-duration};
 }
 
 $px-int: 50px;

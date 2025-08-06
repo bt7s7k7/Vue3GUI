@@ -5,7 +5,7 @@
 
 .as-transition-fade-enter-active,
 .as-transition-fade-leave-active {
-    transition: opacity 0.1s ease-in-out;
+    transition: opacity var(--transition-duration) ease-in-out;
 }
 
 .as-transition-slide-left-enter-from,
@@ -16,7 +16,7 @@
 }
 
 .as-transition-slide-right-enter-from,
-.as-transition-slide-right-leave-to ,
+.as-transition-slide-right-leave-to,
 .as-transition-slide-x-enter-from {
     transform: translate(100%, 0);
     opacity: 0;
@@ -52,7 +52,16 @@
 .as-transition-slide-down-enter-active,
 .as-transition-slide-x-enter-active,
 .as-transition-slide-x-leave-active {
-    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    transition: transform var(--transition-duration) ease-in-out, opacity var(--transition-duration) ease-in-out;
+}
+
+.as-transition-slide-left-leave-active,
+.as-transition-slide-up-leave-active,
+.as-transition-slide-right-leave-active,
+.as-transition-shrink-leave-active,
+.as-transition-slide-down-leave-active,
+.as-transition-slide-x-leave-active {
+    position: absolute;
 }
 
 .as-transition-slide-left-move,
@@ -62,6 +71,6 @@
 .as-transition-slide-down-move,
 .as-transition-slide-x-move,
 .as-transition-move,
-.as-transition-fade-move  {
-    transition: transform 0.1s ease-in-out;
+.as-transition-fade-move {
+    transition: transform var(--transition-duration) ease-in-out;
 }
