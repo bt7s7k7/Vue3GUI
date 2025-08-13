@@ -94,7 +94,7 @@ export function asyncComputed<T, R>(inputs: () => T, getter: (inputs: T) => Prom
 
 export type ComponentProps<T extends { new(...args: any): { $props: any } }> = Omit<InstanceType<T>["$props"], Exclude<keyof VNodeProps, "class" | "style">>
 
-export function useDebounce<T>(value: Ref<T>, { delay = 500, intermediateUpdates = false, ...options }: { delay?: number, intermediateUpdates?: boolean } & WatchOptions = {}) {
+export function useDebounce<T>(value: Ref<T>, { delay = 500, intermediateUpdates = false, onChanged, ...options }: { delay?: number, intermediateUpdates?: boolean, onChanged?: (value: T) => void } & WatchOptions = {}) {
     let timeoutID: any = 0
 
     const result = ref(value.value) as Ref<T>
@@ -102,12 +102,14 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, intermediateUpdates
 
     watch(value, (value) => {
         if (delay <= 0) {
+            onChanged?.(value)
             result.value = value
         } else {
             if (intermediateUpdates) {
                 if (timeoutID == 0) {
                     intermediate = value
                     timeoutID = setTimeout(() => {
+                        onChanged?.(value)
                         result.value = intermediate
                         timeoutID = 0
                     }, delay)
@@ -115,6 +117,7 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, intermediateUpdates
             } else {
                 clearTimeout(timeoutID)
                 timeoutID = setTimeout(() => {
+                    onChanged?.(value)
                     result.value = value
                     timeoutID = 0
                 }, delay)
@@ -126,6 +129,7 @@ export function useDebounce<T>(value: Ref<T>, { delay = 500, intermediateUpdates
         updateNow() {
             clearTimeout(timeoutID)
             result.value = value.value
+            onChanged?.(value.value)
         },
     })
 
