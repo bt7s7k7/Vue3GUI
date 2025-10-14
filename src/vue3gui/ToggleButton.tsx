@@ -9,7 +9,7 @@ export const ToggleButton = eventDecorator(defineComponent({
         focus: { type: Boolean },
         fieldProps: { type: Object as PropType<InputHTMLAttributes> },
         required: { type: Boolean },
-        enabledStyle: { type: Object as PropType<ButtonProps.Style & { class?: any, style?: any }> },
+        enabledStyle: { type: Object as PropType<ButtonProps.Style & { class?: any, style?: any, label?: string }> },
         ...ButtonProps.FUNCTION,
         ...ButtonProps.STYLE,
     },
