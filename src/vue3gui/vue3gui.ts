@@ -1,5 +1,5 @@
-import { escapeHtml, stringifyStyle } from "@vue/shared"
-import { App, DirectiveBinding, normalizeClass, normalizeStyle } from "vue"
+import { escapeHtml, normalizeClass, normalizeStyle, stringifyStyle } from "@vue/shared"
+import { App, DirectiveBinding } from "vue"
 
 function* _applyChildDirective(el: unknown, binding: DirectiveBinding) {
     if (!(el instanceof HTMLElement)) {
