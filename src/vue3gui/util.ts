@@ -294,6 +294,7 @@ export function useLocalStorageValue<T = string>(key: string, {
     store = ref<T>(defaultValue) as Ref<T>,
     serialize = (v => v) as (value: T) => string,
     deserialize = (v => v) as (value: string) => T | null,
+    watchOptions = undefined as undefined | WatchOptions
 } = {}) {
     const existing = localStorage.getItem(key)
     if (existing != null) {
@@ -305,7 +306,7 @@ export function useLocalStorageValue<T = string>(key: string, {
 
     watch(store, value => {
         localStorage.setItem(key, serialize(value))
-    })
+    }, watchOptions)
 
     return store
 }
